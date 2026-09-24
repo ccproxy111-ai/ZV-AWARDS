@@ -250,7 +250,6 @@ header{
 .theme-option .theme-check{color:var(--red);font-size:12px;opacity:0;transition:opacity .2s}
 .theme-option.active .theme-check{opacity:1}
 
-/* HERO — текст с заметной тенью поверх бублика */
 .hero{
   min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
   text-align:center;padding:140px 20px 40px;position:relative;
@@ -728,7 +727,7 @@ body.low-perf .vote-dates::before{display:none !important}
 const GOOGLE_CLIENT_ID = "193095894603-4jefaanb9nv73gonatbprs9cuokqua7v.apps.googleusercontent.com";
 const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const ADMIN_PASSWORD = "meduzaadmin221";
-const SHEETS_API = "https://script.google.com/macros/s/AKfycbwpiv0fkXfyzk7gTVvwio7yP2GP4B20L9sbztjVref6l9JpepYbB8I34VtRwwRGmSzxdw/exec";
+const SHEETS_API = "https://script.google.com/macros/s/AKfycbz9QULaw2eHnv_T7ONyIXbUu0fIK9aPm4M9SWW2gMFTy5Uu1Vuv-4iLeMfetxwGv1Rr/exec";
 
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
 const IS_SLOW = IS_MOBILE && ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 2));
@@ -993,8 +992,6 @@ function confirmLogout(){
 function doLogout(){
   currentUser = null;
   localStorage.removeItem(LS_USER);
-  // При выходе чистим локальный кэш голосов.
-  // Данные в Google-таблице НЕ трогаем.
   userVotes = {};
   saveMyVotes(userVotes);
   updateAuthUI();
@@ -1076,11 +1073,11 @@ window.addEventListener("load", ()=>{
 });
 
 /* ============================================================
-   RESET MY VOTES (через deleteAll — чистит все строки по email)
+   RESET MY VOTES
 ============================================================ */
 async function resetMyVotes(){
   if(!currentUser){ showToast("Сначала войдите в Google-аккаунт.", "error"); return; }
-  if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ВСЕ ваши строки из Google-таблицы (даже если локальный кэш потерян). После этого можно голосовать заново.")) return;
+  if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ВСЕ ваши строки из Google-таблицы. После этого можно голосовать заново.")) return;
 
   SoundFX.cancel();
   showToast("Удаляем ваши голоса с сервера...", "info");
@@ -1292,7 +1289,7 @@ function escapeHtml(s){
 document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal","logout-modal"].forEach(closeModal); });
 
 /* ============================================================
-   THREE.JS — один тор
+   THREE.JS
 ============================================================ */
 const container = document.getElementById("canvas-container");
 const scene = new THREE.Scene();
