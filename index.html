@@ -9,23 +9,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
 :root{
-  --bg:#0a0203;
-  --bg-2:#140204;
-  --red:#ff0033;
-  --red-2:#e60026;
-  --red-3:#b3001b;
-  --red-dark:#7a0012;
-  --white:#ffffff;
-  --gold:#ffd24a;
-  --online:#22ff88;
-  --muted:#b8a0a4;
-  --card:rgba(30,3,8,.6);
-  --admin:#ff3355;
+  --bg:#0a0203;--bg-2:#140204;
+  --red:#ff0033;--red-2:#e60026;--red-3:#b3001b;--red-dark:#7a0012;
+  --white:#ffffff;--gold:#ffd24a;--online:#22ff88;
+  --muted:#b8a0a4;--card:rgba(30,3,8,.6);--admin:#ff3355;
 }
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
 html,body{height:100%}
@@ -34,8 +25,7 @@ body{
     radial-gradient(circle at 20% 10%, rgba(255,0,51,.16), transparent 55%),
     radial-gradient(circle at 80% 80%, rgba(179,0,27,.25), transparent 60%),
     linear-gradient(180deg, var(--bg), var(--bg-2));
-  color:#fff;font-family:"Inter",sans-serif;
-  overflow-x:hidden;position:relative;min-height:100vh;
+  color:#fff;font-family:"Inter",sans-serif;overflow-x:hidden;position:relative;min-height:100vh;
 }
 body::before{
   content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
@@ -44,15 +34,11 @@ body::before{
     radial-gradient(circle at 70% 60%, rgba(230,0,38,.15), transparent 50%);
   animation:breathe 9s ease-in-out infinite alternate;
 }
-@keyframes breathe{
-  0%{opacity:.55;transform:scale(1)}
-  100%{opacity:1;transform:scale(1.08)}
-}
+@keyframes breathe{0%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
 
 #canvas-container{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 #canvas-container canvas{display:block}
 
-/* HEADER */
 header{
   position:fixed;top:0;left:0;width:100%;
   padding:20px 40px;display:flex;justify-content:space-between;align-items:center;
@@ -67,10 +53,7 @@ header{
   filter:drop-shadow(0 0 12px rgba(255,0,51,.6));
   animation:logoShine 5s ease-in-out infinite;white-space:nowrap;
 }
-@keyframes logoShine{
-  0%,100%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-}
+@keyframes logoShine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .header-actions{display:flex;gap:12px;align-items:center;flex-wrap:nowrap}
 
 .online-counter{
@@ -79,11 +62,9 @@ header{
   border:1px solid rgba(34,255,136,.4);
   padding:8px 14px;border-radius:30px;
   font-family:"Orbitron",sans-serif;
-  font-size:13px;font-weight:700;letter-spacing:1px;
-  color:#d6ffe6;
+  font-size:13px;font-weight:700;letter-spacing:1px;color:#d6ffe6;
   box-shadow:0 0 15px rgba(34,255,136,.2), inset 0 0 10px rgba(34,255,136,.06);
-  backdrop-filter:blur(8px);
-  transition:transform .3s;white-space:nowrap;
+  backdrop-filter:blur(8px);transition:transform .3s;white-space:nowrap;
 }
 .online-counter:hover{transform:translateY(-1px)}
 .online-dot{
@@ -92,10 +73,7 @@ header{
   box-shadow:0 0 8px var(--online), 0 0 16px var(--online);
   animation:pulseOnline 1.4s ease-in-out infinite;
 }
-@keyframes pulseOnline{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:.45;transform:scale(.75)}
-}
+@keyframes pulseOnline{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
 .online-counter .online-num{
   color:var(--online);text-shadow:0 0 8px rgba(34,255,136,.85);
   font-weight:900;font-size:15px;min-width:22px;text-align:center;display:inline-block;
@@ -127,10 +105,7 @@ header{
 .admin-btn:hover{background:var(--admin);color:#fff;box-shadow:0 0 25px rgba(255,51,85,.65);transform:translateY(-2px)}
 .admin-btn.visible{display:flex}
 
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:140px 20px 40px;position:relative;
-}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 20px 40px;position:relative}
 .hero h1{
   font-family:"Orbitron",sans-serif;font-size:clamp(48px,9vw,90px);font-weight:900;
   letter-spacing:6px;text-transform:uppercase;margin-bottom:18px;
@@ -142,8 +117,7 @@ header{
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 .vote-dates{
-  font-family:"Orbitron",sans-serif;
-  font-size:clamp(14px, 2vw, 22px);font-weight:800;
+  font-family:"Orbitron",sans-serif;font-size:clamp(14px, 2vw, 22px);font-weight:800;
   letter-spacing:4px;text-transform:uppercase;margin-bottom:28px;
   padding:12px 28px;border-radius:40px;display:inline-block;
   background:linear-gradient(90deg, #ffffff, #ffd24a, #ff0033, #ff6680, #ffffff, #ffd24a, #ff0033);
@@ -163,16 +137,10 @@ header{
   animation:dateSweep 3.5s ease-in-out infinite;
 }
 @keyframes dateShine{0%{background-position:0% 50%}100%{background-position:400% 50%}}
-@keyframes dateGlow{
-  0%,100%{filter:drop-shadow(0 0 10px rgba(255,0,51,.5))}
-  50%{filter:drop-shadow(0 0 22px rgba(255,210,74,.85))}
-}
+@keyframes dateGlow{0%,100%{filter:drop-shadow(0 0 10px rgba(255,0,51,.5))}50%{filter:drop-shadow(0 0 22px rgba(255,210,74,.85))}}
 @keyframes dateSweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
 
-.hero p{
-  font-size:18px;color:var(--muted);margin-bottom:45px;max-width:640px;
-  line-height:1.7;letter-spacing:1px;animation:fadeUp 1.2s ease both;
-}
+.hero p{font-size:18px;color:var(--muted);margin-bottom:45px;max-width:640px;line-height:1.7;letter-spacing:1px;animation:fadeUp 1.2s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
 .vote-main-btn{
@@ -200,10 +168,7 @@ header{
 .vote-main-btn:hover{transform:scale(1.06);background-position:100% 50%}
 
 .container{max-width:1200px;margin:0 auto;padding:80px 20px;position:relative}
-.section-title{
-  font-family:"Orbitron",sans-serif;font-size:32px;text-align:center;
-  margin-bottom:50px;letter-spacing:4px;position:relative;text-transform:uppercase;
-}
+.section-title{font-family:"Orbitron",sans-serif;font-size:32px;text-align:center;margin-bottom:50px;letter-spacing:4px;position:relative;text-transform:uppercase}
 .section-title::after{
   content:"";display:block;width:70px;height:3px;
   background:linear-gradient(90deg,transparent,#fff,transparent);
@@ -212,13 +177,9 @@ header{
 }
 @keyframes linePulse{0%,100%{width:70px;opacity:.85}50%{width:120px;opacity:1}}
 
-.nominations-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:30px;margin-bottom:80px;
-}
+.nominations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin-bottom:80px}
 .nomination-card{
-  background:var(--card);border:1px solid rgba(255,0,51,.2);
-  border-radius:18px;aspect-ratio:1/1;
+  background:var(--card);border:1px solid rgba(255,0,51,.2);border-radius:18px;aspect-ratio:1/1;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;
   backdrop-filter:blur(14px);
@@ -230,15 +191,8 @@ header{
   opacity:0;transition:opacity .4s ease;pointer-events:none;
 }
 .nomination-card:hover::before{opacity:1}
-.nomination-card:hover{
-  transform:translateY(-10px) scale(1.03);border-color:var(--red);
-  box-shadow:0 15px 45px rgba(255,0,51,.4), 0 0 30px rgba(255,0,51,.3);
-}
-.nomination-card i{
-  font-size:45px;margin-bottom:15px;color:var(--red);
-  text-shadow:0 0 20px rgba(255,0,51,.9);transition:transform .4s;
-  animation:iconFloat 3.5s ease-in-out infinite;position:relative;z-index:1;
-}
+.nomination-card:hover{transform:translateY(-10px) scale(1.03);border-color:var(--red);box-shadow:0 15px 45px rgba(255,0,51,.4), 0 0 30px rgba(255,0,51,.3)}
+.nomination-card i{font-size:45px;margin-bottom:15px;color:var(--red);text-shadow:0 0 20px rgba(255,0,51,.9);transition:transform .4s;animation:iconFloat 3.5s ease-in-out infinite;position:relative;z-index:1}
 @keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(3deg)}}
 .nomination-card:hover i{transform:scale(1.18) rotate(8deg)}
 .nomination-card h3{font-family:"Orbitron",sans-serif;font-size:19px;letter-spacing:1.5px;margin-top:10px;position:relative;z-index:1}
@@ -263,30 +217,21 @@ header{
   font-family:"Orbitron",sans-serif;letter-spacing:3px;color:var(--gold);
   text-shadow:0 0 12px rgba(255,210,74,.9);z-index:2;
 }
-.nomination-card.king-card:hover{
-  border-color:var(--gold);transform:translateY(-6px) scale(1.02);
-  box-shadow:0 15px 70px rgba(255,210,74,.55),0 0 100px rgba(255,210,74,.35),inset 0 0 50px rgba(255,210,74,.15);
-}
-.nomination-card.king-card > i{
-  color:var(--gold);font-size:64px;
-  text-shadow:0 0 20px rgba(255,210,74,.95),0 0 45px rgba(255,210,74,.7),0 0 80px rgba(255,210,74,.45);
-  animation:none !important;transition:none;position:relative;z-index:2;
-}
+.nomination-card.king-card:hover{border-color:var(--gold);transform:translateY(-6px) scale(1.02);box-shadow:0 15px 70px rgba(255,210,74,.55),0 0 100px rgba(255,210,74,.35),inset 0 0 50px rgba(255,210,74,.15)}
+.nomination-card.king-card > i{color:var(--gold);font-size:64px;text-shadow:0 0 20px rgba(255,210,74,.95),0 0 45px rgba(255,210,74,.7),0 0 80px rgba(255,210,74,.45);animation:none !important;transition:none;position:relative;z-index:2}
 .nomination-card.king-card:hover > i{transform:none !important}
 .nomination-card.king-card h3{color:var(--gold);text-shadow:0 0 15px rgba(255,210,74,.7);position:relative;z-index:2}
 
 .modal-overlay{
   position:fixed;inset:0;width:100%;height:100%;
   background:radial-gradient(circle at 50% 50%, rgba(30,3,8,.92), rgba(5,0,1,.97));
-  backdrop-filter:blur(18px);z-index:1000;
-  display:flex;justify-content:center;align-items:center;
+  backdrop-filter:blur(18px);z-index:1000;display:flex;justify-content:center;align-items:center;
   opacity:0;pointer-events:none;transition:opacity .4s ease;padding:20px;
 }
 .modal-overlay.active{opacity:1;pointer-events:auto}
 .modal-content{
   background:linear-gradient(160deg, rgba(30,3,8,.98), rgba(12,1,3,.98));
-  border:1px solid rgba(255,0,51,.4);
-  border-radius:24px;padding:40px;max-width:900px;width:100%;position:relative;
+  border:1px solid rgba(255,0,51,.4);border-radius:24px;padding:40px;max-width:900px;width:100%;position:relative;
   transform:scale(.85) translateY(20px);
   transition:transform .45s cubic-bezier(.175,.885,.32,1.2);
   box-shadow:0 0 70px rgba(255,0,51,.4), 0 0 100px rgba(179,0,27,.5);
@@ -298,103 +243,67 @@ header{
   background:linear-gradient(135deg, rgba(255,0,51,.7), transparent 35%, transparent 65%, rgba(255,255,255,.5));
   z-index:-1;filter:blur(10px);opacity:.6;
 }
-.close-modal{
-  position:absolute;top:18px;right:24px;font-size:26px;cursor:pointer;
-  color:var(--muted);transition:all .3s;line-height:1;
-}
+.close-modal{position:absolute;top:18px;right:24px;font-size:26px;cursor:pointer;color:var(--muted);transition:all .3s;line-height:1}
 .close-modal:hover{color:#fff;transform:rotate(90deg) scale(1.2);text-shadow:0 0 15px var(--red)}
 .modal-title{
-  font-family:"Orbitron",sans-serif;font-size:26px;margin-bottom:25px;
-  text-align:center;letter-spacing:3px;text-transform:uppercase;
-  background:linear-gradient(90deg,#fff,#ff0033,#fff);
-  background-size:200% auto;
+  font-family:"Orbitron",sans-serif;font-size:26px;margin-bottom:25px;text-align:center;letter-spacing:3px;text-transform:uppercase;
+  background:linear-gradient(90deg,#fff,#ff0033,#fff);background-size:200% auto;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   animation:logoShine 4s linear infinite;
 }
 .modal-title.king-title{
-  background:linear-gradient(90deg,#fff,#ffd24a,#fff,#ffd24a,#fff);
-  background-size:300% auto;filter:drop-shadow(0 0 12px rgba(255,210,74,.6));
+  background:linear-gradient(90deg,#ffd24a,#fff,#ffd24a,#fff,#ffd24a);
+  background-size:300% auto;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 12px rgba(255,210,74,.6));
 }
-.modal-subtitle{
-  text-align:center;color:var(--muted);font-size:12px;margin-top:-15px;margin-bottom:22px;letter-spacing:.5px;
-}
+.modal-subtitle{text-align:center;color:var(--muted);font-size:12px;margin-top:-15px;margin-bottom:22px;letter-spacing:.5px}
 .modal-subtitle b{color:#fff}
 .modal-subtitle b.gold{color:var(--gold)}
 
-.nominees-list{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:18px;overflow-y:auto;padding:5px 8px 5px 5px;
-}
+.nominees-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px;overflow-y:auto;padding:5px 8px 5px 5px}
 .nominees-list::-webkit-scrollbar{width:6px}
 .nominees-list::-webkit-scrollbar-thumb{background:rgba(255,0,51,.5);border-radius:10px}
 .nominees-list::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:10px}
 
 .nominee-card{
   background:linear-gradient(160deg, rgba(255,0,51,.07), rgba(255,255,255,.02));
-  border:1px solid rgba(255,0,51,.25);
-  border-radius:14px;padding:18px 12px;display:flex;flex-direction:column;
-  justify-content:space-between;align-items:center;text-align:center;
+  border:1px solid rgba(255,0,51,.25);border-radius:14px;padding:18px 12px;
+  display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;
   min-height:190px;transition:all .35s;position:relative;overflow:hidden;
   animation:cardIn .5s ease both;
 }
 @keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.nominee-card::after{
-  content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
-  background:radial-gradient(circle, rgba(255,0,51,.3), transparent 40%);
-  opacity:0;transition:opacity .5s;pointer-events:none;
-}
+.nominee-card::after{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle, rgba(255,0,51,.3), transparent 40%);opacity:0;transition:opacity .5s;pointer-events:none}
 .nominee-card:hover::after{opacity:1}
-.nominee-card:hover{
-  border-color:var(--red);transform:translateY(-4px) scale(1.02);
-  box-shadow:0 10px 30px rgba(255,0,51,.4), inset 0 0 20px rgba(255,0,51,.12);
-}
+.nominee-card:hover{border-color:var(--red);transform:translateY(-4px) scale(1.02);box-shadow:0 10px 30px rgba(255,0,51,.4), inset 0 0 20px rgba(255,0,51,.12)}
 .nominee-avatar{
   width:56px;height:56px;border-radius:50%;
   background:radial-gradient(circle at 30% 30%, var(--red-2), var(--red-dark));
-  display:flex;justify-content:center;align-items:center;
-  color:#fff;font-size:22px;margin-bottom:12px;
+  display:flex;justify-content:center;align-items:center;color:#fff;font-size:22px;margin-bottom:12px;
   border:1.5px solid rgba(255,255,255,.5);
   box-shadow:0 0 18px rgba(255,0,51,.55), inset 0 0 12px rgba(0,0,0,.6);
-  transition:transform .4s, box-shadow .4s;
-  animation:avatarPulse 3s ease-in-out infinite;position:relative;z-index:1;
+  transition:transform .4s, box-shadow .4s;animation:avatarPulse 3s ease-in-out infinite;position:relative;z-index:1;
 }
-@keyframes avatarPulse{
-  0%,100%{box-shadow:0 0 12px rgba(255,0,51,.4), inset 0 0 10px rgba(0,0,0,.6)}
-  50%{box-shadow:0 0 25px rgba(255,0,51,.85), inset 0 0 15px rgba(0,0,0,.6)}
-}
+@keyframes avatarPulse{0%,100%{box-shadow:0 0 12px rgba(255,0,51,.4), inset 0 0 10px rgba(0,0,0,.6)}50%{box-shadow:0 0 25px rgba(255,0,51,.85), inset 0 0 15px rgba(0,0,0,.6)}}
 .nominee-card:hover .nominee-avatar{transform:scale(1.1) rotate(-4deg);box-shadow:0 0 30px rgba(255,0,51,1), inset 0 0 15px rgba(0,0,0,.6)}
 .nominee-card.king-nominee .nominee-avatar{
   background:radial-gradient(circle at 30% 30%, #ffe58a, #b8860b);
   color:#3a2a00;border-color:var(--gold);
   box-shadow:0 0 20px rgba(255,210,74,.7), inset 0 0 12px rgba(0,0,0,.4);animation:none;
 }
-.nominee-name{
-  font-weight:600;font-size:13px;line-height:1.4;margin-bottom:14px;
-  word-break:break-word;flex-grow:1;
-  display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1;
-}
+.nominee-name{font-weight:600;font-size:13px;line-height:1.4;margin-bottom:14px;word-break:break-word;flex-grow:1;display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1}
 .vote-action-btn{
   background:transparent;border:1px solid var(--red);color:var(--red);
   padding:9px 14px;border-radius:20px;cursor:pointer;font-weight:700;
-  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;
-  transition:all .3s;width:100%;position:relative;overflow:hidden;z-index:1;
+  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;transition:all .3s;width:100%;position:relative;overflow:hidden;z-index:1;
 }
 .vote-action-btn:hover{background:var(--red);color:#fff;box-shadow:0 0 20px rgba(255,0,51,.8);transform:translateY(-2px)}
-.vote-action-btn.cancel-btn{
-  border-color:#fff;color:#fff;
-  background:linear-gradient(90deg, #ff0033, #b3001b);
-  font-size:10.5px;
-  box-shadow:0 0 20px rgba(255,0,51,.65), inset 0 0 12px rgba(0,0,0,.35);
-}
-.vote-action-btn.cancel-btn:hover{
-  background:linear-gradient(90deg, #fff, #ffccd5);color:#b3001b;
-  box-shadow:0 0 30px rgba(255,255,255,.9);transform:translateY(-2px) scale(1.03);
-}
+.vote-action-btn.cancel-btn{border-color:#fff;color:#fff;background:linear-gradient(90deg, #ff0033, #b3001b);font-size:10.5px;box-shadow:0 0 20px rgba(255,0,51,.65), inset 0 0 12px rgba(0,0,0,.35)}
+.vote-action-btn.cancel-btn:hover{background:linear-gradient(90deg, #fff, #ffccd5);color:#b3001b;box-shadow:0 0 30px rgba(255,255,255,.9);transform:translateY(-2px) scale(1.03)}
 .vote-action-btn.cancel-btn i{margin-right:6px;font-size:10px}
-
 .nominee-card.king-nominee .vote-action-btn{border-color:var(--gold);color:var(--gold)}
 .nominee-card.king-nominee .vote-action-btn:hover{background:var(--gold);color:#3a2a00;box-shadow:0 0 20px rgba(255,210,74,.9)}
-
 .nominee-card.locked{opacity:.28;filter:grayscale(1) brightness(.65);pointer-events:none;transform:scale(.96)}
 .nominee-card.chosen{
   opacity:1;filter:none;border-color:#fff;
@@ -406,107 +315,49 @@ header{
   0%,100%{box-shadow:0 0 25px rgba(255,255,255,.45), 0 0 40px rgba(255,0,51,.5), inset 0 0 20px rgba(255,255,255,.1)}
   50%{box-shadow:0 0 50px rgba(255,255,255,.85), 0 0 80px rgba(255,0,51,.85), inset 0 0 30px rgba(255,255,255,.2)}
 }
-.nominee-card.chosen .nominee-avatar{
-  border-color:#fff;background:radial-gradient(circle at 30% 30%, #fff, #ff0033);
-  color:#b3001b;box-shadow:0 0 25px rgba(255,255,255,.95), inset 0 0 12px rgba(0,0,0,.25);
-}
+.nominee-card.chosen .nominee-avatar{border-color:#fff;background:radial-gradient(circle at 30% 30%, #fff, #ff0033);color:#b3001b;box-shadow:0 0 25px rgba(255,255,255,.95), inset 0 0 12px rgba(0,0,0,.25)}
 .nominee-card.king-nominee.chosen{
-  border-color:var(--gold);
-  background:linear-gradient(160deg, rgba(255,210,74,.2), rgba(179,124,0,.12));
+  border-color:var(--gold);background:linear-gradient(160deg, rgba(255,210,74,.2), rgba(179,124,0,.12));
   box-shadow:0 0 40px rgba(255,210,74,.7), 0 0 70px rgba(255,210,74,.4), inset 0 0 25px rgba(255,210,74,.15);
 }
-.nominee-card.king-nominee.chosen .nominee-avatar{
-  border-color:var(--gold);background:radial-gradient(circle at 30% 30%, #fff, #ffd24a);
-  color:#3a2a00;box-shadow:0 0 30px rgba(255,210,74,.95), inset 0 0 12px rgba(0,0,0,.25);
-}
-.nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{
-  background:linear-gradient(90deg, #ffd24a, #b8860b);color:#3a2a00;border-color:#fff;
-  box-shadow:0 0 25px rgba(255,210,74,.9);
-}
+.nominee-card.king-nominee.chosen .nominee-avatar{border-color:var(--gold);background:radial-gradient(circle at 30% 30%, #fff, #ffd24a);color:#3a2a00;box-shadow:0 0 30px rgba(255,210,74,.95), inset 0 0 12px rgba(0,0,0,.25)}
+.nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{background:linear-gradient(90deg, #ffd24a, #b8860b);color:#3a2a00;border-color:#fff;box-shadow:0 0 25px rgba(255,210,74,.9)}
 
 .admin-overlay .modal-content{max-width:1000px;max-height:92vh;border-color:rgba(255,51,85,.5)}
 .admin-stats{overflow-y:auto;padding-right:8px}
 .admin-stats::-webkit-scrollbar{width:6px}
 .admin-stats::-webkit-scrollbar-thumb{background:rgba(255,51,85,.5);border-radius:10px}
-.admin-nom-block{
-  background:rgba(255,0,51,.04);border:1px solid rgba(255,51,85,.25);
-  border-radius:14px;padding:18px 20px;margin-bottom:18px;
-  animation:cardIn .4s ease both;
-}
-.admin-nom-title{
-  font-family:"Orbitron",sans-serif;font-size:16px;color:var(--admin);
-  margin-bottom:14px;letter-spacing:1.5px;
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:8px;text-shadow:0 0 10px rgba(255,51,85,.5);
-}
-.admin-nom-title .total-badge{
-  font-size:11px;background:rgba(255,51,85,.18);color:var(--admin);
-  padding:4px 10px;border-radius:20px;font-family:"Inter",sans-serif;letter-spacing:0;
-}
-.admin-nominee-row{
-  display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
-  padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.02);
-  margin-bottom:8px;font-size:13px;transition:background .3s;
-}
+.admin-nom-block{background:rgba(255,0,51,.04);border:1px solid rgba(255,51,85,.25);border-radius:14px;padding:18px 20px;margin-bottom:18px;animation:cardIn .4s ease both}
+.admin-nom-title{font-family:"Orbitron",sans-serif;font-size:16px;color:var(--admin);margin-bottom:14px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;text-shadow:0 0 10px rgba(255,51,85,.5)}
+.admin-nom-title .total-badge{font-size:11px;background:rgba(255,51,85,.18);color:var(--admin);padding:4px 10px;border-radius:20px;font-family:"Inter",sans-serif;letter-spacing:0}
+.admin-nominee-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.02);margin-bottom:8px;font-size:13px;transition:background .3s}
 .admin-nominee-row:hover{background:rgba(255,0,51,.1)}
 .admin-nominee-row .a-name{font-weight:600}
-.admin-nominee-row .a-count{
-  font-family:"Orbitron",sans-serif;color:var(--red);font-weight:800;font-size:15px;
-  text-shadow:0 0 10px rgba(255,0,51,.7);
-}
+.admin-nominee-row .a-count{font-family:"Orbitron",sans-serif;color:var(--red);font-weight:800;font-size:15px;text-shadow:0 0 10px rgba(255,0,51,.7)}
 .admin-nominee-row .a-pct{color:var(--muted);font-size:12px;min-width:45px;text-align:right}
-.admin-times{
-  grid-column:1/-1;font-size:11px;color:var(--muted);margin-top:4px;
-  border-top:1px dashed rgba(255,0,51,.25);padding-top:6px;line-height:1.6;
-}
+.admin-times{grid-column:1/-1;font-size:11px;color:var(--muted);margin-top:4px;border-top:1px dashed rgba(255,0,51,.25);padding-top:6px;line-height:1.6}
 .admin-empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px}
 .admin-toolbar{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-.admin-tool-btn{
-  background:transparent;border:1px solid rgba(255,51,85,.55);color:var(--admin);
-  padding:9px 18px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;
-  font-family:"Orbitron",sans-serif;transition:all .3s;
-}
+.admin-tool-btn{background:transparent;border:1px solid rgba(255,51,85,.55);color:var(--admin);padding:9px 18px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;font-family:"Orbitron",sans-serif;transition:all .3s}
 .admin-tool-btn:hover{background:var(--admin);color:#fff;box-shadow:0 0 20px rgba(255,51,85,.6);transform:translateY(-2px)}
 .admin-tool-btn.danger{border-color:#ff3355;color:#ff3355}
 .admin-tool-btn.danger:hover{background:#ff3355;color:#fff}
-.admin-loader{
-  text-align:center;color:var(--admin);font-family:"Orbitron",sans-serif;
-  font-size:13px;letter-spacing:2px;padding:30px 0;
-}
+.admin-loader{text-align:center;color:var(--admin);font-family:"Orbitron",sans-serif;font-size:13px;letter-spacing:2px;padding:30px 0}
 .admin-loader i{margin-right:8px;animation:spin 1s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.pass-input{
-  width:100%;padding:14px 18px;border-radius:12px;background:rgba(255,0,51,.06);
-  border:1px solid rgba(255,51,85,.4);color:#fff;font-size:15px;outline:none;
-  font-family:"Inter",sans-serif;margin-bottom:16px;transition:all .3s;
-}
+.pass-input{width:100%;padding:14px 18px;border-radius:12px;background:rgba(255,0,51,.06);border:1px solid rgba(255,51,85,.4);color:#fff;font-size:15px;outline:none;font-family:"Inter",sans-serif;margin-bottom:16px;transition:all .3s}
 .pass-input:focus{border-color:var(--admin);box-shadow:0 0 20px rgba(255,51,85,.4)}
-.pass-submit{
-  width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;
-  background:linear-gradient(90deg,#fff,#ff0033);
-  color:#b3001b;font-weight:800;font-family:"Orbitron",sans-serif;letter-spacing:1.5px;font-size:14px;
-  transition:transform .3s,box-shadow .3s;
-  box-shadow:0 0 25px rgba(255,51,85,.4);
-}
+.pass-submit{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(90deg,#fff,#ff0033);color:#b3001b;font-weight:800;font-family:"Orbitron",sans-serif;letter-spacing:1.5px;font-size:14px;transition:transform .3s,box-shadow .3s;box-shadow:0 0 25px rgba(255,51,85,.4)}
 .pass-submit:hover{transform:scale(1.02);box-shadow:0 0 40px rgba(255,51,85,.8);color:#fff;background:linear-gradient(90deg,#ff0033,#b3001b)}
 
-.toast{
-  position:fixed;bottom:30px;right:30px;padding:16px 26px;border-radius:14px;
-  font-weight:600;z-index:3000;transform:translateY(150%);color:#fff;font-size:14px;
-  transition:transform .4s cubic-bezier(.175,.885,.32,1.2);max-width:380px;
-  box-shadow:0 0 40px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);
-  backdrop-filter:blur(10px);
-}
+.toast{position:fixed;bottom:30px;right:30px;padding:16px 26px;border-radius:14px;font-weight:600;z-index:3000;transform:translateY(150%);color:#fff;font-size:14px;transition:transform .4s cubic-bezier(.175,.885,.32,1.2);max-width:380px;box-shadow:0 0 40px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px)}
 .toast.active{transform:translateY(0)}
 .toast.error{background:linear-gradient(135deg,#e60026,#7a0012);box-shadow:0 0 30px rgba(255,0,51,.7)}
 .toast.success{background:linear-gradient(135deg,#fff,#ffb3bf);color:#7a0012;box-shadow:0 0 35px rgba(255,255,255,.7)}
 .toast.info{background:linear-gradient(135deg,#b3001b,#7a0012);box-shadow:0 0 30px rgba(230,0,38,.7)}
 
-@keyframes glitch{
-  0%,100%{text-shadow:0 0 25px rgba(255,0,51,.6)}
-  50%{text-shadow:2px 2px rgba(255,0,51,.7), -2px -2px rgba(255,255,255,.5), 0 0 30px rgba(255,0,51,.8)}
-}
+@keyframes glitch{0%,100%{text-shadow:0 0 25px rgba(255,0,51,.6)}50%{text-shadow:2px 2px rgba(255,0,51,.7), -2px -2px rgba(255,255,255,.5), 0 0 30px rgba(255,0,51,.8)}}
 
 @media (max-width:900px){
   header{padding:14px 16px;gap:8px}
@@ -553,7 +404,7 @@ header{
   <div class="header-actions">
     <div class="online-counter" title="Сейчас на сайте">
       <span class="online-dot"></span>
-      <span class="online-num" id="online-count">23</span>
+      <span class="online-num" id="online-count">—</span>
       <span class="online-label">ОНЛАЙН</span>
     </div>
     <button class="admin-btn" id="admin-btn" type="button" onclick="openAdminPassword()">
@@ -585,15 +436,9 @@ header{
 
   <h2 class="section-title">Дополнительные номинации</h2>
   <div class="nominations-grid">
-    <div class="nomination-card" onclick="openNomination('Фейл года')">
-      <i class="fa-solid fa-face-dizzy"></i><h3>Фейл года</h3>
-    </div>
-    <div class="nomination-card" onclick="openNomination('Роблоксер года')">
-      <i class="fa-solid fa-cube"></i><h3>Роблоксер года</h3>
-    </div>
-    <div class="nomination-card" onclick="openNomination('Харизма года')">
-      <i class="fa-solid fa-fire"></i><h3>Харизма года</h3>
-    </div>
+    <div class="nomination-card" onclick="openNomination('Фейл года')"><i class="fa-solid fa-face-dizzy"></i><h3>Фейл года</h3></div>
+    <div class="nomination-card" onclick="openNomination('Роблоксер года')"><i class="fa-solid fa-cube"></i><h3>Роблоксер года</h3></div>
+    <div class="nomination-card" onclick="openNomination('Харизма года')"><i class="fa-solid fa-fire"></i><h3>Харизма года</h3></div>
     <div class="nomination-card" onclick="openNomination('Майнкрафтер года')">
       <svg class="mc-pick" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
         <rect x="6" y="6" width="20" height="20" fill="#8b0012"/>
@@ -607,18 +452,10 @@ header{
       </svg>
       <h3>Майнкрафтер года</h3>
     </div>
-    <div class="nomination-card" onclick="openNomination('КСер года')">
-      <i class="fa-solid fa-crosshairs"></i><h3>КСер года</h3>
-    </div>
-    <div class="nomination-card" onclick="openNomination('Мультигеймер года')">
-      <i class="fa-solid fa-gamepad"></i><h3>Мультигеймер года</h3>
-    </div>
-    <div class="nomination-card" onclick="openNomination('Игра года')">
-      <i class="fa-solid fa-trophy"></i><h3>Игра года</h3>
-    </div>
-    <div class="nomination-card" onclick="openNomination('Актив года')">
-      <i class="fa-solid fa-bolt"></i><h3>Актив года</h3>
-    </div>
+    <div class="nomination-card" onclick="openNomination('КСер года')"><i class="fa-solid fa-crosshairs"></i><h3>КСер года</h3></div>
+    <div class="nomination-card" onclick="openNomination('Мультигеймер года')"><i class="fa-solid fa-gamepad"></i><h3>Мультигеймер года</h3></div>
+    <div class="nomination-card" onclick="openNomination('Игра года')"><i class="fa-solid fa-trophy"></i><h3>Игра года</h3></div>
+    <div class="nomination-card" onclick="openNomination('Актив года')"><i class="fa-solid fa-bolt"></i><h3>Актив года</h3></div>
   </div>
 </main>
 
@@ -634,9 +471,7 @@ header{
 <div class="modal-overlay" id="admin-pass-modal" onclick="handleModalBg(event,'admin-pass-modal')">
   <div class="modal-content" style="max-width:380px">
     <span class="close-modal" onclick="closeModal('admin-pass-modal')">×</span>
-    <h2 class="modal-title" style="font-size:20px;color:var(--admin)">
-      <i class="fa-solid fa-lock"></i> Вход в админ-панель
-    </h2>
+    <h2 class="modal-title" style="font-size:20px;color:var(--admin)"><i class="fa-solid fa-lock"></i> Вход в админ-панель</h2>
     <input type="password" class="pass-input" id="admin-pass-input" placeholder="Введите пароль..." autocomplete="off">
     <button class="pass-submit" onclick="checkAdminPassword()">ВОЙТИ</button>
   </div>
@@ -645,9 +480,7 @@ header{
 <div class="modal-overlay admin-overlay" id="admin-modal" onclick="handleModalBg(event,'admin-modal')">
   <div class="modal-content">
     <span class="close-modal" onclick="closeModal('admin-modal')">×</span>
-    <h2 class="modal-title" style="color:var(--admin);font-size:22px">
-      <i class="fa-solid fa-shield-halved"></i> АДМИН-ПАНЕЛЬ
-    </h2>
+    <h2 class="modal-title" style="color:var(--admin);font-size:22px"><i class="fa-solid fa-shield-halved"></i> АДМИН-ПАНЕЛЬ</h2>
     <div class="admin-stats" id="admin-stats"></div>
     <div class="admin-toolbar">
       <button class="admin-tool-btn" onclick="refreshAdminStats()"><i class="fa-solid fa-rotate"></i> ОБНОВИТЬ</button>
@@ -668,32 +501,74 @@ const GOOGLE_CLIENT_ID = "193095894603-4jefaanb9nv73gonatbprs9cuokqua7v.apps.goo
 const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const ADMIN_PASSWORD = "meduzaadmin221";
 
-/* ⚠️ ВАЖНО: сюда вставлен URL твоего Google Apps Script.
-   Если передеплоишь скрипт — замени эту ссылку. */
-const SHEETS_API = "https://script.google.com/macros/s/AKfycbzWWtxkYWjEfR9Rv1VKdcEmpt6eo6EnI__6kYklDJZp_5U_Ce3VzYD1T-ZYY-Qtyowprg/exec";
+/* ✅ Новый URL Apps Script */
+const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
 
 /* ============================================================
-   ONLINE COUNTER (имитация)
+   SESSION ID (для онлайна)
 ============================================================ */
-(function(){
+function getSessionId(){
+  let sid = sessionStorage.getItem("zvawards_sid");
+  if(!sid){
+    sid = "s_" + Math.random().toString(36).slice(2) + "_" + Date.now();
+    sessionStorage.setItem("zvawards_sid", sid);
+  }
+  return sid;
+}
+const SESSION_ID = getSessionId();
+
+/* ============================================================
+   РЕАЛЬНЫЙ ОНЛАЙН
+============================================================ */
+const ONLINE_PING_INTERVAL = 25000; // 25 сек — пингуем себя
+let onlineTimer = null;
+
+async function pingOnline(){
+  try{
+    const url = SHEETS_API + "?action=ping&sid=" + encodeURIComponent(SESSION_ID) + "&t=" + Date.now();
+    const res = await fetch(url, { method:"GET" });
+    const data = await res.json();
+    if(data && data.ok && typeof data.online === "number"){
+      updateOnlineUI(data.online);
+    }
+  }catch(e){
+    // тихо игнорим — счётчик просто не обновится
+  }
+}
+
+async function fetchOnline(){
+  try{
+    const url = SHEETS_API + "?action=online&t=" + Date.now();
+    const res = await fetch(url, { method:"GET" });
+    const data = await res.json();
+    if(data && data.ok && typeof data.online === "number"){
+      updateOnlineUI(data.online);
+    }
+  }catch(e){}
+}
+
+function updateOnlineUI(n){
   const el = document.getElementById("online-count");
   if(!el) return;
-  let current = Math.floor(Math.random()*28) + 14;
-  el.textContent = current;
-  function next(){
-    const delay = 3000 + Math.random()*5000;
-    setTimeout(()=>{
-      let delta = Math.floor(Math.random()*7) - 3;
-      let n = current + delta;
-      if(n < 12) n = 12 + Math.floor(Math.random()*4);
-      if(n > 47) n = 47 - Math.floor(Math.random()*4);
-      if(n === current) n = current + (Math.random() < 0.5 ? 1 : -1);
-      current = Math.max(12, Math.min(47, n));
-      el.textContent = current;
-      next();
-    }, delay);
-  }
-  next();
+  el.textContent = n;
+}
+
+(function startOnline(){
+  // Первый пинг сразу после загрузки (чуть позже, чтобы не блочить)
+  setTimeout(()=>{ pingOnline(); }, 1200);
+  // И далее каждые 25 сек — «держит» сессию живой
+  onlineTimer = setInterval(pingOnline, ONLINE_PING_INTERVAL);
+
+  // Дополнительно — при уходе со страницы последний пинг
+  window.addEventListener("beforeunload", ()=>{
+    try{
+      const url = SHEETS_API + "?action=ping&sid=" + encodeURIComponent(SESSION_ID) + "&leave=1";
+      navigator.sendBeacon ? navigator.sendBeacon(url) : fetch(url, {method:"GET", keepalive:true});
+    }catch(e){}
+  });
+
+  // Раз в минуту — общий запрос (на случай, если кто-то ушёл и нам надо очиститься)
+  setInterval(fetchOnline, 60000);
 })();
 
 /* ============================================================
@@ -710,8 +585,7 @@ const SoundFX = (()=>{
     const c = ensureCtx(); if(!c) return;
     const t0 = c.currentTime + when;
     const osc = c.createOscillator(); const gain = c.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, t0);
+    osc.type = type; osc.frequency.setValueAtTime(freq, t0);
     if(slide) osc.frequency.exponentialRampToValueAtTime(slide, t0 + dur);
     gain.gain.setValueAtTime(0.0001, t0);
     gain.gain.exponentialRampToValueAtTime(vol, t0 + 0.012);
@@ -724,25 +598,11 @@ const SoundFX = (()=>{
     hover(){ tone({freq:800,dur:0.04,type:"sine",vol:0.015}); },
     open(){ tone({freq:320,dur:0.22,type:"sine",vol:0.045,slide:780}); },
     close(){ tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
-    success(){
-      tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0});
-      tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08});
-      tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16});
-      tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26});
-    },
-    error(){
-      tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90});
-      tone({freq:120,dur:0.22,type:"sine",vol:0.04,when:0.05});
-    },
+    success(){ tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0}); tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08}); tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16}); tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26}); },
+    error(){ tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90}); tone({freq:120,dur:0.22,type:"sine",vol:0.04,when:0.05}); },
     switch(){ tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
-    whoosh(){
-      tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900});
-      tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300});
-    },
-    cancel(){
-      tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380});
-      tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180});
-    }
+    whoosh(){ tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900}); tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300}); },
+    cancel(){ tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380}); tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180}); }
   };
 })();
 window.addEventListener("pointerdown", ()=>{ SoundFX.click(); }, {once:true, capture:true});
@@ -751,9 +611,9 @@ window.addEventListener("pointerdown", ()=>{ SoundFX.click(); }, {once:true, cap
    STATE
 ============================================================ */
 let currentUser = null;
-let userVotes = {};        // локально: чтобы UI не давал голосовать дважды
+let userVotes = {};
 let adminUnlocked = false;
-let allVotes = {};         // данные из Google Sheets (для админки)
+let allVotes = {};
 
 /* ============================================================
    NOMINEES
@@ -779,29 +639,23 @@ const nomineesDatabase = {
 ============================================================ */
 const LS_VOTES = "zvawards_my_votes";
 const LS_USER  = "zvawards_user";
-function loadMyVotes(){
-  try{ const r = localStorage.getItem(LS_VOTES); return r ? JSON.parse(r) : {}; }catch(e){ return {}; }
-}
+function loadMyVotes(){ try{ const r = localStorage.getItem(LS_VOTES); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } }
 function saveMyVotes(v){ localStorage.setItem(LS_VOTES, JSON.stringify(v)); }
 userVotes = loadMyVotes();
 
 /* ============================================================
-   GOOGLE SHEETS API
+   API
 ============================================================ */
 async function sendVoteToSheet(payload){
   try{
     const res = await fetch(SHEETS_API, {
       method: "POST",
-      // text/plain — чтобы избежать CORS preflight
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
     const data = await res.json();
     return data && data.ok === true;
-  }catch(e){
-    console.error("sendVoteToSheet error:", e);
-    return false;
-  }
+  }catch(e){ console.error("sendVoteToSheet error:", e); return false; }
 }
 
 async function fetchAllVotes(){
@@ -809,10 +663,7 @@ async function fetchAllVotes(){
     const res = await fetch(SHEETS_API + "?t=" + Date.now(), { method: "GET" });
     const data = await res.json();
     return data || {};
-  }catch(e){
-    console.error("fetchAllVotes error:", e);
-    return null;
-  }
+  }catch(e){ console.error("fetchAllVotes error:", e); return null; }
 }
 
 /* ============================================================
@@ -821,8 +672,7 @@ async function fetchAllVotes(){
 let toastTimer = null;
 function showToast(msg, type="error"){
   const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = "toast " + type;
+  t.textContent = msg; t.className = "toast " + type;
   requestAnimationFrame(()=>t.classList.add("active"));
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>t.classList.remove("active"), 4200);
@@ -830,10 +680,7 @@ function showToast(msg, type="error"){
   else if(type === "error") SoundFX.error();
 }
 
-function scrollToNominations(){
-  SoundFX.whoosh();
-  document.getElementById("voting-section").scrollIntoView({behavior:"smooth"});
-}
+function scrollToNominations(){ SoundFX.whoosh(); document.getElementById("voting-section").scrollIntoView({behavior:"smooth"}); }
 
 /* ============================================================
    GOOGLE SIGN-IN
@@ -855,17 +702,14 @@ function googleLogin(){
   if(currentUser){ logout(); return; }
   if(!window.google || !google.accounts){ showToast("Google API ещё загружается...", "error"); return; }
   initGoogle();
-  google.accounts.id.prompt((n)=>{
-    if(n.isNotDisplayed() || n.isSkippedMoment()) renderFallbackGoogleButton();
-  });
+  google.accounts.id.prompt((n)=>{ if(n.isNotDisplayed() || n.isSkippedMoment()) renderFallbackGoogleButton(); });
 }
 function renderFallbackGoogleButton(){
   let holder = document.getElementById("g-fallback");
   if(!holder){
     holder = document.createElement("div");
     holder.id = "g-fallback";
-    holder.style.position = "fixed";
-    holder.style.top = "-9999px";
+    holder.style.position = "fixed"; holder.style.top = "-9999px";
     document.body.appendChild(holder);
   }
   holder.innerHTML = "";
@@ -951,7 +795,6 @@ function openNomination(category){
   refreshNominationUI(category);
   openModal("nomination-modal");
 }
-
 function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
   const card = document.createElement("div");
   card.className = "nominee-card";
@@ -972,7 +815,6 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
 
   const btn = document.createElement("button");
   btn.className = "vote-action-btn"; btn.type = "button";
-
   if(isChosen){
     btn.classList.add("cancel-btn");
     btn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> ОТМЕНИТЬ ВЫБОР';
@@ -983,64 +825,42 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
     btn.textContent = "ПРОГОЛОСОВАТЬ";
     btn.addEventListener("click", (e)=>{ e.stopPropagation(); submitVote(category, name); });
   }
-
   card.appendChild(avatar); card.appendChild(nm); card.appendChild(btn);
   return card;
 }
-
 async function submitVote(category, name){
   if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); return; }
   if(userVotes[category]){ showToast("Вы уже голосовали в этой номинации! Сначала отмените выбор.", "error"); return; }
 
   const now = new Date();
-  const timeStr = now.toLocaleString("ru-RU", {
-    day:"2-digit", month:"2-digit", year:"numeric",
-    hour:"2-digit", minute:"2-digit", second:"2-digit"
-  });
+  const timeStr = now.toLocaleString("ru-RU", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit", second:"2-digit" });
 
-  // Оптимистично фиксируем локально
   userVotes[category] = name;
   saveMyVotes(userVotes);
   refreshNominationUI(category);
 
-  // Отправляем на сервер
-  const ok = await sendVoteToSheet({
-    time: timeStr, category, nominee: name,
-    user: currentUser.name, email: currentUser.email
-  });
-
-  if(ok){
-    showToast("Спасибо за ваш голос, переходите к следующей номинации!", "success");
-  } else {
-    // откатываем
-    delete userVotes[category];
-    saveMyVotes(userVotes);
-    refreshNominationUI(category);
+  const ok = await sendVoteToSheet({ time: timeStr, category, nominee: name, user: currentUser.name, email: currentUser.email });
+  if(ok) showToast("Спасибо за ваш голос, переходите к следующей номинации!", "success");
+  else {
+    delete userVotes[category]; saveMyVotes(userVotes); refreshNominationUI(category);
     showToast("Не удалось отправить голос. Проверьте интернет.", "error");
   }
 }
-
 function cancelVote(category, name){
   if(!currentUser){ showToast("Необходимо войти в Google аккаунт!", "error"); return; }
   if(userVotes[category] !== name) return;
-
-  // ВАЖНО: локально голос убираем, но в Google-таблице строка остаётся.
-  // Если хочешь реально удалять из таблицы — нужен отдельный endpoint.
   delete userVotes[category];
   saveMyVotes(userVotes);
-
   SoundFX.cancel();
   showToast("Выбор отменён. Теперь можно проголосовать заново.", "info");
   refreshNominationUI(category);
 }
-
 function refreshNominationUI(category){
   const container = document.getElementById("nominees-container");
   const subtitle = document.getElementById("modal-category-subtitle");
   const nominees = nomineesDatabase[category] || [];
   const alreadyVoted = userVotes[category];
   const isKing = category === "ZV KING";
-
   container.innerHTML = "";
   nominees.forEach((name, idx)=>{
     container.appendChild(buildNomineeCard({
@@ -1050,12 +870,8 @@ function refreshNominationUI(category){
       idx
     }));
   });
-
-  if(alreadyVoted){
-    subtitle.innerHTML = `Ваш выбор: <b class="${isKing?"gold":""}">${escapeHtml(alreadyVoted)}</b>.`;
-  } else {
-    subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
-  }
+  if(alreadyVoted) subtitle.innerHTML = `Ваш выбор: <b class="${isKing?"gold":""}">${escapeHtml(alreadyVoted)}</b>.`;
+  else subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
 }
 
 /* ============================================================
@@ -1070,114 +886,79 @@ function openAdminPassword(){
 }
 function checkAdminPassword(){
   const val = document.getElementById("admin-pass-input").value;
-  if(val === ADMIN_PASSWORD){
-    adminUnlocked = true;
-    closeModal("admin-pass-modal");
-    openAdminPanel();
-  } else showToast("Неверный пароль!", "error");
+  if(val === ADMIN_PASSWORD){ adminUnlocked = true; closeModal("admin-pass-modal"); openAdminPanel(); }
+  else showToast("Неверный пароль!", "error");
 }
 function openAdminPanel(){
   if(!adminUnlocked){ showToast("Сначала введите пароль.", "error"); return; }
   openModal("admin-modal");
-  // Показываем лоадер
-  document.getElementById("admin-stats").innerHTML =
-    '<div class="admin-loader"><i class="fa-solid fa-spinner"></i> Загрузка голосов из таблицы...</div>';
+  document.getElementById("admin-stats").innerHTML = '<div class="admin-loader"><i class="fa-solid fa-spinner"></i> Загрузка голосов из таблицы...</div>';
   refreshAdminStats();
 }
-
 async function refreshAdminStats(){
   const wrap = document.getElementById("admin-stats");
   wrap.innerHTML = '<div class="admin-loader"><i class="fa-solid fa-spinner"></i> Загрузка голосов...</div>';
-
   const data = await fetchAllVotes();
-  if(!data){
-    wrap.innerHTML = '<div class="admin-empty">Не удалось загрузить данные. Нажми «Обновить».</div>';
-    return;
-  }
+  if(!data){ wrap.innerHTML = '<div class="admin-empty">Не удалось загрузить данные. Нажми «Обновить».</div>'; return; }
   allVotes = data;
   renderAdminStats();
   showToast("Статистика обновлена", "success");
 }
-
 function renderAdminStats(){
   const wrap = document.getElementById("admin-stats");
   wrap.innerHTML = "";
   let hasAny = false;
-
   Object.keys(nomineesDatabase).forEach(cat=>{
     const nominees = nomineesDatabase[cat];
     const catVotes = allVotes[cat] || {};
     let totalCat = 0;
     Object.values(catVotes).forEach(arr=> totalCat += arr.length);
-
     const block = document.createElement("div");
     block.className = "admin-nom-block";
-
     let rowsHTML = "";
     nominees.forEach(name=>{
       const arr = catVotes[name] || [];
       const cnt = arr.length;
       const pct = totalCat > 0 ? ((cnt/totalCat)*100).toFixed(1) : "0.0";
       if(cnt > 0) hasAny = true;
-
       let timesHTML = "";
       if(cnt > 0){
         timesHTML = `<div class="admin-times"><b>Время голосов:</b><br>` +
-          arr.map(v=>`• ${v.time} — ${escapeHtml(v.user)} (${escapeHtml(v.email)})`).join("<br>") +
-          `</div>`;
+          arr.map(v=>`• ${v.time} — ${escapeHtml(v.user)} (${escapeHtml(v.email)})`).join("<br>") + `</div>`;
       }
-
-      rowsHTML += `
-        <div class="admin-nominee-row">
+      rowsHTML += `<div class="admin-nominee-row">
           <div class="a-name">${escapeHtml(name)}</div>
           <div class="a-count">${cnt}</div>
           <div class="a-pct">${pct}%</div>
           ${timesHTML}
         </div>`;
     });
-
-    block.innerHTML = `
-      <div class="admin-nom-title">
-        <span>${escapeHtml(cat)}</span>
-        <span class="total-badge">Всего голосов: ${totalCat}</span>
-      </div>
-      ${rowsHTML}`;
+    block.innerHTML = `<div class="admin-nom-title"><span>${escapeHtml(cat)}</span><span class="total-badge">Всего голосов: ${totalCat}</span></div>${rowsHTML}`;
     wrap.appendChild(block);
   });
-
   if(!hasAny){
-    const e = document.createElement("div");
-    e.className = "admin-empty"; e.textContent = "Пока нет ни одного голоса.";
+    const e = document.createElement("div"); e.className = "admin-empty"; e.textContent = "Пока нет ни одного голоса.";
     wrap.appendChild(e);
   }
 }
-
 function exportResults(){
   SoundFX.click();
   const blob = new Blob([JSON.stringify(allVotes, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = "zv-awards-results.json"; a.click();
+  const a = document.createElement("a"); a.href = url; a.download = "zv-awards-results.json"; a.click();
   URL.revokeObjectURL(url);
   showToast("Результаты экспортированы", "success");
 }
-
 function clearResults(){
   SoundFX.error();
   if(!confirm("Очистить ЛОКАЛЬНЫЙ кэш голосов в этом браузере? Данные в Google-таблице НЕ удаляются.")) return;
-  userVotes = {};
-  saveMyVotes(userVotes);
+  userVotes = {}; saveMyVotes(userVotes);
   showToast("Локальный кэш очищен", "info");
 }
-
 function escapeHtml(s){
-  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
-
-document.addEventListener("keydown", e=>{
-  if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal"].forEach(closeModal);
-});
+document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal"].forEach(closeModal); });
 
 /* ============================================================
    THREE.JS
@@ -1203,21 +984,11 @@ for(let i=0;i<pCount;i++){
 }
 pGeo.setAttribute("position", new THREE.BufferAttribute(pPos,3));
 pGeo.setAttribute("color", new THREE.BufferAttribute(pColors,3));
-const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
-  size:0.055, vertexColors:true, transparent:true, opacity:0.9,
-  blending:THREE.AdditiveBlending, depthWrite:false
-}));
+const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ size:0.055, vertexColors:true, transparent:true, opacity:0.9, blending:THREE.AdditiveBlending, depthWrite:false }));
 scene.add(particles);
 
 const floaters = [];
-const geos = [
-  new THREE.IcosahedronGeometry(1.1,0),
-  new THREE.OctahedronGeometry(1.0,0),
-  new THREE.TorusGeometry(0.85,0.28,12,28),
-  new THREE.TetrahedronGeometry(1.1,0),
-  new THREE.TorusKnotGeometry(0.6,0.18,64,8),
-  new THREE.BoxGeometry(1.2,1.2,1.2)
-];
+const geos = [ new THREE.IcosahedronGeometry(1.1,0), new THREE.OctahedronGeometry(1.0,0), new THREE.TorusGeometry(0.85,0.28,12,28), new THREE.TetrahedronGeometry(1.1,0), new THREE.TorusKnotGeometry(0.6,0.18,64,8), new THREE.BoxGeometry(1.2,1.2,1.2) ];
 const matRed = new THREE.MeshBasicMaterial({color:0xff0033,wireframe:true,transparent:true,opacity:0.5});
 const matDeep = new THREE.MeshBasicMaterial({color:0xb3001b,wireframe:true,transparent:true,opacity:0.4});
 const matWhite = new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:0.35});
@@ -1227,19 +998,13 @@ for(let i=0;i<14;i++){
   const m = variants[Math.floor(Math.random()*variants.length)].clone();
   const mesh = new THREE.Mesh(g, m);
   mesh.position.set((Math.random()-0.5)*22,(Math.random()-0.5)*16,(Math.random()-0.5)*16-5);
-  mesh.userData = {
-    rx:(Math.random()-0.5)*0.005, ry:(Math.random()-0.5)*0.005, rz:(Math.random()-0.5)*0.005,
-    float: Math.random()*Math.PI*2, floatSpeed: 0.004 + Math.random()*0.007,
-    baseY: mesh.position.y
-  };
+  mesh.userData = { rx:(Math.random()-0.5)*0.005, ry:(Math.random()-0.5)*0.005, rz:(Math.random()-0.5)*0.005, float: Math.random()*Math.PI*2, floatSpeed: 0.004 + Math.random()*0.007, baseY: mesh.position.y };
   scene.add(mesh); floaters.push(mesh);
 }
 
-const core = new THREE.Mesh(new THREE.SphereGeometry(2.6,32,32),
-  new THREE.MeshBasicMaterial({color:0xff0033, wireframe:true, transparent:true, opacity:0.1}));
+const core = new THREE.Mesh(new THREE.SphereGeometry(2.6,32,32), new THREE.MeshBasicMaterial({color:0xff0033, wireframe:true, transparent:true, opacity:0.1}));
 core.position.set(0,0,-7); scene.add(core);
-const glow = new THREE.Mesh(new THREE.SphereGeometry(1.6,32,32),
-  new THREE.MeshBasicMaterial({color:0xff0033, transparent:true, opacity:0.07}));
+const glow = new THREE.Mesh(new THREE.SphereGeometry(1.6,32,32), new THREE.MeshBasicMaterial({color:0xff0033, transparent:true, opacity:0.07}));
 glow.position.copy(core.position); scene.add(glow);
 
 const ribbonGroup = new THREE.Group();
@@ -1252,19 +1017,13 @@ for(let r=0; r<3; r++){
   }
   const curve = new THREE.CatmullRomCurve3(pts);
   const geo = new THREE.TubeGeometry(curve, 200, 0.02, 6, false);
-  ribbonGroup.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
-    color: r % 2 === 0 ? 0xff0033 : 0xffffff,
-    transparent:true, opacity: r % 2 === 0 ? 0.4 : 0.2
-  })));
+  ribbonGroup.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: r % 2 === 0 ? 0xff0033 : 0xffffff, transparent:true, opacity: r % 2 === 0 ? 0.4 : 0.2 })));
 }
 ribbonGroup.position.z = -6; scene.add(ribbonGroup);
 
 camera.position.z = 8;
 let mouseX = 0, mouseY = 0;
-document.addEventListener("mousemove", e=>{
-  mouseX = (e.clientX - innerWidth/2)*0.0007;
-  mouseY = (e.clientY - innerHeight/2)*0.0007;
-});
+document.addEventListener("mousemove", e=>{ mouseX = (e.clientX - innerWidth/2)*0.0007; mouseY = (e.clientY - innerHeight/2)*0.0007; });
 
 let t = 0;
 function animate(){
@@ -1282,8 +1041,7 @@ function animate(){
   const s = 1 + Math.sin(t*1.4)*0.08;
   core.scale.set(s,s,s); glow.scale.set(s*1.1, s*1.1, s*1.1);
   core.rotation.y += 0.0018; core.rotation.x += 0.0008; glow.rotation.y -= 0.001;
-  ribbonGroup.rotation.y += 0.0025;
-  ribbonGroup.rotation.x = Math.sin(t*0.3)*0.25;
+  ribbonGroup.rotation.y += 0.0025; ribbonGroup.rotation.x = Math.sin(t*0.3)*0.25;
   camera.position.x += (mouseX*3.5 - camera.position.x)*0.03;
   camera.position.y += (-mouseY*3.5 - camera.position.y)*0.03;
   camera.lookAt(0,0,-3);
@@ -1292,11 +1050,7 @@ function animate(){
 }
 animate();
 
-addEventListener("resize", ()=>{
-  camera.aspect = innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
+addEventListener("resize", ()=>{ camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
 document.addEventListener("mouseover", (e)=>{
   const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter");
