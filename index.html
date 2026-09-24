@@ -13,7 +13,7 @@
 
 <style>
 /* ============================================================
-   ТЕМЫ — все переменные
+   ТЕМЫ
 ============================================================ */
 :root,
 [data-theme="scarlet"]{
@@ -30,7 +30,6 @@
   --fog-color-3d: 0x1a0005;
   --tor-color: 0xb8002a;
   --tor-color-2: 0xd0d0d8;
-  --text-shadow-color: #000000;
   --modal-bg-1: rgba(30,3,8,.98);
   --modal-bg-2: rgba(12,1,3,.98);
   --modal-glow-1: rgba(255,0,51,.4);
@@ -54,7 +53,6 @@
   --fog-color-3d: 0x1a1a1d;
   --tor-color: 0x909098;
   --tor-color-2: 0xb8b8c0;
-  --text-shadow-color: #000000;
   --modal-bg-1: rgba(30,30,35,.98);
   --modal-bg-2: rgba(14,14,18,.98);
   --modal-glow-1: rgba(255,255,255,.25);
@@ -78,7 +76,6 @@
   --fog-color-3d: 0x001a33;
   --tor-color: 0x0088c0;
   --tor-color-2: 0xa8d8ff;
-  --text-shadow-color: #000814;
   --modal-bg-1: rgba(3,25,40,.98);
   --modal-bg-2: rgba(1,10,20,.98);
   --modal-glow-1: rgba(0,179,255,.4);
@@ -102,7 +99,6 @@
   --fog-color-3d: 0x0a0a0c;
   --tor-color: 0x5a5a65;
   --tor-color-2: 0x8a8a95;
-  --text-shadow-color: #000000;
   --modal-bg-1: rgba(20,20,26,.98);
   --modal-bg-2: rgba(8,8,10,.98);
   --modal-glow-1: rgba(138,138,149,.25);
@@ -126,7 +122,6 @@
   --fog-color-3d: 0x021a08;
   --tor-color: 0x00b34d;
   --tor-color-2: 0xa0ffcc;
-  --text-shadow-color: #001a08;
   --modal-bg-1: rgba(3,25,10,.98);
   --modal-bg-2: rgba(1,10,4,.98);
   --modal-glow-1: rgba(0,255,102,.35);
@@ -136,7 +131,6 @@
   --modal-card-bg-1: rgba(0,255,102,.06);
   --modal-card-bg-2: rgba(255,255,255,.02);
 }
-/* ПАСХАЛКА-ТЕМА (включается через Konami) */
 [data-theme="rainbow"]{
   --bg:#1a0033;--bg-2:#330066;
   --red:#ff00ff;--red-2:#00ffff;--red-3:#ffff00;--red-dark:#ff0080;
@@ -151,7 +145,6 @@
   --fog-color-3d: 0x330066;
   --tor-color: 0xff00ff;
   --tor-color-2: 0x00ffff;
-  --text-shadow-color: #000000;
   --modal-bg-1: rgba(40,0,80,.98);
   --modal-bg-2: rgba(20,0,40,.98);
   --modal-glow-1: rgba(255,0,255,.5);
@@ -185,17 +178,8 @@ body::before{
 #canvas-container canvas{display:block;width:100%;height:100%}
 
 /* ============================================================
-   ПРИКОЛЫ: КУРСОР GLOW + КЛИК RIPPLE + КУРСОРНЫЕ ЧАСТИЦЫ
+   ПРИКОЛЫ
 ============================================================ */
-#cursor-glow{
-  position:fixed;top:0;left:0;width:240px;height:240px;
-  margin:-120px 0 0 -120px;
-  border-radius:50%;pointer-events:none;z-index:5;
-  background:radial-gradient(circle, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.22) 0%, transparent 60%);
-  transition:opacity .3s ease;
-  mix-blend-mode:screen;opacity:0;
-}
-#cursor-glow.active{opacity:1}
 .ripple{
   position:fixed;pointer-events:none;z-index:9999;
   border-radius:50%;
@@ -204,9 +188,8 @@ body::before{
   transform:translate(-50%,-50%) scale(1);
   animation:rippleOut .7s ease-out forwards;
 }
-@keyframes rippleOut{
-  to{width:180px;height:180px;opacity:0;border-width:0}
-}
+@keyframes rippleOut{to{width:180px;height:180px;opacity:0;border-width:0}}
+
 .cursor-particle{
   position:fixed;pointer-events:none;z-index:8;
   width:6px;height:6px;border-radius:50%;
@@ -220,47 +203,76 @@ body::before{
   100%{opacity:0;transform:translate(-50%,-50%) scale(0.2) translateY(20px)}
 }
 
-/* ============================================================
-   ПРИКОЛЫ: ПУЗЫРЬКИ + ВСПЫШКИ
-============================================================ */
+/* Пузырьки — менее заметные */
 .bubble{
   position:fixed;bottom:-80px;pointer-events:none;z-index:1;
   border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(var(--accent-r),var(--accent-g),var(--accent-b),.12) 50%, transparent 75%);
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow:inset 0 0 20px rgba(255,255,255,.1), 0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);
+  background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.15), rgba(var(--accent-r),var(--accent-g),var(--accent-b),.06) 50%, transparent 75%);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 0 14px rgba(255,255,255,.05);
   animation:floatUp linear infinite;
-  opacity:.7;
+  opacity:.25;
 }
 @keyframes floatUp{
   0%{transform:translateY(0) translateX(0) scale(.8);opacity:0}
-  10%{opacity:.7}
-  90%{opacity:.7}
+  10%{opacity:.25}
+  90%{opacity:.25}
   100%{transform:translateY(-120vh) translateX(var(--bubble-x, 0)) scale(1.1);opacity:0}
 }
+
 .flash-overlay{
   position:fixed;inset:0;pointer-events:none;z-index:6;
   background:radial-gradient(circle at var(--flash-x,50%) var(--flash-y,50%), rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35), transparent 40%);
   opacity:0;animation:flashPulse 1.2s ease-out forwards;
 }
-@keyframes flashPulse{
-  0%{opacity:0}
-  20%{opacity:1}
-  100%{opacity:0}
+@keyframes flashPulse{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+
+/* ГЛИТЧ-ЭФФЕКТ — для клика на заблокированную карточку */
+.glitch-shake{
+  animation:glitchShake 0.35s ease-in-out;
+  position:relative;
+}
+@keyframes glitchShake{
+  0%{transform:translate(0,0);filter:none}
+  15%{transform:translate(-4px,2px);filter:hue-rotate(180deg) saturate(2)}
+  30%{transform:translate(4px,-2px);filter:hue-rotate(-90deg) saturate(2)}
+  45%{transform:translate(-3px,-3px);filter:hue-rotate(45deg) saturate(2)}
+  60%{transform:translate(3px,3px);filter:hue-rotate(-135deg) saturate(2)}
+  100%{transform:translate(0,0);filter:none}
+}
+.glitch-shake::before,
+.glitch-shake::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:inherit;
+  mix-blend-mode:screen;
+  opacity:0;
+}
+.glitch-shake::before{
+  background:linear-gradient(90deg, transparent 0%, rgba(0,255,255,.35) 40%, transparent 60%);
+  animation:glitchBar 0.35s steps(4);
+}
+.glitch-shake::after{
+  background:linear-gradient(90deg, transparent 30%, rgba(255,0,255,.35) 55%, transparent 70%);
+  animation:glitchBar 0.35s steps(4) 0.05s;
+}
+@keyframes glitchBar{
+  0%{opacity:0;transform:translateX(-30%)}
+  50%{opacity:1;transform:translateX(0)}
+  100%{opacity:0;transform:translateX(30%)}
 }
 
-/* ============================================================
-   МАСКОТ-КНОПКА (слева снизу, рядом с "СБРОСИТЬ")
-============================================================ */
+/* МАСКОТ */
 .mascot-btn{
   position:fixed;left:20px;bottom:70px;z-index:99;
   width:44px;height:44px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), var(--red-dark));
+  background:linear-gradient(135deg,var(--red),var(--red-3),var(--red),var(--red-3));
+  background-size:200% 200%;
   border:2px solid rgba(255,255,255,.7);
   color:#fff;font-family:"Orbitron",sans-serif;font-weight:900;font-size:12px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 22px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7), inset 0 0 10px rgba(0,0,0,.35);
-  animation:mascotBlink 2s ease-in-out infinite;
+  animation:mascotBlink 2s ease-in-out infinite, mascotGradient 3s linear infinite;
+  transition:transform .2s;
 }
 .mascot-btn:hover{transform:scale(1.08)}
 .mascot-btn:active{transform:scale(.92)}
@@ -268,10 +280,9 @@ body::before{
   0%,100%{box-shadow:0 0 22px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7), inset 0 0 10px rgba(0,0,0,.35)}
   50%{box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1), inset 0 0 15px rgba(0,0,0,.35)}
 }
+@keyframes mascotGradient{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 
-/* ============================================================
-   СЧЁТЧИК КЛИКОВ
-============================================================ */
+/* СЧЁТЧИК КЛИКОВ */
 .click-counter{
   position:fixed;right:20px;top:88px;z-index:99;
   padding:6px 12px;border-radius:14px;
@@ -442,15 +453,15 @@ header{
 
 .vote-main-btn{
   font-family:"Orbitron",sans-serif;
-  background:linear-gradient(90deg,var(--red-3),var(--red),#fff,var(--red),var(--red-3));
-  background-size:300% 300%;
+  background:linear-gradient(90deg,var(--red-3),var(--red),#fff,var(--red),var(--red-3),var(--red),#fff,var(--red-3));
+  background-size:400% 400%;
   border:1px solid rgba(255,255,255,.25);
   padding:20px 55px;color:#fff;font-size:18px;font-weight:700;letter-spacing:3px;
   border-radius:50px;cursor:pointer;
   box-shadow:0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6), inset 0 0 20px rgba(255,255,255,.06);
   text-shadow:0 2px 6px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,1);
   transition:transform .3s, box-shadow .3s, background-position .8s;
-  animation:pulseBtn 2.8s ease-in-out infinite;
+  animation:pulseBtn 2.8s ease-in-out infinite, gradientShift 5s linear infinite;
   position:relative;overflow:hidden;z-index:2;
 }
 .vote-main-btn::before{
@@ -459,19 +470,40 @@ header{
   animation:shine 3.2s ease-in-out infinite;
 }
 @keyframes shine{0%{left:-100%}60%,100%{left:120%}}
+@keyframes gradientShift{0%{background-position:0% 50%}100%{background-position:400% 50%}}
 @keyframes pulseBtn{0%,100%{box-shadow:0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5), inset 0 0 15px rgba(255,255,255,.06)}50%{box-shadow:0 0 55px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.95), inset 0 0 25px rgba(255,255,255,.14)}}
-.vote-main-btn:hover{transform:scale(1.06);background-position:100% 50%}
+.vote-main-btn:hover{transform:scale(1.06)}
 
 .container{max-width:1200px;margin:0 auto;padding:80px 20px;position:relative}
 .section-title{font-family:"Orbitron",sans-serif;font-size:32px;text-align:center;margin-bottom:50px;letter-spacing:4px;position:relative;text-transform:uppercase;text-shadow:0 2px 6px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,1)}
 .section-title::after{content:"";display:block;width:70px;height:3px;background:linear-gradient(90deg,transparent,#fff,transparent);margin:15px auto 0;box-shadow:0 0 15px var(--red);animation:linePulse 2.4s ease-in-out infinite}
 @keyframes linePulse{0%,100%{width:70px;opacity:.85}50%{width:120px;opacity:1}}
 
+/* ============================================================
+   КАРТОЧКИ НОМИНАЦИЙ — усиленный параллакс
+============================================================ */
 .nominations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin-bottom:80px}
-.nomination-card{background:var(--card);border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);border-radius:18px;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;backdrop-filter:blur(14px);transition:transform .45s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s, transform .15s;transform-style:preserve-3d}
-.nomination-card::before{content:"";position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle at 50% 30%, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35), transparent 65%);opacity:0;transition:opacity .4s ease;pointer-events:none}
+.nomination-card{
+  background:var(--card);
+  border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);
+  border-radius:18px;aspect-ratio:1/1;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;
+  backdrop-filter:blur(14px);
+  transition:transform .35s cubic-bezier(.175,.885,.32,1.275), border-color .3s, box-shadow .3s;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.nomination-card::before{
+  content:"";position:absolute;inset:0;border-radius:18px;
+  background:radial-gradient(circle at 50% 30%, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.45), transparent 65%);
+  opacity:0;transition:opacity .4s ease;pointer-events:none;
+}
 .nomination-card:hover::before{opacity:1}
-.nomination-card:hover{transform:translateY(-10px) scale(1.03);border-color:var(--red);box-shadow:0 15px 45px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4), 0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3)}
+.nomination-card:hover{
+  border-color:var(--red);
+  box-shadow:0 25px 70px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55), 0 0 50px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4);
+}
 
 .nomination-card > i{
   font-size:45px;margin-bottom:15px;
@@ -482,10 +514,10 @@ header{
   position:relative;z-index:1;
 }
 @keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(3deg)}}
-.nomination-card:hover > i{transform:scale(1.18) rotate(8deg)}
+.nomination-card:hover > i{transform:scale(1.22) rotate(10deg)}
 .nomination-card h3{font-family:"Orbitron",sans-serif;font-size:19px;letter-spacing:1.5px;margin-top:10px;position:relative;z-index:1;text-shadow:0 2px 6px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,1)}
 .nomination-card .mc-pick{width:56px;height:56px;margin-bottom:15px;transition:transform .4s;color:#ffffff !important;filter:drop-shadow(0 0 12px rgba(255,255,255,.7)) drop-shadow(0 2px 4px rgba(0,0,0,.9));position:relative;z-index:1}
-.nomination-card:hover .mc-pick{transform:scale(1.12) rotate(-8deg)}
+.nomination-card:hover .mc-pick{transform:scale(1.15) rotate(-10deg)}
 .mc-pick .mc-bg{fill:currentColor;opacity:.35}
 .mc-pick .mc-bg-2{fill:currentColor;opacity:.55}
 .mc-pick .mc-bg-3{fill:currentColor;opacity:.85}
@@ -497,7 +529,7 @@ header{
 .nomination-card.king-card::before{display:none}
 .nomination-card.king-card::after{content:"";position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle at 50% 40%, rgba(255,210,74,.25), transparent 60%);opacity:.7;pointer-events:none}
 .nomination-card.king-card .king-label{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:10px;font-family:"Orbitron",sans-serif;letter-spacing:3px;color:#ffd24a;text-shadow:0 0 12px rgba(255,210,74,.9);z-index:2}
-.nomination-card.king-card:hover{border-color:#ffd24a;transform:translateY(-6px) scale(1.02);box-shadow:0 15px 70px rgba(255,210,74,.55),0 0 100px rgba(255,210,74,.35),inset 0 0 50px rgba(255,210,74,.15)}
+.nomination-card.king-card:hover{border-color:#ffd24a;box-shadow:0 25px 90px rgba(255,210,74,.7),0 0 120px rgba(255,210,74,.45),inset 0 0 60px rgba(255,210,74,.2)}
 .nomination-card.king-card > i{color:#ffd24a !important;font-size:64px;text-shadow:0 0 20px rgba(255,210,74,.95),0 0 45px rgba(255,210,74,.7),0 0 80px rgba(255,210,74,.45) !important;animation:none !important;transition:none;position:relative;z-index:2}
 .nomination-card.king-card:hover > i{transform:none !important}
 .nomination-card.king-card h3{color:#ffd24a;text-shadow:0 0 15px rgba(255,210,74,.7);position:relative;z-index:2}
@@ -532,27 +564,82 @@ header{
 .nominee-name{font-weight:600;font-size:13px;line-height:1.4;margin-bottom:14px;word-break:break-word;flex-grow:1;display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1}
 
 .vote-actions{width:100%;display:flex;flex-direction:column;gap:6px;position:relative;z-index:1}
-.vote-action-btn{background:transparent;border:1px solid var(--red);color:var(--red);padding:9px 14px;border-radius:20px;cursor:pointer;font-weight:700;font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;transition:all .3s;width:100%;position:relative;overflow:hidden}
-.vote-action-btn:hover{background:var(--red);color:#000;box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.8);transform:translateY(-2px)}
-.vote-action-btn.cancel-btn{border-color:#fff;color:#fff;background:linear-gradient(90deg, var(--red), var(--red-3));font-size:10.5px;box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.65), inset 0 0 12px rgba(0,0,0,.35)}
-.vote-action-btn.cancel-btn:hover{background:linear-gradient(90deg, #fff, #fff);color:var(--red-3);box-shadow:0 0 30px rgba(255,255,255,.9);transform:translateY(-2px) scale(1.03)}
+
+/* Переливающиеся кнопки голосования */
+.vote-action-btn{
+  background:linear-gradient(90deg,transparent,transparent,transparent);
+  background-size:200% 100%;
+  border:1px solid var(--red);color:var(--red);
+  padding:9px 14px;border-radius:20px;cursor:pointer;font-weight:700;
+  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;
+  transition:all .3s;width:100%;position:relative;overflow:hidden;
+}
+.vote-action-btn:hover{
+  background:linear-gradient(90deg,var(--red),#fff,var(--red));
+  background-size:200% 100%;
+  color:#000;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.9);
+  transform:translateY(-2px);
+  animation:btnShimmer 1.5s linear infinite;
+}
+@keyframes btnShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+.vote-action-btn.cancel-btn{
+  border-color:#fff;color:#fff;
+  background:linear-gradient(90deg, var(--red), var(--red-3), var(--red));
+  background-size:200% 100%;
+  font-size:10.5px;
+  box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.65), inset 0 0 12px rgba(0,0,0,.35);
+  animation:btnShimmer 3s linear infinite;
+}
+.vote-action-btn.cancel-btn:hover{
+  background:linear-gradient(90deg, #fff, #ffccd5, #fff);
+  background-size:200% 100%;
+  color:var(--red-3);
+  box-shadow:0 0 30px rgba(255,255,255,.9);
+  transform:translateY(-2px) scale(1.03);
+}
 .vote-action-btn.cancel-btn i{margin-right:6px;font-size:10px}
 
-.vote-confirm-btn{background:linear-gradient(90deg,var(--red),var(--red-3));border:1px solid #fff;color:#fff;padding:9px 12px;border-radius:20px;cursor:pointer;font-weight:800;font-family:"Orbitron",sans-serif;font-size:10.5px;letter-spacing:1px;transition:all .3s;width:100%;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), inset 0 0 12px rgba(0,0,0,.25);animation:confirmPulse 1.4s ease-in-out infinite;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+/* Кнопка "ГОЛОС ОТДАН" — заблокированная, с глитчем при клике */
+.vote-action-btn:disabled{
+  cursor:not-allowed;
+  opacity:.55;
+}
+.vote-action-btn:disabled:hover{
+  animation:none;
+  transform:none;
+}
+
+.vote-confirm-btn{
+  background:linear-gradient(90deg,var(--red),var(--red-3),var(--red));
+  background-size:200% 100%;
+  border:1px solid #fff;color:#fff;padding:9px 12px;border-radius:20px;cursor:pointer;
+  font-weight:800;font-family:"Orbitron",sans-serif;font-size:10.5px;letter-spacing:1px;
+  transition:all .3s;width:100%;
+  box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), inset 0 0 12px rgba(0,0,0,.25);
+  animation:confirmPulse 1.4s ease-in-out infinite, btnShimmer 2s linear infinite;
+  text-shadow:0 1px 3px rgba(0,0,0,.9);
+}
 .vote-confirm-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)}
 @keyframes confirmPulse{0%,100%{box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6), inset 0 0 12px rgba(0,0,0,.25)}50%{box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1), inset 0 0 15px rgba(0,0,0,.3)}}
-.vote-cancel-small{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:7px 12px;border-radius:20px;cursor:pointer;font-weight:700;font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;transition:all .3s;width:100%}
+
+.vote-cancel-small{
+  background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;
+  padding:7px 12px;border-radius:20px;cursor:pointer;font-weight:700;
+  font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;
+  transition:all .3s;width:100%;
+}
 .vote-cancel-small:hover{background:rgba(255,255,255,.15);border-color:#fff;transform:translateY(-1px)}
 
 .nominee-card.king-nominee .vote-action-btn{border-color:#ffd24a;color:#ffd24a}
-.nominee-card.king-nominee .vote-action-btn:hover{background:#ffd24a;color:#3a2a00;box-shadow:0 0 20px rgba(255,210,74,.9)}
+.nominee-card.king-nominee .vote-action-btn:hover{background:linear-gradient(90deg,#ffd24a,#fff,#ffd24a);background-size:200% 100%;color:#3a2a00;box-shadow:0 0 25px rgba(255,210,74,.9);animation:btnShimmer 1.5s linear infinite}
 .nominee-card.locked{opacity:.28;filter:grayscale(1) brightness(.65);pointer-events:none;transform:scale(.96)}
 .nominee-card.chosen{opacity:1;filter:none;border-color:#fff;background:linear-gradient(160deg, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.25), rgba(var(--accent-3-r),var(--accent-3-g),var(--accent-3-b),.15));box-shadow:0 0 40px rgba(255,255,255,.55), 0 0 60px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6), inset 0 0 25px rgba(255,255,255,.15);animation:chosenPulse 2s ease-in-out infinite}
 @keyframes chosenPulse{0%,100%{box-shadow:0 0 25px rgba(255,255,255,.45), 0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5), inset 0 0 20px rgba(255,255,255,.1)}50%{box-shadow:0 0 50px rgba(255,255,255,.85), 0 0 80px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), inset 0 0 30px rgba(255,255,255,.2)}}
 .nominee-card.chosen .nominee-avatar{border-color:#fff;background:radial-gradient(circle at 30% 30%, #fff, var(--red));color:var(--red-3);box-shadow:0 0 25px rgba(255,255,255,.95), inset 0 0 12px rgba(0,0,0,.25)}
 .nominee-card.king-nominee.chosen{border-color:#ffd24a;background:linear-gradient(160deg, rgba(255,210,74,.2), rgba(179,124,0,.12));box-shadow:0 0 40px rgba(255,210,74,.7), 0 0 70px rgba(255,210,74,.4), inset 0 0 25px rgba(255,210,74,.15)}
 .nominee-card.king-nominee.chosen .nominee-avatar{border-color:#ffd24a;background:radial-gradient(circle at 30% 30%, #fff, #ffd24a);color:#3a2a00;box-shadow:0 0 30px rgba(255,210,74,.95), inset 0 0 12px rgba(0,0,0,.25)}
-.nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{background:linear-gradient(90deg, #ffd24a, #b8860b);color:#3a2a00;border-color:#fff;box-shadow:0 0 25px rgba(255,210,74,.9)}
+.nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{background:linear-gradient(90deg, #ffd24a, #b8860b, #ffd24a);background-size:200% 100%;color:#3a2a00;border-color:#fff;box-shadow:0 0 25px rgba(255,210,74,.9);animation:btnShimmer 3s linear infinite}
 
 .admin-overlay .modal-content{max-width:1000px;max-height:92vh;border-color:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5)}
 .admin-stats{overflow-y:auto;padding-right:8px}
@@ -617,8 +704,6 @@ header{
   .profile-name{font-size:13px}
   .profile-email{font-size:10px}
 
-  /* Отключаем большинство приколов на мобилке */
-  #cursor-glow,
   .cursor-particle,
   .bubble,
   .flash-overlay{display:none !important}
@@ -696,7 +781,6 @@ body.low-perf .vote-dates::before{display:none !important}
 </head>
 <body data-theme="scarlet">
 
-<div id="cursor-glow"></div>
 <div id="canvas-container"></div>
 
 <header>
@@ -732,7 +816,6 @@ body.low-perf .vote-dates::before{display:none !important}
   </div>
 </header>
 
-<!-- Счётчик кликов -->
 <div class="click-counter" title="Твои клики">
   <i class="fa-solid fa-hand-pointer"></i>
   <b id="click-count">0</b> кликов
@@ -742,7 +825,6 @@ body.low-perf .vote-dates::before{display:none !important}
   <i class="fa-solid fa-rotate-left"></i> СБРОСИТЬ МОИ ГОЛОСА
 </button>
 
-<!-- Маскот-кнопка -->
 <button class="mascot-btn" id="mascot-btn" type="button" onclick="mascotClick()" title="Нажми меня!">ZV</button>
 
 <div class="theme-widget">
@@ -941,7 +1023,7 @@ function applyThemeTo3D(){
 }
 
 /* ============================================================
-   SESSION ID
+   SESSION ID + ONLINE
 ============================================================ */
 function getSessionId(){
   let sid = sessionStorage.getItem("zvawards_sid");
@@ -1009,6 +1091,11 @@ const SoundFX = (()=>{
     close(){ tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
     success(){ tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0}); tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08}); tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16}); tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26}); },
     error(){ tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90}); tone({freq:120,dur:0.22,type:"sine",vol:0.04,when:0.05}); },
+    glitch(){
+      tone({freq:220, dur:0.08, type:"square", vol:0.05, slide:80});
+      tone({freq:600, dur:0.05, type:"sawtooth", vol:0.03, when:0.04, slide:140});
+      tone({freq:90,  dur:0.12, type:"square", vol:0.04, when:0.08, slide:60});
+    },
     switch(){ tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
     whoosh(){ tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900}); tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300}); },
     cancel(){ tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380}); tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180}); },
@@ -1018,7 +1105,7 @@ const SoundFX = (()=>{
       const n = notes[Math.floor(Math.random()*notes.length)];
       tone({freq:n, dur:0.25, type:"triangle", vol:0.05});
     },
-    easter(){ // фанфарки при пасхалке
+    easter(){
       [523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.5].forEach((f,i)=>{
         tone({freq:f, dur:0.15, type:"triangle", vol:0.05, when:i*0.08});
       });
@@ -1053,7 +1140,6 @@ const nomineesDatabase = {
 
 const LS_VOTES = "zvawards_my_votes";
 const LS_USER  = "zvawards_user";
-const LS_CLICKS = "zvawards_clicks";
 function loadMyVotes(){ try{ const r = localStorage.getItem(LS_VOTES); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } }
 function saveMyVotes(v){ localStorage.setItem(LS_VOTES, JSON.stringify(v)); }
 userVotes = loadMyVotes();
@@ -1227,22 +1313,21 @@ window.addEventListener("load", ()=>{
 });
 
 /* ============================================================
-   RESET MY VOTES
+   RESET
 ============================================================ */
 async function resetMyVotes(){
   if(!currentUser){ showToast("Сначала войдите в Google-аккаунт.", "error"); return; }
-  if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ВСЕ ваши строки из Google-таблицы. После этого можно голосовать заново.")) return;
+  if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ВСЕ ваши строки из Google-таблицы.")) return;
 
   SoundFX.cancel();
   showToast("Удаляем ваши голоса с сервера...", "info");
 
   const ok = await deleteAllVotesByEmail(currentUser.email);
-
   userVotes = {};
   saveMyVotes(userVotes);
 
-  if(ok) showToast("Все ваши голоса удалены с сервера. Можно голосовать заново!", "success");
-  else   showToast("Локальный кэш очищен, но с сервером связи не было. Попробуйте ещё раз.", "error");
+  if(ok) showToast("Все ваши голоса удалены с сервера!", "success");
+  else   showToast("Локальный кэш очищен, но с сервером связи не было.", "error");
 }
 
 function openModal(id){ SoundFX.open(); document.getElementById(id).classList.add("active"); document.body.style.overflow = "hidden"; }
@@ -1292,6 +1377,14 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
     btn.type = "button";
     btn.textContent = "ГОЛОС ОТДАН";
     btn.disabled = true;
+    // Глитч при клике
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      triggerGlitch(card);
+    });
+    card.addEventListener("click", (e)=>{
+      if(e.target !== btn){ triggerGlitch(card); }
+    });
     actions.appendChild(btn);
   } else {
     const btn = document.createElement("button");
@@ -1303,6 +1396,17 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
   }
   card.appendChild(avatar); card.appendChild(nm); card.appendChild(actions);
   return card;
+}
+function triggerGlitch(el){
+  if(!el) return;
+  SoundFX.glitch();
+  el.classList.remove("glitch-shake");
+  void el.offsetWidth; // reflow
+  el.classList.add("glitch-shake");
+  // Взрыв искр из центра
+  const r = el.getBoundingClientRect();
+  sparkBurst(r.left + r.width/2, r.top + r.height/2, "rgba(255,255,255,1)");
+  setTimeout(()=>el.classList.remove("glitch-shake"), 400);
 }
 function showConfirmActions(actionsEl, category, name, e){
   actionsEl.innerHTML = "";
@@ -1347,7 +1451,7 @@ async function cancelVote(category, name){
   refreshNominationUI(category);
   const ok = await deleteVoteFromSheet(category, currentUser.email);
   SoundFX.cancel();
-  if(ok) showToast("Выбор отменён, голос удалён из таблицы. Можно голосовать заново.", "info");
+  if(ok) showToast("Выбор отменён, голос удалён из таблицы.", "info");
   else   showToast("Выбор отменён локально, но с сервера удалить не удалось.", "info");
 }
 function refreshNominationUI(category){
@@ -1451,48 +1555,26 @@ document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-mo
    ПРИКОЛЫ
 ============================================================ */
 
-/* --- 1. Курсорный glow --- */
-(function cursorGlowInit(){
-  if(IS_MOBILE) return;
-  const glow = document.getElementById("cursor-glow");
-  let tx = window.innerWidth/2, ty = window.innerHeight/2;
-  let cx = tx, cy = ty;
-  let last = 0;
-  document.addEventListener("mousemove", (e)=>{
-    tx = e.clientX; ty = e.clientY;
-    glow.classList.add("active");
-  }, { passive: true });
-  document.addEventListener("mouseleave", ()=> glow.classList.remove("active"));
-  function tick(){
-    cx += (tx - cx) * 0.15;
-    cy += (ty - cy) * 0.15;
-    glow.style.transform = `translate(${cx}px, ${cy}px)`;
-    requestAnimationFrame(tick);
-  }
-  tick();
-})();
-
-/* --- 2. Курсорные частицы --- */
+/* Курсорные частицы (только они) */
 (function cursorParticlesInit(){
   if(IS_MOBILE) return;
   let last = 0;
   document.addEventListener("mousemove", (e)=>{
     const now = performance.now();
-    if(now - last < 60) return;   // не чаще 16 в сек
+    if(now - last < 55) return;
     last = now;
-    if(Math.random() < 0.55) return; // только иногда
+    if(Math.random() < 0.5) return;
     const p = document.createElement("div");
     p.className = "cursor-particle";
-    p.style.left = (e.clientX + (Math.random()-0.5)*10) + "px";
-    p.style.top  = (e.clientY + (Math.random()-0.5)*10) + "px";
+    p.style.left = (e.clientX + (Math.random()-0.5)*12) + "px";
+    p.style.top  = (e.clientY + (Math.random()-0.5)*12) + "px";
     document.body.appendChild(p);
     setTimeout(()=>p.remove(), 900);
   }, { passive: true });
 })();
 
-/* --- 3. Клик Ripple --- */
+/* Ripple клик */
 document.addEventListener("click", (e)=>{
-  // Не показываем на кликах внутри модалок/инпутов
   const tgt = e.target;
   if(tgt.closest("input,textarea")) return;
   const rip = document.createElement("div");
@@ -1503,7 +1585,7 @@ document.addEventListener("click", (e)=>{
   setTimeout(()=>rip.remove(), 750);
 }, { passive:true });
 
-/* --- 4. Счётчик кликов --- */
+/* Счётчик кликов */
 const LS_CLICKS_KEY = "zvawards_clicks";
 let myClicks = parseInt(localStorage.getItem(LS_CLICKS_KEY) || "0", 10);
 function updateClickCounter(){
@@ -1517,17 +1599,17 @@ document.addEventListener("click", ()=>{
 });
 updateClickCounter();
 
-/* --- 5. Пузырьки --- */
+/* Пузырьки (приглушены) */
 (function bubblesInit(){
   if(IS_MOBILE) return;
-  const MAX = 12;
+  const MAX = 8;
   let active = 0;
   function spawn(){
     if(active >= MAX) return;
     active++;
-    const size = 20 + Math.random()*70;
+    const size = 30 + Math.random()*60;
     const left = Math.random() * 100;
-    const dur = 12 + Math.random()*14;
+    const dur = 16 + Math.random()*14;
     const b = document.createElement("div");
     b.className = "bubble";
     b.style.width = size + "px";
@@ -1538,11 +1620,11 @@ updateClickCounter();
     document.body.appendChild(b);
     setTimeout(()=>{ b.remove(); active--; }, dur*1000);
   }
-  for(let i=0;i<4;i++) setTimeout(spawn, i*800);
-  setInterval(spawn, 1400);
+  for(let i=0;i<3;i++) setTimeout(spawn, i*1200);
+  setInterval(spawn, 2000);
 })();
 
-/* --- 6. Случайные вспышки --- */
+/* Случайные вспышки */
 (function flashInit(){
   if(IS_MOBILE) return;
   function flash(){
@@ -1552,43 +1634,50 @@ updateClickCounter();
     f.style.setProperty("--flash-y", (20 + Math.random()*60) + "%");
     document.body.appendChild(f);
     setTimeout(()=>f.remove(), 1300);
-    setTimeout(flash, 8000 + Math.random()*7000);
+    setTimeout(flash, 9000 + Math.random()*7000);
   }
   setTimeout(flash, 5000);
 })();
 
-/* --- 7. Параллакс карточек --- */
+/* ПАРАЛЛАКС — усиленный */
 (function parallaxInit(){
   if(IS_MOBILE) return;
   document.querySelectorAll(".nomination-card").forEach(card=>{
+    let rafId = null;
+    let tx = 0, ty = 0;
     card.addEventListener("mousemove", (e)=>{
       const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(600px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-10px) scale(1.03)`;
+      tx = (e.clientX - r.left) / r.width - 0.5;
+      ty = (e.clientY - r.top) / r.height - 0.5;
+      if(rafId) return;
+      rafId = requestAnimationFrame(()=>{
+        rafId = null;
+        card.style.transform = `perspective(700px) rotateY(${tx*14}deg) rotateX(${-ty*14}deg) translateY(-12px) scale(1.05)`;
+      });
     });
     card.addEventListener("mouseleave", ()=>{
+      if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
       card.style.transform = "";
     });
   });
 })();
 
-/* --- 8. Взрыв искр --- */
-function sparkBurst(x, y){
+/* Взрыв искр */
+function sparkBurst(x, y, colorOverride){
   if(IS_MOBILE) return;
-  const count = 14;
+  const count = 16;
   for(let i=0;i<count;i++){
     const s = document.createElement("div");
-    const angle = (Math.PI * 2 / count) * i + Math.random()*0.3;
-    const dist = 60 + Math.random()*70;
+    const angle = (Math.PI * 2 / count) * i + Math.random()*0.35;
+    const dist = 70 + Math.random()*80;
     s.style.position = "fixed";
     s.style.left = x + "px";
     s.style.top = y + "px";
     s.style.width = "7px";
     s.style.height = "7px";
     s.style.borderRadius = "50%";
-    s.style.background = `rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)`;
-    s.style.boxShadow = "0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)";
+    s.style.background = colorOverride || `rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)`;
+    s.style.boxShadow = `0 0 12px ${colorOverride || `rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)`}`;
     s.style.pointerEvents = "none";
     s.style.zIndex = "9998";
     s.style.transition = "transform .8s cubic-bezier(.2,.7,.3,1), opacity .8s";
@@ -1602,38 +1691,39 @@ function sparkBurst(x, y){
   }
 }
 
-/* --- 9. Маскот-кнопка --- */
+/* МАСКОТ — новые сообщения */
 function mascotClick(){
   SoundFX.random();
   const btn = document.getElementById("mascot-btn");
   btn.style.transform = "scale(1.25) rotate(-12deg)";
   setTimeout(()=>{ btn.style.transform = ""; }, 180);
-  // Случайный текст
-  const phrases = ["ZV!", "Огонь!", "Держи!", "Ты лучший!", "Ха-ха!", "🎉", "🔥", "💎", "⚡"];
+
+  const phrases = ["ZOV!", "Кекешке", "Соси", "🐔", "Егор лох"];
   const p = phrases[Math.floor(Math.random()*phrases.length)];
+
   const label = document.createElement("div");
   label.textContent = p;
   label.style.position = "fixed";
   label.style.left = (btn.getBoundingClientRect().left + 50) + "px";
   label.style.top = (btn.getBoundingClientRect().top - 10) + "px";
   label.style.color = "#fff";
-  label.style.fontWeight = "800";
+  label.style.fontWeight = "900";
   label.style.fontFamily = "'Orbitron', sans-serif";
-  label.style.fontSize = "14px";
-  label.style.textShadow = "0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)";
+  label.style.fontSize = "16px";
+  label.style.textShadow = "0 0 14px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1), 0 2px 4px rgba(0,0,0,1)";
   label.style.pointerEvents = "none";
   label.style.zIndex = "100";
   label.style.transition = "transform 1.2s ease-out, opacity 1.2s";
   label.style.transform = "translateY(0)";
   document.body.appendChild(label);
   requestAnimationFrame(()=>{
-    label.style.transform = "translateY(-60px)";
+    label.style.transform = "translateY(-70px) scale(1.15)";
     label.style.opacity = "0";
   });
   setTimeout(()=>label.remove(), 1300);
 }
 
-/* --- 10. Пасхалка Konami --- */
+/* Пасхалка Konami */
 (function konamiInit(){
   const code = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
   let pos = 0;
@@ -1641,20 +1731,15 @@ function mascotClick(){
     const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
     if(key === code[pos]){
       pos++;
-      if(pos === code.length){
-        pos = 0;
-        activateEaster();
-      }
+      if(pos === code.length){ pos = 0; activateEaster(); }
     } else {
       pos = (key === code[0]) ? 1 : 0;
     }
   });
   function activateEaster(){
     SoundFX.easter();
-    // Включаем тему rainbow
     document.body.setAttribute("data-theme", "rainbow");
     applyThemeTo3D();
-    // Салют
     for(let i=0;i<12;i++){
       setTimeout(()=>{
         sparkBurst(
@@ -1663,8 +1748,7 @@ function mascotClick(){
         );
       }, i*120);
     }
-    showToast("🎉 ПАСХАЛКА АКТИВИРОВАНА! РАДУЖНЫЙ РЕЖИМ!", "success");
-    // Через 30 сек вернуть прежнюю тему
+    showToast("🎉 ПАСХАЛКА! РАДУЖНЫЙ РЕЖИМ!", "success");
     setTimeout(()=>{
       const saved = localStorage.getItem(THEME_KEY) || "scarlet";
       setTheme(saved);
@@ -1674,7 +1758,7 @@ function mascotClick(){
 })();
 
 /* ============================================================
-   THREE.JS — один тор
+   THREE.JS
 ============================================================ */
 const container = document.getElementById("canvas-container");
 const scene = new THREE.Scene();
