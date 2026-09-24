@@ -39,6 +39,7 @@ body::before{
 #canvas-container{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 #canvas-container canvas{display:block}
 
+/* HEADER */
 header{
   position:fixed;top:0;left:0;width:100%;
   padding:20px 40px;display:flex;justify-content:space-between;align-items:center;
@@ -105,6 +106,19 @@ header{
 .admin-btn:hover{background:var(--admin);color:#fff;box-shadow:0 0 25px rgba(255,51,85,.65);transform:translateY(-2px)}
 .admin-btn.visible{display:flex}
 
+/* RESET BUTTON */
+.reset-btn{
+  position:fixed;left:20px;bottom:20px;z-index:99;
+  background:rgba(255,0,51,.1);border:1px solid rgba(255,0,51,.45);color:#fff;
+  padding:8px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:700;
+  font-family:"Orbitron",sans-serif;letter-spacing:1px;
+  display:none;align-items:center;gap:6px;transition:all .3s;
+  backdrop-filter:blur(8px);
+}
+.reset-btn:hover{background:var(--red);box-shadow:0 0 20px rgba(255,0,51,.7);transform:translateY(-2px)}
+.reset-btn.visible{display:flex}
+
+/* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 20px 40px;position:relative}
 .hero h1{
   font-family:"Orbitron",sans-serif;font-size:clamp(48px,9vw,90px);font-weight:900;
@@ -167,6 +181,7 @@ header{
 }
 .vote-main-btn:hover{transform:scale(1.06);background-position:100% 50%}
 
+/* CONTAINER */
 .container{max-width:1200px;margin:0 auto;padding:80px 20px;position:relative}
 .section-title{font-family:"Orbitron",sans-serif;font-size:32px;text-align:center;margin-bottom:50px;letter-spacing:4px;position:relative;text-transform:uppercase}
 .section-title::after{
@@ -177,6 +192,7 @@ header{
 }
 @keyframes linePulse{0%,100%{width:70px;opacity:.85}50%{width:120px;opacity:1}}
 
+/* NOMINATION CARDS */
 .nominations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin-bottom:80px}
 .nomination-card{
   background:var(--card);border:1px solid rgba(255,0,51,.2);border-radius:18px;aspect-ratio:1/1;
@@ -222,6 +238,7 @@ header{
 .nomination-card.king-card:hover > i{transform:none !important}
 .nomination-card.king-card h3{color:var(--gold);text-shadow:0 0 15px rgba(255,210,74,.7);position:relative;z-index:2}
 
+/* MODAL */
 .modal-overlay{
   position:fixed;inset:0;width:100%;height:100%;
   background:radial-gradient(circle at 50% 50%, rgba(30,3,8,.92), rgba(5,0,1,.97));
@@ -323,6 +340,7 @@ header{
 .nominee-card.king-nominee.chosen .nominee-avatar{border-color:var(--gold);background:radial-gradient(circle at 30% 30%, #fff, #ffd24a);color:#3a2a00;box-shadow:0 0 30px rgba(255,210,74,.95), inset 0 0 12px rgba(0,0,0,.25)}
 .nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{background:linear-gradient(90deg, #ffd24a, #b8860b);color:#3a2a00;border-color:#fff;box-shadow:0 0 25px rgba(255,210,74,.9)}
 
+/* ADMIN */
 .admin-overlay .modal-content{max-width:1000px;max-height:92vh;border-color:rgba(255,51,85,.5)}
 .admin-stats{overflow-y:auto;padding-right:8px}
 .admin-stats::-webkit-scrollbar{width:6px}
@@ -368,6 +386,7 @@ header{
   .auth-btn{padding:7px 10px;font-size:11px;gap:6px}
   .auth-btn img{width:18px;height:18px}
   .admin-btn{padding:7px 10px;font-size:9px}
+  .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px}
 }
 @media (max-width:700px){
   .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px}
@@ -416,6 +435,10 @@ header{
     </button>
   </div>
 </header>
+
+<button class="reset-btn" id="reset-btn" type="button" onclick="resetMyVotes()">
+  <i class="fa-solid fa-rotate-left"></i> СБРОСИТЬ МОИ ГОЛОСА
+</button>
 
 <section class="hero">
   <h1>ZV-AWARDS</h1>
@@ -500,8 +523,6 @@ header{
 const GOOGLE_CLIENT_ID = "193095894603-4jefaanb9nv73gonatbprs9cuokqua7v.apps.googleusercontent.com";
 const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const ADMIN_PASSWORD = "meduzaadmin221";
-
-/* ✅ Новый URL Apps Script */
 const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
 
 /* ============================================================
@@ -520,54 +541,30 @@ const SESSION_ID = getSessionId();
 /* ============================================================
    РЕАЛЬНЫЙ ОНЛАЙН
 ============================================================ */
-const ONLINE_PING_INTERVAL = 25000; // 25 сек — пингуем себя
-let onlineTimer = null;
-
+const ONLINE_PING_INTERVAL = 25000;
 async function pingOnline(){
   try{
     const url = SHEETS_API + "?action=ping&sid=" + encodeURIComponent(SESSION_ID) + "&t=" + Date.now();
     const res = await fetch(url, { method:"GET" });
     const data = await res.json();
-    if(data && data.ok && typeof data.online === "number"){
-      updateOnlineUI(data.online);
-    }
-  }catch(e){
-    // тихо игнорим — счётчик просто не обновится
-  }
+    if(data && data.ok && typeof data.online === "number") updateOnlineUI(data.online);
+  }catch(e){}
 }
-
 async function fetchOnline(){
   try{
     const url = SHEETS_API + "?action=online&t=" + Date.now();
     const res = await fetch(url, { method:"GET" });
     const data = await res.json();
-    if(data && data.ok && typeof data.online === "number"){
-      updateOnlineUI(data.online);
-    }
+    if(data && data.ok && typeof data.online === "number") updateOnlineUI(data.online);
   }catch(e){}
 }
-
 function updateOnlineUI(n){
   const el = document.getElementById("online-count");
-  if(!el) return;
-  el.textContent = n;
+  if(el) el.textContent = n;
 }
-
 (function startOnline(){
-  // Первый пинг сразу после загрузки (чуть позже, чтобы не блочить)
-  setTimeout(()=>{ pingOnline(); }, 1200);
-  // И далее каждые 25 сек — «держит» сессию живой
-  onlineTimer = setInterval(pingOnline, ONLINE_PING_INTERVAL);
-
-  // Дополнительно — при уходе со страницы последний пинг
-  window.addEventListener("beforeunload", ()=>{
-    try{
-      const url = SHEETS_API + "?action=ping&sid=" + encodeURIComponent(SESSION_ID) + "&leave=1";
-      navigator.sendBeacon ? navigator.sendBeacon(url) : fetch(url, {method:"GET", keepalive:true});
-    }catch(e){}
-  });
-
-  // Раз в минуту — общий запрос (на случай, если кто-то ушёл и нам надо очиститься)
+  setTimeout(pingOnline, 1200);
+  setInterval(pingOnline, ONLINE_PING_INTERVAL);
   setInterval(fetchOnline, 60000);
 })();
 
@@ -635,7 +632,7 @@ const nomineesDatabase = {
 };
 
 /* ============================================================
-   STORAGE (локально)
+   STORAGE
 ============================================================ */
 const LS_VOTES = "zvawards_my_votes";
 const LS_USER  = "zvawards_user";
@@ -657,13 +654,23 @@ async function sendVoteToSheet(payload){
     return data && data.ok === true;
   }catch(e){ console.error("sendVoteToSheet error:", e); return false; }
 }
-
 async function fetchAllVotes(){
   try{
     const res = await fetch(SHEETS_API + "?t=" + Date.now(), { method: "GET" });
-    const data = await res.json();
-    return data || {};
+    return await res.json() || {};
   }catch(e){ console.error("fetchAllVotes error:", e); return null; }
+}
+async function deleteVoteFromSheet(category, email){
+  try{
+    const url = SHEETS_API
+      + "?action=delete"
+      + "&category=" + encodeURIComponent(category)
+      + "&email=" + encodeURIComponent(email)
+      + "&t=" + Date.now();
+    const res = await fetch(url, { method: "GET" });
+    const data = await res.json();
+    return data && data.ok === true;
+  }catch(e){ console.error("deleteVoteFromSheet error:", e); return false; }
 }
 
 /* ============================================================
@@ -725,6 +732,7 @@ function handleGoogleCredential(response){
     updateAuthUI();
     if(currentUser.email === ADMIN_EMAIL) document.getElementById("admin-btn").classList.add("visible");
     else document.getElementById("admin-btn").classList.remove("visible");
+    document.getElementById("reset-btn").classList.add("visible");
     showToast(`Вы вошли как ${currentUser.name}`, "success");
   }catch(e){ showToast("Ошибка входа через Google", "error"); console.error(e); }
 }
@@ -734,6 +742,7 @@ function logout(){
   localStorage.removeItem(LS_USER);
   updateAuthUI();
   document.getElementById("admin-btn").classList.remove("visible");
+  document.getElementById("reset-btn").classList.remove("visible");
   adminUnlocked = false;
   if(window.google && google.accounts) google.accounts.id.disableAutoSelect();
   showToast("Вы вышли из аккаунта", "error");
@@ -769,12 +778,32 @@ function parseJwt(token){
       currentUser = JSON.parse(raw);
       updateAuthUI();
       if(currentUser.email === ADMIN_EMAIL) document.getElementById("admin-btn").classList.add("visible");
+      document.getElementById("reset-btn").classList.add("visible");
     }
   }catch(e){}
 })();
 window.addEventListener("load", ()=>{
   const t = setInterval(()=>{ if(window.google && google.accounts){ initGoogle(); clearInterval(t); } }, 300);
 });
+
+/* ============================================================
+   RESET MY VOTES
+============================================================ */
+async function resetMyVotes(){
+  if(!currentUser){ showToast("Сначала войдите в Google-аккаунт.", "error"); return; }
+  if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ваши голоса из Google-таблицы, и вы сможете проголосовать заново.")) return;
+
+  SoundFX.cancel();
+  showToast("Удаляем ваши голоса...", "info");
+
+  const categories = Object.keys(userVotes);
+  for(const cat of categories){
+    await deleteVoteFromSheet(cat, currentUser.email);
+  }
+  userVotes = {};
+  saveMyVotes(userVotes);
+  showToast("Все ваши голоса удалены. Можно голосовать заново!", "success");
+}
 
 /* ============================================================
    MODAL
@@ -846,14 +875,19 @@ async function submitVote(category, name){
     showToast("Не удалось отправить голос. Проверьте интернет.", "error");
   }
 }
-function cancelVote(category, name){
+async function cancelVote(category, name){
   if(!currentUser){ showToast("Необходимо войти в Google аккаунт!", "error"); return; }
   if(userVotes[category] !== name) return;
+
   delete userVotes[category];
   saveMyVotes(userVotes);
-  SoundFX.cancel();
-  showToast("Выбор отменён. Теперь можно проголосовать заново.", "info");
   refreshNominationUI(category);
+
+  const ok = await deleteVoteFromSheet(category, currentUser.email);
+
+  SoundFX.cancel();
+  if(ok) showToast("Выбор отменён, голос удалён из таблицы. Можно голосовать заново.", "info");
+  else   showToast("Выбор отменён локально, но с сервера удалить не удалось.", "info");
 }
 function refreshNominationUI(category){
   const container = document.getElementById("nominees-container");
@@ -1053,7 +1087,7 @@ animate();
 addEventListener("resize", ()=>{ camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
 document.addEventListener("mouseover", (e)=>{
-  const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter");
+  const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn");
   if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
 });
 </script>
