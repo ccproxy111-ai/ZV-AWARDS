@@ -136,6 +136,31 @@
   --modal-card-bg-1: rgba(0,255,102,.06);
   --modal-card-bg-2: rgba(255,255,255,.02);
 }
+/* ПАСХАЛКА-ТЕМА (включается через Konami) */
+[data-theme="rainbow"]{
+  --bg:#1a0033;--bg-2:#330066;
+  --red:#ff00ff;--red-2:#00ffff;--red-3:#ffff00;--red-dark:#ff0080;
+  --white:#ffffff;--gold:#ffdd00;--online:#00ff88;
+  --muted:#e0c0ff;--card:rgba(30,0,60,.78);--admin:#ff00ff;
+  --accent-r:255;--accent-g:0;--accent-b:255;
+  --accent-2-r:0;--accent-2-g:255;--accent-2-b:255;
+  --accent-3-r:255;--accent-3-g:255;--accent-3-b:0;
+  --bg-rad-1:rgba(255,0,255,.2);--bg-rad-2:rgba(0,255,255,.2);
+  --bg-rad-3:rgba(255,255,0,.15);--bg-rad-4:rgba(255,0,128,.2);
+  --bg-color-3d: 0x1a0033;
+  --fog-color-3d: 0x330066;
+  --tor-color: 0xff00ff;
+  --tor-color-2: 0x00ffff;
+  --text-shadow-color: #000000;
+  --modal-bg-1: rgba(40,0,80,.98);
+  --modal-bg-2: rgba(20,0,40,.98);
+  --modal-glow-1: rgba(255,0,255,.5);
+  --modal-glow-2: rgba(0,255,255,.4);
+  --modal-fade-1: rgba(40,0,80,.92);
+  --modal-fade-2: rgba(10,0,20,.97);
+  --modal-card-bg-1: rgba(255,0,255,.1);
+  --modal-card-bg-2: rgba(0,255,255,.05);
+}
 
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
 html,body{height:100%}
@@ -154,11 +179,118 @@ body::before{
     radial-gradient(circle at 70% 60%, var(--bg-rad-4), transparent 50%);
   animation:breathe 9s ease-in-out infinite alternate;
 }
-@keyframes breathe{0%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
 
 #canvas-container{position:absolute;top:0;left:0;width:100%;height:100vh;z-index:-1;pointer-events:none;overflow:hidden}
 #canvas-container canvas{display:block;width:100%;height:100%}
 
+/* ============================================================
+   ПРИКОЛЫ: КУРСОР GLOW + КЛИК RIPPLE + КУРСОРНЫЕ ЧАСТИЦЫ
+============================================================ */
+#cursor-glow{
+  position:fixed;top:0;left:0;width:240px;height:240px;
+  margin:-120px 0 0 -120px;
+  border-radius:50%;pointer-events:none;z-index:5;
+  background:radial-gradient(circle, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.22) 0%, transparent 60%);
+  transition:opacity .3s ease;
+  mix-blend-mode:screen;opacity:0;
+}
+#cursor-glow.active{opacity:1}
+.ripple{
+  position:fixed;pointer-events:none;z-index:9999;
+  border-radius:50%;
+  border:2px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85);
+  width:10px;height:10px;
+  transform:translate(-50%,-50%) scale(1);
+  animation:rippleOut .7s ease-out forwards;
+}
+@keyframes rippleOut{
+  to{width:180px;height:180px;opacity:0;border-width:0}
+}
+.cursor-particle{
+  position:fixed;pointer-events:none;z-index:8;
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.9);
+  box-shadow:0 0 10px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.9);
+  transform:translate(-50%,-50%);
+  animation:cursorParticleFade .9s ease-out forwards;
+}
+@keyframes cursorParticleFade{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.2) translateY(20px)}
+}
+
+/* ============================================================
+   ПРИКОЛЫ: ПУЗЫРЬКИ + ВСПЫШКИ
+============================================================ */
+.bubble{
+  position:fixed;bottom:-80px;pointer-events:none;z-index:1;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(var(--accent-r),var(--accent-g),var(--accent-b),.12) 50%, transparent 75%);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:inset 0 0 20px rgba(255,255,255,.1), 0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);
+  animation:floatUp linear infinite;
+  opacity:.7;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) translateX(0) scale(.8);opacity:0}
+  10%{opacity:.7}
+  90%{opacity:.7}
+  100%{transform:translateY(-120vh) translateX(var(--bubble-x, 0)) scale(1.1);opacity:0}
+}
+.flash-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:6;
+  background:radial-gradient(circle at var(--flash-x,50%) var(--flash-y,50%), rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35), transparent 40%);
+  opacity:0;animation:flashPulse 1.2s ease-out forwards;
+}
+@keyframes flashPulse{
+  0%{opacity:0}
+  20%{opacity:1}
+  100%{opacity:0}
+}
+
+/* ============================================================
+   МАСКОТ-КНОПКА (слева снизу, рядом с "СБРОСИТЬ")
+============================================================ */
+.mascot-btn{
+  position:fixed;left:20px;bottom:70px;z-index:99;
+  width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), var(--red-dark));
+  border:2px solid rgba(255,255,255,.7);
+  color:#fff;font-family:"Orbitron",sans-serif;font-weight:900;font-size:12px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 22px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7), inset 0 0 10px rgba(0,0,0,.35);
+  animation:mascotBlink 2s ease-in-out infinite;
+}
+.mascot-btn:hover{transform:scale(1.08)}
+.mascot-btn:active{transform:scale(.92)}
+@keyframes mascotBlink{
+  0%,100%{box-shadow:0 0 22px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7), inset 0 0 10px rgba(0,0,0,.35)}
+  50%{box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1), inset 0 0 15px rgba(0,0,0,.35)}
+}
+
+/* ============================================================
+   СЧЁТЧИК КЛИКОВ
+============================================================ */
+.click-counter{
+  position:fixed;right:20px;top:88px;z-index:99;
+  padding:6px 12px;border-radius:14px;
+  background:rgba(0,0,0,.5);
+  border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4);
+  font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1.5px;
+  color:var(--muted);
+  backdrop-filter:blur(6px);
+  display:flex;align-items:center;gap:6px;
+  opacity:.6;
+  transition:opacity .3s;
+}
+.click-counter:hover{opacity:1}
+.click-counter i{color:var(--red)}
+.click-counter b{color:#fff;font-size:12px}
+
+/* ============================================================
+   HEADER
+============================================================ */
 header{
   position:fixed;top:0;left:0;width:100%;
   padding:20px 40px;display:flex;justify-content:space-between;align-items:center;
@@ -336,7 +468,7 @@ header{
 @keyframes linePulse{0%,100%{width:70px;opacity:.85}50%{width:120px;opacity:1}}
 
 .nominations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin-bottom:80px}
-.nomination-card{background:var(--card);border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);border-radius:18px;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;backdrop-filter:blur(14px);transition:transform .45s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s}
+.nomination-card{background:var(--card);border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);border-radius:18px;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;backdrop-filter:blur(14px);transition:transform .45s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s, transform .15s;transform-style:preserve-3d}
 .nomination-card::before{content:"";position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle at 50% 30%, rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35), transparent 65%);opacity:0;transition:opacity .4s ease;pointer-events:none}
 .nomination-card:hover::before{opacity:1}
 .nomination-card:hover{transform:translateY(-10px) scale(1.03);border-color:var(--red);box-shadow:0 15px 45px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4), 0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3)}
@@ -485,6 +617,15 @@ header{
   .profile-name{font-size:13px}
   .profile-email{font-size:10px}
 
+  /* Отключаем большинство приколов на мобилке */
+  #cursor-glow,
+  .cursor-particle,
+  .bubble,
+  .flash-overlay{display:none !important}
+  .ripple{display:none !important}
+  .mascot-btn{left:12px;bottom:60px;width:36px;height:36px;font-size:10px}
+  .click-counter{right:12px;top:80px;padding:4px 8px;font-size:9px}
+
   body::before{animation:none;opacity:.7}
   .logo{animation:none}
   .hero h1{animation:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.95)) drop-shadow(0 0 3px rgba(0,0,0,1))}
@@ -555,6 +696,7 @@ body.low-perf .vote-dates::before{display:none !important}
 </head>
 <body data-theme="scarlet">
 
+<div id="cursor-glow"></div>
 <div id="canvas-container"></div>
 
 <header>
@@ -590,9 +732,18 @@ body.low-perf .vote-dates::before{display:none !important}
   </div>
 </header>
 
+<!-- Счётчик кликов -->
+<div class="click-counter" title="Твои клики">
+  <i class="fa-solid fa-hand-pointer"></i>
+  <b id="click-count">0</b> кликов
+</div>
+
 <button class="reset-btn" id="reset-btn" type="button" onclick="resetMyVotes()">
   <i class="fa-solid fa-rotate-left"></i> СБРОСИТЬ МОИ ГОЛОСА
 </button>
+
+<!-- Маскот-кнопка -->
+<button class="mascot-btn" id="mascot-btn" type="button" onclick="mascotClick()" title="Нажми меня!">ZV</button>
 
 <div class="theme-widget">
   <div class="theme-panel" id="theme-panel">
@@ -727,7 +878,7 @@ body.low-perf .vote-dates::before{display:none !important}
 const GOOGLE_CLIENT_ID = "193095894603-4jefaanb9nv73gonatbprs9cuokqua7v.apps.googleusercontent.com";
 const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const ADMIN_PASSWORD = "meduzaadmin221";
-const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
+const SHEETS_API = "https://script.google.com/macros/s/AKfycbz9QULaw2eHnv_T7ONyIXbUu0fIK9aPm4M9SWW2gMFTy5Uu1Vuv-4iLeMfetxwGv1Rr/exec";
 
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
 const IS_SLOW = IS_MOBILE && ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 2));
@@ -861,7 +1012,17 @@ const SoundFX = (()=>{
     switch(){ tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
     whoosh(){ tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900}); tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300}); },
     cancel(){ tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380}); tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180}); },
-    confirm(){ tone({freq:640,dur:0.08,type:"triangle",vol:0.04,slide:900}); tone({freq:900,dur:0.12,type:"triangle",vol:0.035,when:0.07}); }
+    confirm(){ tone({freq:640,dur:0.08,type:"triangle",vol:0.04,slide:900}); tone({freq:900,dur:0.12,type:"triangle",vol:0.035,when:0.07}); },
+    random(){
+      const notes = [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99];
+      const n = notes[Math.floor(Math.random()*notes.length)];
+      tone({freq:n, dur:0.25, type:"triangle", vol:0.05});
+    },
+    easter(){ // фанфарки при пасхалке
+      [523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.5].forEach((f,i)=>{
+        tone({freq:f, dur:0.15, type:"triangle", vol:0.05, when:i*0.08});
+      });
+    }
   };
 })();
 window.addEventListener("pointerdown", ()=>{ SoundFX.click(); }, {once:true, capture:true});
@@ -892,6 +1053,7 @@ const nomineesDatabase = {
 
 const LS_VOTES = "zvawards_my_votes";
 const LS_USER  = "zvawards_user";
+const LS_CLICKS = "zvawards_clicks";
 function loadMyVotes(){ try{ const r = localStorage.getItem(LS_VOTES); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } }
 function saveMyVotes(v){ localStorage.setItem(LS_VOTES, JSON.stringify(v)); }
 userVotes = loadMyVotes();
@@ -979,16 +1141,8 @@ function handleGoogleCredential(response){
     showToast(`Вы вошли как ${currentUser.name}`, "success");
   }catch(e){ showToast("Ошибка входа через Google", "error"); console.error(e); }
 }
-function askLogout(){
-  closeProfileMenu();
-  SoundFX.click();
-  openModal("logout-modal");
-}
-function confirmLogout(){
-  SoundFX.cancel();
-  closeModal("logout-modal");
-  doLogout();
-}
+function askLogout(){ closeProfileMenu(); SoundFX.click(); openModal("logout-modal"); }
+function confirmLogout(){ SoundFX.cancel(); closeModal("logout-modal"); doLogout(); }
 function doLogout(){
   currentUser = null;
   localStorage.removeItem(LS_USER);
@@ -1144,24 +1298,29 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
     btn.className = "vote-action-btn";
     btn.type = "button";
     btn.textContent = "ПРОГОЛОСОВАТЬ";
-    btn.addEventListener("click", (e)=>{ e.stopPropagation(); SoundFX.click(); showConfirmActions(actions, category, name); });
+    btn.addEventListener("click", (e)=>{ e.stopPropagation(); SoundFX.click(); showConfirmActions(actions, category, name, e); });
     actions.appendChild(btn);
   }
   card.appendChild(avatar); card.appendChild(nm); card.appendChild(actions);
   return card;
 }
-function showConfirmActions(actionsEl, category, name){
+function showConfirmActions(actionsEl, category, name, e){
   actionsEl.innerHTML = "";
   const confirmBtn = document.createElement("button");
   confirmBtn.className = "vote-confirm-btn";
   confirmBtn.type = "button";
   confirmBtn.textContent = "ПОДТВЕРДИТЬ";
-  confirmBtn.addEventListener("click", async (e)=>{ e.stopPropagation(); SoundFX.confirm(); await submitVote(category, name); });
+  confirmBtn.addEventListener("click", async (ev)=>{
+    ev.stopPropagation();
+    SoundFX.confirm();
+    if(e) sparkBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
+    await submitVote(category, name);
+  });
   const cancelBtn = document.createElement("button");
   cancelBtn.className = "vote-cancel-small";
   cancelBtn.type = "button";
   cancelBtn.textContent = "ОТМЕНА";
-  cancelBtn.addEventListener("click", (e)=>{ e.stopPropagation(); SoundFX.cancel(); refreshNominationUI(category); });
+  cancelBtn.addEventListener("click", (ev)=>{ ev.stopPropagation(); SoundFX.cancel(); refreshNominationUI(category); });
   actionsEl.appendChild(confirmBtn);
   actionsEl.appendChild(cancelBtn);
 }
@@ -1289,7 +1448,233 @@ function escapeHtml(s){
 document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal","logout-modal"].forEach(closeModal); });
 
 /* ============================================================
-   THREE.JS
+   ПРИКОЛЫ
+============================================================ */
+
+/* --- 1. Курсорный glow --- */
+(function cursorGlowInit(){
+  if(IS_MOBILE) return;
+  const glow = document.getElementById("cursor-glow");
+  let tx = window.innerWidth/2, ty = window.innerHeight/2;
+  let cx = tx, cy = ty;
+  let last = 0;
+  document.addEventListener("mousemove", (e)=>{
+    tx = e.clientX; ty = e.clientY;
+    glow.classList.add("active");
+  }, { passive: true });
+  document.addEventListener("mouseleave", ()=> glow.classList.remove("active"));
+  function tick(){
+    cx += (tx - cx) * 0.15;
+    cy += (ty - cy) * 0.15;
+    glow.style.transform = `translate(${cx}px, ${cy}px)`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* --- 2. Курсорные частицы --- */
+(function cursorParticlesInit(){
+  if(IS_MOBILE) return;
+  let last = 0;
+  document.addEventListener("mousemove", (e)=>{
+    const now = performance.now();
+    if(now - last < 60) return;   // не чаще 16 в сек
+    last = now;
+    if(Math.random() < 0.55) return; // только иногда
+    const p = document.createElement("div");
+    p.className = "cursor-particle";
+    p.style.left = (e.clientX + (Math.random()-0.5)*10) + "px";
+    p.style.top  = (e.clientY + (Math.random()-0.5)*10) + "px";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 900);
+  }, { passive: true });
+})();
+
+/* --- 3. Клик Ripple --- */
+document.addEventListener("click", (e)=>{
+  // Не показываем на кликах внутри модалок/инпутов
+  const tgt = e.target;
+  if(tgt.closest("input,textarea")) return;
+  const rip = document.createElement("div");
+  rip.className = "ripple";
+  rip.style.left = e.clientX + "px";
+  rip.style.top  = e.clientY + "px";
+  document.body.appendChild(rip);
+  setTimeout(()=>rip.remove(), 750);
+}, { passive:true });
+
+/* --- 4. Счётчик кликов --- */
+const LS_CLICKS_KEY = "zvawards_clicks";
+let myClicks = parseInt(localStorage.getItem(LS_CLICKS_KEY) || "0", 10);
+function updateClickCounter(){
+  const el = document.getElementById("click-count");
+  if(el) el.textContent = myClicks;
+}
+document.addEventListener("click", ()=>{
+  myClicks++;
+  localStorage.setItem(LS_CLICKS_KEY, myClicks);
+  updateClickCounter();
+});
+updateClickCounter();
+
+/* --- 5. Пузырьки --- */
+(function bubblesInit(){
+  if(IS_MOBILE) return;
+  const MAX = 12;
+  let active = 0;
+  function spawn(){
+    if(active >= MAX) return;
+    active++;
+    const size = 20 + Math.random()*70;
+    const left = Math.random() * 100;
+    const dur = 12 + Math.random()*14;
+    const b = document.createElement("div");
+    b.className = "bubble";
+    b.style.width = size + "px";
+    b.style.height = size + "px";
+    b.style.left = left + "vw";
+    b.style.animationDuration = dur + "s";
+    b.style.setProperty("--bubble-x", ((Math.random()-0.5)*80) + "px");
+    document.body.appendChild(b);
+    setTimeout(()=>{ b.remove(); active--; }, dur*1000);
+  }
+  for(let i=0;i<4;i++) setTimeout(spawn, i*800);
+  setInterval(spawn, 1400);
+})();
+
+/* --- 6. Случайные вспышки --- */
+(function flashInit(){
+  if(IS_MOBILE) return;
+  function flash(){
+    const f = document.createElement("div");
+    f.className = "flash-overlay";
+    f.style.setProperty("--flash-x", (20 + Math.random()*60) + "%");
+    f.style.setProperty("--flash-y", (20 + Math.random()*60) + "%");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(), 1300);
+    setTimeout(flash, 8000 + Math.random()*7000);
+  }
+  setTimeout(flash, 5000);
+})();
+
+/* --- 7. Параллакс карточек --- */
+(function parallaxInit(){
+  if(IS_MOBILE) return;
+  document.querySelectorAll(".nomination-card").forEach(card=>{
+    card.addEventListener("mousemove", (e)=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-10px) scale(1.03)`;
+    });
+    card.addEventListener("mouseleave", ()=>{
+      card.style.transform = "";
+    });
+  });
+})();
+
+/* --- 8. Взрыв искр --- */
+function sparkBurst(x, y){
+  if(IS_MOBILE) return;
+  const count = 14;
+  for(let i=0;i<count;i++){
+    const s = document.createElement("div");
+    const angle = (Math.PI * 2 / count) * i + Math.random()*0.3;
+    const dist = 60 + Math.random()*70;
+    s.style.position = "fixed";
+    s.style.left = x + "px";
+    s.style.top = y + "px";
+    s.style.width = "7px";
+    s.style.height = "7px";
+    s.style.borderRadius = "50%";
+    s.style.background = `rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)`;
+    s.style.boxShadow = "0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)";
+    s.style.pointerEvents = "none";
+    s.style.zIndex = "9998";
+    s.style.transition = "transform .8s cubic-bezier(.2,.7,.3,1), opacity .8s";
+    s.style.transform = "translate(-50%,-50%)";
+    document.body.appendChild(s);
+    requestAnimationFrame(()=>{
+      s.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px)) scale(0.2)`;
+      s.style.opacity = "0";
+    });
+    setTimeout(()=>s.remove(), 900);
+  }
+}
+
+/* --- 9. Маскот-кнопка --- */
+function mascotClick(){
+  SoundFX.random();
+  const btn = document.getElementById("mascot-btn");
+  btn.style.transform = "scale(1.25) rotate(-12deg)";
+  setTimeout(()=>{ btn.style.transform = ""; }, 180);
+  // Случайный текст
+  const phrases = ["ZV!", "Огонь!", "Держи!", "Ты лучший!", "Ха-ха!", "🎉", "🔥", "💎", "⚡"];
+  const p = phrases[Math.floor(Math.random()*phrases.length)];
+  const label = document.createElement("div");
+  label.textContent = p;
+  label.style.position = "fixed";
+  label.style.left = (btn.getBoundingClientRect().left + 50) + "px";
+  label.style.top = (btn.getBoundingClientRect().top - 10) + "px";
+  label.style.color = "#fff";
+  label.style.fontWeight = "800";
+  label.style.fontFamily = "'Orbitron', sans-serif";
+  label.style.fontSize = "14px";
+  label.style.textShadow = "0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)";
+  label.style.pointerEvents = "none";
+  label.style.zIndex = "100";
+  label.style.transition = "transform 1.2s ease-out, opacity 1.2s";
+  label.style.transform = "translateY(0)";
+  document.body.appendChild(label);
+  requestAnimationFrame(()=>{
+    label.style.transform = "translateY(-60px)";
+    label.style.opacity = "0";
+  });
+  setTimeout(()=>label.remove(), 1300);
+}
+
+/* --- 10. Пасхалка Konami --- */
+(function konamiInit(){
+  const code = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  let pos = 0;
+  document.addEventListener("keydown", (e)=>{
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if(key === code[pos]){
+      pos++;
+      if(pos === code.length){
+        pos = 0;
+        activateEaster();
+      }
+    } else {
+      pos = (key === code[0]) ? 1 : 0;
+    }
+  });
+  function activateEaster(){
+    SoundFX.easter();
+    // Включаем тему rainbow
+    document.body.setAttribute("data-theme", "rainbow");
+    applyThemeTo3D();
+    // Салют
+    for(let i=0;i<12;i++){
+      setTimeout(()=>{
+        sparkBurst(
+          window.innerWidth * (0.1 + Math.random()*0.8),
+          window.innerHeight * (0.15 + Math.random()*0.6)
+        );
+      }, i*120);
+    }
+    showToast("🎉 ПАСХАЛКА АКТИВИРОВАНА! РАДУЖНЫЙ РЕЖИМ!", "success");
+    // Через 30 сек вернуть прежнюю тему
+    setTimeout(()=>{
+      const saved = localStorage.getItem(THEME_KEY) || "scarlet";
+      setTheme(saved);
+      showToast("Радужный режим закончился 🌈", "info");
+    }, 30000);
+  }
+})();
+
+/* ============================================================
+   THREE.JS — один тор
 ============================================================ */
 const container = document.getElementById("canvas-container");
 const scene = new THREE.Scene();
@@ -1369,7 +1754,7 @@ addEventListener("resize", ()=>{
 
 if(!IS_MOBILE){
   document.addEventListener("mouseover", (e)=>{
-    const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option, .profile-action");
+    const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option, .profile-action, .mascot-btn");
     if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
   });
 }
