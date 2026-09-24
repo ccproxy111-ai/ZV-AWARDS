@@ -23,14 +23,10 @@
   --accent-3-r:179;--accent-3-g:0;--accent-3-b:27;
   --bg-rad-1:rgba(255,0,51,.16);--bg-rad-2:rgba(179,0,27,.25);
   --bg-rad-3:rgba(255,0,51,.18);--bg-rad-4:rgba(230,0,38,.15);
-  --theme-dot:#ff0033;
   --bg-color-3d: 0x0a0203;
   --fog-color-3d: 0x1a0005;
-  --particle-1: 0xff0033;
-  --particle-2: 0xb3001b;
-  --particle-3: 0xffffff;
-  --ribbon-1: 0xff0033;
-  --ribbon-2: 0xffffff;
+  --tor-color: 0xff0033;
+  --tor-color-2: 0xffffff;
 }
 [data-theme="lunar"]{
   --bg:#0d0d0f;--bg-2:#1a1a1d;
@@ -42,14 +38,10 @@
   --accent-3-r:138;--accent-3-g:138;--accent-3-b:144;
   --bg-rad-1:rgba(255,255,255,.08);--bg-rad-2:rgba(150,150,160,.18);
   --bg-rad-3:rgba(255,255,255,.1);--bg-rad-4:rgba(180,180,190,.12);
-  --theme-dot:#e0e0e6;
   --bg-color-3d: 0x0d0d0f;
   --fog-color-3d: 0x1a1a1d;
-  --particle-1: 0xffffff;
-  --particle-2: 0x8a8a90;
-  --particle-3: 0xffffff;
-  --ribbon-1: 0xffffff;
-  --ribbon-2: 0xc8c8cc;
+  --tor-color: 0xffffff;
+  --tor-color-2: 0xc8c8cc;
 }
 [data-theme="sky"]{
   --bg:#020a14;--bg-2:#04121f;
@@ -61,14 +53,10 @@
   --accent-3-r:0;--accent-3-g:107;--accent-3-b:179;
   --bg-rad-1:rgba(0,179,255,.18);--bg-rad-2:rgba(0,107,179,.28);
   --bg-rad-3:rgba(0,179,255,.18);--bg-rad-4:rgba(0,144,230,.15);
-  --theme-dot:#00b3ff;
   --bg-color-3d: 0x020a14;
   --fog-color-3d: 0x001a33;
-  --particle-1: 0x00b3ff;
-  --particle-2: 0x006bb3;
-  --particle-3: 0xffffff;
-  --ribbon-1: 0x00b3ff;
-  --ribbon-2: 0xffffff;
+  --tor-color: 0x00b3ff;
+  --tor-color-2: 0xffffff;
 }
 [data-theme="night"]{
   --bg:#020203;--bg-2:#08080a;
@@ -80,14 +68,10 @@
   --accent-3-r:38;--accent-3-g:38;--accent-3-b:46;
   --bg-rad-1:rgba(80,80,100,.1);--bg-rad-2:rgba(40,40,60,.2);
   --bg-rad-3:rgba(70,70,90,.1);--bg-rad-4:rgba(50,50,70,.1);
-  --theme-dot:#4a4a55;
   --bg-color-3d: 0x020203;
   --fog-color-3d: 0x08080a;
-  --particle-1: 0x4a4a55;
-  --particle-2: 0x26262e;
-  --particle-3: 0x8a8a95;
-  --ribbon-1: 0x4a4a55;
-  --ribbon-2: 0x8a8a95;
+  --tor-color: 0x4a4a55;
+  --tor-color-2: 0x8a8a95;
 }
 [data-theme="matrix"]{
   --bg:#010a04;--bg-2:#031407;
@@ -99,14 +83,10 @@
   --accent-3-r:0;--accent-3-g:153;--accent-3-b:64;
   --bg-rad-1:rgba(0,255,102,.15);--bg-rad-2:rgba(0,153,64,.25);
   --bg-rad-3:rgba(0,255,102,.15);--bg-rad-4:rgba(0,204,82,.13);
-  --theme-dot:#00ff66;
   --bg-color-3d: 0x010a04;
   --fog-color-3d: 0x021a08;
-  --particle-1: 0x00ff66;
-  --particle-2: 0x009940;
-  --particle-3: 0xffffff;
-  --ribbon-1: 0x00ff66;
-  --ribbon-2: 0xffffff;
+  --tor-color: 0x00ff66;
+  --tor-color-2: 0xffffff;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
@@ -128,8 +108,19 @@ body::before{
 }
 @keyframes breathe{0%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
 
-#canvas-container{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-#canvas-container canvas{display:block}
+/* ============================================================
+   КОНТЕЙНЕР С 3D — ТЕПЕРЬ СКРОЛЛИТСЯ С ДОКУМЕНТОМ
+============================================================ */
+#canvas-container{
+  position:absolute;      /* не fixed! скроллится вместе со страницей */
+  top:0;left:0;
+  width:100%;
+  height:100vh;           /* ровно один экран по высоте — ушёл вниз, бублик исчез */
+  z-index:-1;
+  pointer-events:none;
+  overflow:hidden;
+}
+#canvas-container canvas{display:block;width:100%;height:100%}
 
 header{
   position:fixed;top:0;left:0;width:100%;
@@ -146,7 +137,7 @@ header{
   animation:logoShine 5s ease-in-out infinite;white-space:nowrap;
 }
 @keyframes logoShine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.header-actions{display:flex;gap:12px;align-items:center;flex-wrap:nowrap}
+.header-actions{display:flex;gap:12px;align-items:center;flex-wrap:nowrap;position:relative}
 
 .online-counter{
   display:flex;align-items:center;gap:8px;
@@ -156,7 +147,7 @@ header{
   font-family:"Orbitron",sans-serif;
   font-size:13px;font-weight:700;letter-spacing:1px;color:#d6ffe6;
   box-shadow:0 0 15px rgba(34,255,136,.2), inset 0 0 10px rgba(34,255,136,.06);
-  backdrop-filter:blur(8px);transition:transform .3s;white-space:nowrap;
+  backdrop-filter:blur(8px);white-space:nowrap;
 }
 .online-dot{width:8px;height:8px;border-radius:50%;background:var(--online);box-shadow:0 0 8px var(--online), 0 0 16px var(--online);animation:pulseOnline 1.4s ease-in-out infinite}
 @keyframes pulseOnline{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
@@ -166,13 +157,82 @@ header{
 .auth-btn{
   background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.06);
   border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4);color:#fff;
-  padding:10px 20px;border-radius:30px;cursor:pointer;font-weight:600;
+  padding:8px 14px 8px 8px;border-radius:30px;cursor:pointer;font-weight:600;
   display:flex;align-items:center;gap:10px;transition:all .3s ease;font-size:14px;
-  position:relative;overflow:hidden;
+  position:relative;
 }
 .auth-btn:hover{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7);transform:translateY(-2px)}
 .auth-btn.logged-in{border-color:var(--red);box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5)}
-.auth-btn img{width:24px;height:24px;border-radius:50%;border:1px solid var(--red)}
+.auth-btn img{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--red);object-fit:cover}
+.auth-btn .fa-google{font-size:16px}
+
+/* Иконка-стрелочка при залогиненном виде */
+.auth-btn .auth-chevron{
+  font-size:11px;opacity:.65;margin-left:2px;transition:transform .3s;
+}
+.auth-btn.logged-in.opened .auth-chevron{transform:rotate(180deg)}
+
+/* ============================================================
+   МИНИ-МЕНЮ ПРОФИЛЯ
+============================================================ */
+.profile-menu{
+  position:absolute;
+  top:calc(100% + 10px);
+  right:0;
+  min-width:260px;
+  background:linear-gradient(160deg, rgba(15,5,8,.98), rgba(8,2,3,.98));
+  border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5);
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 15px 50px rgba(0,0,0,.75), 0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3);
+  backdrop-filter:blur(14px);
+  opacity:0;
+  transform:translateY(-10px) scale(.95);
+  transform-origin:top right;
+  pointer-events:none;
+  transition:opacity .25s ease, transform .25s cubic-bezier(.175,.885,.32,1.2);
+  z-index:200;
+}
+.profile-menu.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+
+.profile-header{
+  display:flex;align-items:center;gap:12px;
+  padding-bottom:12px;margin-bottom:10px;
+  border-bottom:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);
+}
+.profile-avatar{
+  width:44px;height:44px;border-radius:50%;
+  border:2px solid var(--red);
+  object-fit:cover;
+  box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5);
+  flex-shrink:0;
+}
+.profile-info{min-width:0;flex:1}
+.profile-name{
+  font-weight:700;font-size:14px;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.profile-email{
+  font-size:11px;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  margin-top:2px;
+}
+
+.profile-action{
+  width:100%;padding:10px 14px;border-radius:10px;
+  background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.08);
+  border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35);
+  color:#fff;cursor:pointer;font-weight:700;
+  font-family:"Orbitron",sans-serif;font-size:12px;letter-spacing:1px;
+  display:flex;align-items:center;gap:10px;
+  transition:all .25s;
+}
+.profile-action:hover{
+  background:var(--red);border-color:#fff;
+  box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7);
+  transform:translateY(-1px);
+}
+.profile-action i{font-size:13px}
 
 .admin-btn{
   background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.08);
@@ -216,13 +276,10 @@ header{
   0%,100%{box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5), inset 0 0 15px rgba(0,0,0,.4)}
   50%{box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.9), inset 0 0 15px rgba(0,0,0,.4)}
 }
-
 .theme-panel{
   background:linear-gradient(160deg, rgba(15,5,8,.98), rgba(8,2,3,.98));
   border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.45);
-  border-radius:18px;
-  padding:14px;
-  width:260px;
+  border-radius:18px;padding:14px;width:260px;
   box-shadow:0 15px 50px rgba(0,0,0,.7), 0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.25);
   backdrop-filter:blur(14px);
   transform-origin:bottom right;
@@ -230,81 +287,24 @@ header{
   opacity:0;pointer-events:none;
   transition:transform .3s cubic-bezier(.175,.885,.32,1.2), opacity .25s ease;
 }
-.theme-panel.active{
-  transform:scale(1) translateY(0);
-  opacity:1;pointer-events:auto;
-}
-.theme-panel-title{
-  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:2.5px;
-  color:var(--red);text-transform:uppercase;margin-bottom:10px;
-  text-align:center;
-  padding-bottom:8px;
-  border-bottom:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);
-  text-shadow:0 0 8px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6);
-}
-.theme-option{
-  display:flex;align-items:center;gap:12px;
-  padding:9px 12px;border-radius:10px;cursor:pointer;
-  transition:background .25s, transform .25s;
-  border:1px solid transparent;
-  font-size:13px;font-weight:600;
-}
-.theme-option:hover{
-  background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.1);
-  transform:translateX(3px);
-}
-.theme-option.active{
-  background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.15);
-  border-color:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55);
-  box-shadow:inset 0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.15);
-}
-.theme-option .theme-dot-circle{
-  width:18px;height:18px;border-radius:50%;flex-shrink:0;
-  border:2px solid rgba(255,255,255,.65);
-  box-shadow:0 0 10px currentColor, inset 0 0 6px rgba(0,0,0,.4);
-}
+.theme-panel.active{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
+.theme-panel-title{font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:2.5px;color:var(--red);text-transform:uppercase;margin-bottom:10px;text-align:center;padding-bottom:8px;border-bottom:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.2);text-shadow:0 0 8px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6)}
+.theme-option{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:background .25s, transform .25s;border:1px solid transparent;font-size:13px;font-weight:600}
+.theme-option:hover{background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.1);transform:translateX(3px)}
+.theme-option.active{background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.15);border-color:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55);box-shadow:inset 0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.15)}
+.theme-option .theme-dot-circle{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,.65);box-shadow:0 0 10px currentColor, inset 0 0 6px rgba(0,0,0,.4)}
 .theme-option .theme-name{flex:1;color:#fff}
-.theme-option .theme-check{
-  color:var(--red);font-size:12px;opacity:0;
-  transition:opacity .2s;
-}
+.theme-option .theme-check{color:var(--red);font-size:12px;opacity:0;transition:opacity .2s}
 .theme-option.active .theme-check{opacity:1}
 
+/* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 20px 40px;position:relative}
-.hero h1{
-  font-family:"Orbitron",sans-serif;font-size:clamp(48px,9vw,90px);font-weight:900;
-  letter-spacing:6px;text-transform:uppercase;margin-bottom:18px;
-  background:linear-gradient(180deg,#fff 0%,rgba(var(--accent-r),var(--accent-g),var(--accent-b),1) 45%,var(--red-3) 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6));
-  animation:glitch 4s infinite, floatY 6s ease-in-out infinite;
-}
+.hero h1{font-family:"Orbitron",sans-serif;font-size:clamp(48px,9vw,90px);font-weight:900;letter-spacing:6px;text-transform:uppercase;margin-bottom:18px;background:linear-gradient(180deg,#fff 0%,rgba(var(--accent-r),var(--accent-g),var(--accent-b),1) 45%,var(--red-3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6));animation:glitch 4s infinite, floatY 6s ease-in-out infinite}
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes glitch{
-  0%,100%{text-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6)}
-  50%{text-shadow:2px 2px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7), -2px -2px rgba(255,255,255,.5), 0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.8)}
-}
+@keyframes glitch{0%,100%{text-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6)}50%{text-shadow:2px 2px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7), -2px -2px rgba(255,255,255,.5), 0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.8)}}
 
-.vote-dates{
-  font-family:"Orbitron",sans-serif;font-size:clamp(14px, 2vw, 22px);font-weight:800;
-  letter-spacing:4px;text-transform:uppercase;margin-bottom:28px;
-  padding:12px 28px;border-radius:40px;display:inline-block;
-  background:linear-gradient(90deg, #ffffff, var(--red), var(--red-3), var(--red-2), #ffffff);
-  background-size:400% 100%;
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
-  filter:drop-shadow(0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55));
-  animation:dateShine 6s linear infinite, dateGlow 3s ease-in-out infinite;
-  border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3);
-  box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35), inset 0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.08);
-  position:relative;overflow:hidden;
-}
-.vote-dates::before{
-  content:"";position:absolute;inset:0;border-radius:40px;pointer-events:none;
-  background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,.25) 50%, transparent 100%);
-  transform:translateX(-100%);
-  animation:dateSweep 3.5s ease-in-out infinite;
-}
+.vote-dates{font-family:"Orbitron",sans-serif;font-size:clamp(14px, 2vw, 22px);font-weight:800;letter-spacing:4px;text-transform:uppercase;margin-bottom:28px;padding:12px 28px;border-radius:40px;display:inline-block;background:linear-gradient(90deg, #ffffff, var(--red), var(--red-3), var(--red-2), #ffffff);background-size:400% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55));animation:dateShine 6s linear infinite, dateGlow 3s ease-in-out infinite;border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3);box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35), inset 0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.08);position:relative;overflow:hidden}
+.vote-dates::before{content:"";position:absolute;inset:0;border-radius:40px;pointer-events:none;background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,.25) 50%, transparent 100%);transform:translateX(-100%);animation:dateSweep 3.5s ease-in-out infinite}
 @keyframes dateShine{0%{background-position:0% 50%}100%{background-position:400% 50%}}
 @keyframes dateGlow{0%,100%{filter:drop-shadow(0 0 10px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5))}50%{filter:drop-shadow(0 0 22px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85))}}
 @keyframes dateSweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
@@ -312,18 +312,7 @@ header{
 .hero p{font-size:18px;color:var(--muted);margin-bottom:45px;max-width:640px;line-height:1.7;letter-spacing:1px;animation:fadeUp 1.2s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-.vote-main-btn{
-  font-family:"Orbitron",sans-serif;
-  background:linear-gradient(90deg,var(--red-3),var(--red),#fff,var(--red),var(--red-3));
-  background-size:300% 300%;
-  border:1px solid rgba(255,255,255,.25);
-  padding:20px 55px;color:#fff;font-size:18px;font-weight:700;letter-spacing:3px;
-  border-radius:50px;cursor:pointer;
-  box-shadow:0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6), inset 0 0 20px rgba(255,255,255,.06);
-  transition:transform .3s, box-shadow .3s, background-position .8s;
-  animation:pulseBtn 2.8s ease-in-out infinite;
-  position:relative;overflow:hidden;
-}
+.vote-main-btn{font-family:"Orbitron",sans-serif;background:linear-gradient(90deg,var(--red-3),var(--red),#fff,var(--red),var(--red-3));background-size:300% 300%;border:1px solid rgba(255,255,255,.25);padding:20px 55px;color:#fff;font-size:18px;font-weight:700;letter-spacing:3px;border-radius:50px;cursor:pointer;box-shadow:0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6), inset 0 0 20px rgba(255,255,255,.06);transition:transform .3s, box-shadow .3s, background-position .8s;animation:pulseBtn 2.8s ease-in-out infinite;position:relative;overflow:hidden}
 .vote-main-btn::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);animation:shine 3.2s ease-in-out infinite}
 @keyframes shine{0%{left:-100%}60%,100%{left:120%}}
 @keyframes pulseBtn{0%,100%{box-shadow:0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5), inset 0 0 15px rgba(255,255,255,.06)}50%{box-shadow:0 0 55px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.95), inset 0 0 25px rgba(255,255,255,.14)}}
@@ -441,30 +430,58 @@ header{
 .pass-submit{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(90deg,#fff,var(--red));color:var(--red-3);font-weight:800;font-family:"Orbitron",sans-serif;letter-spacing:1.5px;font-size:14px;transition:transform .3s,box-shadow .3s;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4)}
 .pass-submit:hover{transform:scale(1.02);box-shadow:0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.8);color:#fff;background:linear-gradient(90deg,var(--red),var(--red-3))}
 
+/* Подтверждение выхода */
+.logout-confirm .modal-content{max-width:420px;text-align:center}
+.logout-confirm-icon{
+  font-size:44px;color:var(--red);margin-bottom:14px;
+  text-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7);
+}
+.logout-confirm-text{
+  font-size:16px;color:#fff;margin-bottom:8px;
+  font-family:"Orbitron",sans-serif;letter-spacing:1.5px;
+}
+.logout-confirm-sub{color:var(--muted);font-size:13px;margin-bottom:24px}
+.logout-confirm-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.logout-confirm-actions button{
+  padding:12px 22px;border-radius:22px;cursor:pointer;
+  font-family:"Orbitron",sans-serif;font-size:13px;font-weight:800;letter-spacing:1px;
+  transition:all .3s;
+}
+.btn-yes{
+  background:linear-gradient(90deg,var(--red),var(--red-3));
+  border:1px solid #fff;color:#fff;
+  box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7);
+}
+.btn-yes:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)}
+.btn-no{
+  background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;
+}
+.btn-no:hover{background:rgba(255,255,255,.12);border-color:#fff;transform:translateY(-1px)}
+
 .toast{position:fixed;bottom:30px;right:30px;padding:16px 26px;border-radius:14px;font-weight:600;z-index:3000;transform:translateY(150%);color:#fff;font-size:14px;transition:transform .4s cubic-bezier(.175,.885,.32,1.2);max-width:380px;box-shadow:0 0 40px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px)}
 .toast.active{transform:translateY(0)}
 .toast.error{background:linear-gradient(135deg,var(--red-2),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7)}
 .toast.success{background:linear-gradient(135deg,#fff,#e6e6e6);color:var(--red-dark);box-shadow:0 0 35px rgba(255,255,255,.7)}
 .toast.info{background:linear-gradient(135deg,var(--red-3),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-2-r),var(--accent-2-g),var(--accent-2-b),.7)}
 
-/* ============================================================
-   МОБИЛЬНАЯ ОПТИМИЗАЦИЯ CSS — упрощаем тяжёлые визуальные эффекты
-============================================================ */
 @media (max-width: 900px){
   header{padding:14px 16px;gap:8px}
   .logo{font-size:15px;letter-spacing:1.5px;animation:none}
   .online-counter{padding:6px 10px;font-size:11px;gap:6px;backdrop-filter:blur(4px)}
   .online-counter .online-num{font-size:13px}
   .online-counter .online-label{font-size:9px;letter-spacing:1px}
-  .auth-btn{padding:7px 10px;font-size:11px;gap:6px}
-  .auth-btn img{width:18px;height:18px}
+  .auth-btn{padding:6px 12px 6px 6px;font-size:11px;gap:6px}
+  .auth-btn img{width:22px;height:22px}
   .admin-btn{padding:7px 10px;font-size:9px}
   .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px;backdrop-filter:none}
   .theme-toggle{width:46px;height:46px;font-size:17px;animation:none}
   .theme-panel{width:230px;padding:12px;backdrop-filter:blur(6px)}
   .theme-option{padding:8px 10px;font-size:12px}
+  .profile-menu{min-width:220px}
+  .profile-avatar{width:38px;height:38px}
+  .profile-name{font-size:13px}
+  .profile-email{font-size:10px}
 
-  /* Отключаем тяжёлые анимации */
   body::before{animation:none;opacity:.7}
   .logo{animation:none}
   .hero h1{animation:none;filter:none}
@@ -486,14 +503,8 @@ header{
   .nominee-card.king-nominee.chosen,
   .nominee-card.chosen{animation:none}
   .vote-confirm-btn{animation:none}
-  .theme-toggle{animation:none}
   .theme-toggle:hover{transform:none}
   .close-modal:hover{transform:none}
-  .admin-loader i{animation:spin 1s linear infinite} /* оставим, он дешёвый */
-  .admin-nom-block,
-  .admin-nom-block *{animation:none}
-
-  /* Уменьшаем backdrop-filter у модалок — самый дорогой эффект */
   .modal-overlay{backdrop-filter:blur(6px)}
   .modal-content::before{filter:blur(6px)}
   .toast{backdrop-filter:blur(4px)}
@@ -529,7 +540,6 @@ header{
   .theme-panel{width:210px}
 }
 
-/* Отдельно для очень слабых устройств (по кол-ву ядер/памяти) — через JS добавим класс .low-perf */
 body.low-perf .nomination-card,
 body.low-perf .nominee-card,
 body.low-perf .modal-content,
@@ -538,7 +548,6 @@ body.low-perf .nomination-card::before,
 body.low-perf .nominee-card::after,
 body.low-perf .modal-content::before{display:none !important}
 body.low-perf .vote-dates::before{display:none !important}
-body.low-perf body::before{animation:none}
 </style>
 </head>
 <body data-theme="scarlet">
@@ -556,10 +565,27 @@ body.low-perf body::before{animation:none}
     <button class="admin-btn" id="admin-btn" type="button" onclick="openAdminPassword()">
       <i class="fa-solid fa-shield-halved"></i> АДМИН
     </button>
-    <button class="auth-btn" id="google-login-btn" type="button" onclick="googleLogin()">
-      <i class="fa-brands fa-google"></i>
+
+    <!-- Профиль / вход -->
+    <button class="auth-btn" id="google-login-btn" type="button" onclick="onAuthClick()">
+      <i class="fa-brands fa-google" id="auth-icon"></i>
       <span id="auth-btn-text">Войти через Google</span>
+      <i class="fa-solid fa-chevron-down auth-chevron" id="auth-chevron" style="display:none"></i>
     </button>
+
+    <!-- Мини-меню профиля -->
+    <div class="profile-menu" id="profile-menu">
+      <div class="profile-header">
+        <img class="profile-avatar" id="profile-avatar" src="" alt="">
+        <div class="profile-info">
+          <div class="profile-name" id="profile-name">—</div>
+          <div class="profile-email" id="profile-email">—</div>
+        </div>
+      </div>
+      <button class="profile-action" type="button" onclick="askLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> ВЫЙТИ ИЗ АККАУНТА
+      </button>
+    </div>
   </div>
 </header>
 
@@ -674,6 +700,23 @@ body.low-perf body::before{animation:none}
   </div>
 </div>
 
+<!-- ПОДТВЕРЖДЕНИЕ ВЫХОДА -->
+<div class="modal-overlay logout-confirm" id="logout-modal" onclick="handleModalBg(event,'logout-modal')">
+  <div class="modal-content">
+    <i class="fa-solid fa-right-from-bracket logout-confirm-icon"></i>
+    <div class="logout-confirm-text">ВЫЙТИ ИЗ АККАУНТА?</div>
+    <div class="logout-confirm-sub">Вы уверены, что хотите выйти?</div>
+    <div class="logout-confirm-actions">
+      <button class="btn-yes" type="button" onclick="confirmLogout()">
+        <i class="fa-solid fa-check"></i> ДА, ВЫЙТИ
+      </button>
+      <button class="btn-no" type="button" onclick="closeModal('logout-modal')">
+        <i class="fa-solid fa-xmark"></i> ОТМЕНА
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -687,17 +730,14 @@ const ADMIN_PASSWORD = "meduzaadmin221";
 const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
 
 /* ============================================================
-   ОПРЕДЕЛЕНИЕ ПРОИЗВОДИТЕЛЬНОСТИ УСТРОЙСТВА
+   ОПРЕДЕЛЕНИЕ ПРОИЗВОДИТЕЛЬНОСТИ
 ============================================================ */
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
 const IS_SLOW = IS_MOBILE && (
   (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-  (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
-  !window.WebGLRenderingContext
+  (navigator.deviceMemory && navigator.deviceMemory <= 2)
 );
 if(IS_SLOW || IS_MOBILE) document.body.classList.add("low-perf");
-
-// Лимит FPS: 30 на мобилке, 60 на ПК
 const FPS_CAP = IS_MOBILE ? 30 : 60;
 const FRAME_INTERVAL = 1000 / FPS_CAP;
 
@@ -705,7 +745,6 @@ const FRAME_INTERVAL = 1000 / FPS_CAP;
    THEME
 ============================================================ */
 const THEME_KEY = "zvawards_theme";
-
 function setTheme(name){
   document.body.setAttribute("data-theme", name);
   localStorage.setItem(THEME_KEY, name);
@@ -717,8 +756,7 @@ function setTheme(name){
 }
 function toggleThemePanel(e){
   if(e) e.stopPropagation();
-  const panel = document.getElementById("theme-panel");
-  panel.classList.toggle("active");
+  document.getElementById("theme-panel").classList.toggle("active");
   SoundFX.click();
 }
 document.addEventListener("click", (e)=>{
@@ -746,42 +784,15 @@ function readCSSColor(varName){
 let themeColorTargets = null;
 function applyThemeTo3D(){
   if(!themeColorTargets) return;
-  const cBg  = readCSSColor("--bg-color-3d");
+  const cBg = readCSSColor("--bg-color-3d");
   const cFog = readCSSColor("--fog-color-3d");
-  const cP1  = readCSSColor("--particle-1");
-  const cP2  = readCSSColor("--particle-2");
-  const cP3  = readCSSColor("--particle-3");
-  const cR1  = readCSSColor("--ribbon-1");
-  const cR2  = readCSSColor("--ribbon-2");
-
+  const cTor = readCSSColor("--tor-color");
+  const cTor2 = readCSSColor("--tor-color-2");
   if(cBg != null) scene.background = new THREE.Color(cBg);
   if(cFog != null) scene.fog.color.setHex(cFog);
-
-  const t = themeColorTargets;
-  if(t.particles){
-    const colors = t.particles.geometry.attributes.color.array;
-    const col1 = new THREE.Color(cP1 ?? 0xff0033);
-    const col2 = new THREE.Color(cP2 ?? 0xb3001b);
-    const col3 = new THREE.Color(cP3 ?? 0xffffff);
-    const N = colors.length / 3;
-    for(let i=0;i<N;i++){
-      const r = Math.random();
-      const c = r < 0.55 ? col1 : (r < 0.85 ? col2 : col3);
-      colors[i*3]=c.r; colors[i*3+1]=c.g; colors[i*3+2]=c.b;
-    }
-    t.particles.geometry.attributes.color.needsUpdate = true;
-  }
-  t.floaters.forEach((mesh, idx)=>{
-    const c = idx % 3 === 0 ? (cP1 ?? 0xff0033)
-            : idx % 3 === 1 ? (cP2 ?? 0xb3001b)
-            : (cP3 ?? 0xffffff);
-    mesh.material.color.setHex(c);
-  });
-  if(t.core) t.core.material.color.setHex(cP1 ?? 0xff0033);
-  if(t.glow) t.glow.material.color.setHex(cP1 ?? 0xff0033);
-  t.ribbons.forEach((mesh, idx)=>{
-    mesh.material.color.setHex(idx % 2 === 0 ? (cR1 ?? 0xff0033) : (cR2 ?? 0xffffff));
-  });
+  if(themeColorTargets.tor) themeColorTargets.tor.material.color.setHex(cTor ?? 0xff0033);
+  if(themeColorTargets.torWire) themeColorTargets.torWire.material.color.setHex(cTor2 ?? 0xffffff);
+  if(themeColorTargets.torGlow) themeColorTargets.torGlow.material.color.setHex(cTor ?? 0xff0033);
 }
 
 /* ============================================================
@@ -800,7 +811,7 @@ const SESSION_ID = getSessionId();
 /* ============================================================
    ОНЛАЙН
 ============================================================ */
-const ONLINE_PING_INTERVAL = IS_MOBILE ? 40000 : 25000;   // на мобилке реже пингуем
+const ONLINE_PING_INTERVAL = IS_MOBILE ? 40000 : 25000;
 async function pingOnline(){
   try{
     const url = SHEETS_API + "?action=ping&sid=" + encodeURIComponent(SESSION_ID) + "&t=" + Date.now();
@@ -950,13 +961,19 @@ function initGoogle(){
   google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleCredential, auto_select: false, cancel_on_tap_outside: true });
   googleInitialized = true;
 }
-function googleLogin(){
+
+/* Единая точка входа для кнопки — либо логин, либо открыть меню */
+function onAuthClick(){
+  if(currentUser){
+    toggleProfileMenu();
+    return;
+  }
   SoundFX.click();
-  if(currentUser){ logout(); return; }
   if(!window.google || !google.accounts){ showToast("Google API ещё загружается...", "error"); return; }
   initGoogle();
   google.accounts.id.prompt((n)=>{ if(n.isNotDisplayed() || n.isSkippedMoment()) renderFallbackGoogleButton(); });
 }
+
 function renderFallbackGoogleButton(){
   let holder = document.getElementById("g-fallback");
   if(!holder){
@@ -981,8 +998,19 @@ function handleGoogleCredential(response){
     showToast(`Вы вошли как ${currentUser.name}`, "success");
   }catch(e){ showToast("Ошибка входа через Google", "error"); console.error(e); }
 }
-function logout(){
-  SoundFX.close();
+
+/* Кнопка выхода — сначала подтверждение */
+function askLogout(){
+  closeProfileMenu();
+  SoundFX.click();
+  openModal("logout-modal");
+}
+function confirmLogout(){
+  SoundFX.cancel();
+  closeModal("logout-modal");
+  doLogout();
+}
+function doLogout(){
   currentUser = null;
   localStorage.removeItem(LS_USER);
   updateAuthUI();
@@ -992,26 +1020,65 @@ function logout(){
   if(window.google && google.accounts) google.accounts.id.disableAutoSelect();
   showToast("Вы вышли из аккаунта", "error");
 }
+
 function updateAuthUI(){
   const txt = document.getElementById("auth-btn-text");
   const btn = document.getElementById("google-login-btn");
+  const icon = document.getElementById("auth-icon");
+  const chevron = document.getElementById("auth-chevron");
+  btn.classList.remove("opened");
+  closeProfileMenu();
+
   if(currentUser){
     txt.textContent = currentUser.name;
     btn.classList.add("logged-in");
-    const oldImg = btn.querySelector("img"); if(oldImg) oldImg.remove();
-    const icon = btn.querySelector("i.fa-google"); if(icon) icon.style.display = "none";
-    if(currentUser.picture){
-      const img = document.createElement("img");
-      img.src = currentUser.picture; img.referrerPolicy = "no-referrer";
+    // Аватарка вместо Google-иконки
+    let img = btn.querySelector("img.auth-mini-avatar");
+    if(!img){
+      img = document.createElement("img");
+      img.className = "auth-mini-avatar";
+      img.referrerPolicy = "no-referrer";
       btn.insertBefore(img, txt);
     }
+    img.src = currentUser.picture || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%23444'/></svg>";
+    if(icon) icon.style.display = "none";
+    if(chevron) chevron.style.display = "";
+    // Профиль в меню
+    document.getElementById("profile-avatar").src = img.src;
+    document.getElementById("profile-name").textContent = currentUser.name;
+    document.getElementById("profile-email").textContent = currentUser.email;
   } else {
     txt.textContent = "Войти через Google";
     btn.classList.remove("logged-in");
-    const oldImg = btn.querySelector("img"); if(oldImg) oldImg.remove();
-    const icon = btn.querySelector("i.fa-google"); if(icon) icon.style.display = "";
+    const oldImg = btn.querySelector("img.auth-mini-avatar");
+    if(oldImg) oldImg.remove();
+    if(icon) icon.style.display = "";
+    if(chevron) chevron.style.display = "none";
   }
 }
+
+/* Меню профиля */
+function toggleProfileMenu(){
+  SoundFX.click();
+  const menu = document.getElementById("profile-menu");
+  const btn = document.getElementById("google-login-btn");
+  const willOpen = !menu.classList.contains("active");
+  menu.classList.toggle("active", willOpen);
+  btn.classList.toggle("opened", willOpen);
+}
+function closeProfileMenu(){
+  document.getElementById("profile-menu").classList.remove("active");
+  document.getElementById("google-login-btn").classList.remove("opened");
+}
+// Клик вне меню — закрыть
+document.addEventListener("click", (e)=>{
+  const menu = document.getElementById("profile-menu");
+  const btn = document.getElementById("google-login-btn");
+  if(!menu.classList.contains("active")) return;
+  if(menu.contains(e.target) || btn.contains(e.target)) return;
+  closeProfileMenu();
+});
+
 function parseJwt(token){
   const b = token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
   return JSON.parse(decodeURIComponent(atob(b).split("").map(c=>"%"+("00"+c.charCodeAt(0).toString(16)).slice(-2)).join("")));
@@ -1060,7 +1127,7 @@ function handleModalBg(e,id){ if(e.target.id === id) closeModal(id); }
 ============================================================ */
 function openNomination(category){
   SoundFX.click();
-  if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); googleLogin(); return; }
+  if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); onAuthClick(); return; }
   const title = document.getElementById("modal-category-title");
   title.textContent = category;
   title.classList.toggle("king-title", category === "ZV KING");
@@ -1252,124 +1319,86 @@ function clearResults(){
 function escapeHtml(s){
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
-document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal"].forEach(closeModal); });
+document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal","logout-modal"].forEach(closeModal); });
 
 /* ============================================================
-   THREE.JS — ОПТИМИЗИРОВАННЫЙ
+   THREE.JS — ОДИН КРУТЯЩИЙСЯ «БУБЛИК» НА ФОНЕ
+   Контейнер position:absolute → скроллится вместе со страницей.
 ============================================================ */
+const container = document.getElementById("canvas-container");
+
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({
-  antialias: !IS_MOBILE,          // сглаживание отключаем на мобилке — большой прирост FPS
-  alpha: false,                    // фон рисуется через CSS body, scene.background тоже ставим
+  antialias: !IS_MOBILE,
+  alpha: false,
   powerPreference: "high-performance",
-  stencil: false,
-  depth: true
+  stencil: false
 });
-// Мобилка: ограничиваем pixel ratio до 1.25; ПК: до 2
 const PR = IS_MOBILE ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
 renderer.setPixelRatio(PR);
-renderer.setSize(innerWidth, innerHeight);
-document.getElementById("canvas-container").appendChild(renderer.domElement);
+renderer.setSize(container.clientWidth, container.clientHeight);
+container.appendChild(renderer.domElement);
 
-const initP1 = readCSSColor("--particle-1") ?? 0xff0033;
-const initP2 = readCSSColor("--particle-2") ?? 0xb3001b;
-const initP3 = readCSSColor("--particle-3") ?? 0xffffff;
-const initFog= readCSSColor("--fog-color-3d") ?? 0x1a0005;
-const initBg = readCSSColor("--bg-color-3d") ?? null;
-
+const initTor  = readCSSColor("--tor-color")   ?? 0xff0033;
+const initTor2 = readCSSColor("--tor-color-2") ?? 0xffffff;
+const initFog  = readCSSColor("--fog-color-3d") ?? 0x1a0005;
+const initBg   = readCSSColor("--bg-color-3d") ?? null;
 if(initBg != null) scene.background = new THREE.Color(initBg);
-scene.fog = new THREE.FogExp2(initFog, 0.045);
+scene.fog = new THREE.FogExp2(initFog, 0.055);
 
-// Частицы: на мобилке 450, на ПК 1200
-const pCount = IS_MOBILE ? 450 : 1200;
-const pGeo = new THREE.BufferGeometry();
-const pPos = new Float32Array(pCount*3);
-const pColors = new Float32Array(pCount*3);
-const col1 = new THREE.Color(initP1);
-const col2 = new THREE.Color(initP2);
-const col3 = new THREE.Color(initP3);
-for(let i=0;i<pCount;i++){
-  pPos[i*3]=(Math.random()-0.5)*26; pPos[i*3+1]=(Math.random()-0.5)*26; pPos[i*3+2]=(Math.random()-0.5)*26;
-  const r = Math.random();
-  const c = r < 0.55 ? col1 : (r < 0.85 ? col2 : col3);
-  pColors[i*3]=c.r; pColors[i*3+1]=c.g; pColors[i*3+2]=c.b;
-}
-pGeo.setAttribute("position", new THREE.BufferAttribute(pPos,3));
-pGeo.setAttribute("color", new THREE.BufferAttribute(pColors,3));
-const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
-  size: IS_MOBILE ? 0.07 : 0.055,
-  vertexColors:true, transparent:true, opacity:0.9,
-  blending:THREE.AdditiveBlending, depthWrite:false
-}));
-scene.add(particles);
+// ——— Тор (бублик), главный объект ———
+const TOR_SEGMENTS = IS_MOBILE ? 60 : 120;     // полигонов вдоль
+const TOR_TUBE_SEG = IS_MOBILE ? 20 : 40;      // полигонов по толщине
+const torGeo = new THREE.TorusGeometry(3.2, 0.9, TOR_TUBE_SEG, TOR_SEGMENTS);
+const torMat = new THREE.MeshBasicMaterial({
+  color: initTor,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.55
+});
+const tor = new THREE.Mesh(torGeo, torMat);
 
-// Плавающие фигуры: на мобилке 6, на ПК 14
-const floatersCount = IS_MOBILE ? 6 : 14;
-const floaters = [];
-const geos = [
-  new THREE.IcosahedronGeometry(1.1,0),
-  new THREE.OctahedronGeometry(1.0,0),
-  new THREE.TorusGeometry(0.85,0.28,10,20),   // было 12,28 — уменьшили сегменты
-  new THREE.TetrahedronGeometry(1.1,0),
-  new THREE.TorusKnotGeometry(0.6,0.18,48,6), // было 64,8
-  new THREE.BoxGeometry(1.2,1.2,1.2)
-];
-for(let i=0;i<floatersCount;i++){
-  const g = geos[Math.floor(Math.random()*geos.length)];
-  const m = new THREE.MeshBasicMaterial({color:initP1,wireframe:true,transparent:true,opacity:0.45});
-  const mesh = new THREE.Mesh(g, m);
-  mesh.position.set((Math.random()-0.5)*22,(Math.random()-0.5)*16,(Math.random()-0.5)*16-5);
-  mesh.userData = { rx:(Math.random()-0.5)*0.005, ry:(Math.random()-0.5)*0.005, rz:(Math.random()-0.5)*0.005, float: Math.random()*Math.PI*2, floatSpeed: 0.004 + Math.random()*0.007, baseY: mesh.position.y };
-  scene.add(mesh); floaters.push(mesh);
-}
+// ——— Внутренний тор (плотная «лента» из полос) ———
+const torWireMat = new THREE.MeshBasicMaterial({
+  color: initTor2,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.28
+});
+const torWireGeo = new THREE.TorusGeometry(3.2, 0.92, IS_MOBILE ? 8 : 16, TOR_SEGMENTS);
+const torWire = new THREE.Mesh(torWireGeo, torWireMat);
 
-// Ядро: на мобилке меньше полигонов
-const coreSegments = IS_MOBILE ? 18 : 32;
-const core = new THREE.Mesh(new THREE.SphereGeometry(2.6, coreSegments, coreSegments), new THREE.MeshBasicMaterial({color:initP1, wireframe:true, transparent:true, opacity:0.1}));
-core.position.set(0,0,-7); scene.add(core);
-const glow = new THREE.Mesh(new THREE.SphereGeometry(1.6, coreSegments, coreSegments), new THREE.MeshBasicMaterial({color:initP1, transparent:true, opacity:0.07}));
-glow.position.copy(core.position); scene.add(glow);
+// ——— Мягкое «свечение» внутри тора ———
+const torGlowMat = new THREE.MeshBasicMaterial({
+  color: initTor,
+  transparent: true,
+  opacity: 0.06
+});
+const torGlowGeo = new THREE.TorusGeometry(3.2, 1.2, IS_MOBILE ? 12 : 24, TOR_SEGMENTS);
+const torGlow = new THREE.Mesh(torGlowGeo, torGlowMat);
 
-// Ленты: на мобилке 2, на ПК 3; сегментов меньше на мобилке
-const ribbonCount = IS_MOBILE ? 2 : 3;
-const ribbonSegments = IS_MOBILE ? 100 : 200;
-const ribbonRadial = IS_MOBILE ? 4 : 6;
-const ribbonGroup = new THREE.Group();
-const ribbons = [];
-for(let r=0; r<ribbonCount; r++){
-  const pts = [];
-  const steps = ribbonSegments;
-  for(let i=0;i<=steps;i++){
-    const t = i/steps * Math.PI * 2 * 6;
-    const rad = 5 + Math.sin(t*1.5 + r)*1.5;
-    pts.push(new THREE.Vector3(Math.cos(t)*rad, Math.sin(t*0.7 + r)*3, Math.sin(t)*rad));
-  }
-  const curve = new THREE.CatmullRomCurve3(pts);
-  const geo = new THREE.TubeGeometry(curve, steps, 0.02, ribbonRadial, false);
-  const mat = new THREE.MeshBasicMaterial({ color: r % 2 === 0 ? initP1 : initP3, transparent:true, opacity: r % 2 === 0 ? 0.4 : 0.2 });
-  const ribbon = new THREE.Mesh(geo, mat);
-  ribbonGroup.add(ribbon);
-  ribbons.push(ribbon);
-}
-ribbonGroup.position.z = -6; scene.add(ribbonGroup);
+// Группа тора — чтобы вращать всё вместе
+const torGroup = new THREE.Group();
+torGroup.add(torGlow);
+torGroup.add(torWire);
+torGroup.add(tor);
 
-themeColorTargets = { particles, floaters, core, glow, ribbons };
+// Смещаем тор немного вправо-вверх, чтобы выглядело эффектно
+torGroup.position.set(0, 0, -2);
+torGroup.rotation.x = Math.PI * 0.35;
+scene.add(torGroup);
+
+themeColorTargets = { tor, torWire, torGlow };
 setTimeout(applyThemeTo3D, 50);
 
 camera.position.z = 8;
-
-let mouseX = 0, mouseY = 0;
-if(!IS_MOBILE){
-  document.addEventListener("mousemove", e=>{ mouseX = (e.clientX - innerWidth/2)*0.0007; mouseY = (e.clientY - innerHeight/2)*0.0007; }, { passive: true });
-}
 
 let t = 0;
 let lastFrame = 0;
 let rafId = null;
 let isVisible = !document.hidden;
 
-// Пауза рендера, если вкладка неактивна
 document.addEventListener("visibilitychange", ()=>{
   isVisible = !document.hidden;
   if(isVisible && !rafId){ rafId = requestAnimationFrame(animate); }
@@ -1377,59 +1406,42 @@ document.addEventListener("visibilitychange", ()=>{
 
 function animate(now){
   rafId = requestAnimationFrame(animate);
-  if(!isVisible) { rafId = null; return; }
-
-  // FPS-cap
+  if(!isVisible){ rafId = null; return; }
   if(now - lastFrame < FRAME_INTERVAL) return;
   lastFrame = now;
 
   t += 0.008;
 
-  particles.rotation.y += 0.001;
-  particles.rotation.x += 0.0004;
-  if(!IS_MOBILE){
-    particles.rotation.x += (mouseY*2 - particles.rotation.x)*0.02;
-    particles.rotation.y += (mouseX*2 - particles.rotation.y)*0.02;
-  }
+  // Основное вращение бублика — медленно и красиво
+  torGroup.rotation.z += 0.0035;
+  torGroup.rotation.y += 0.0022;
+  torGroup.rotation.x += 0.0008;
 
-  floaters.forEach(m=>{
-    m.rotation.x += m.userData.rx; m.rotation.y += m.userData.ry; m.rotation.z += m.userData.rz;
-    m.userData.float += m.userData.floatSpeed;
-    m.position.y = m.userData.baseY + Math.sin(m.userData.float)*0.9;
-    m.position.x += Math.sin(m.userData.float*0.7)*0.002;
-  });
-
-  const s = 1 + Math.sin(t*1.4)*0.08;
-  core.scale.set(s,s,s); glow.scale.set(s*1.1, s*1.1, s*1.1);
-  core.rotation.y += 0.0018; core.rotation.x += 0.0008; glow.rotation.y -= 0.001;
-  ribbonGroup.rotation.y += 0.0025; ribbonGroup.rotation.x = Math.sin(t*0.3)*0.25;
-
-  if(!IS_MOBILE){
-    camera.position.x += (mouseX*3.5 - camera.position.x)*0.03;
-    camera.position.y += (-mouseY*3.5 - camera.position.y)*0.03;
-  }
-  camera.lookAt(0,0,-3);
-  camera.position.z = 8 + Math.sin(t*0.4)*0.35;
+  // Дыхание масштаба
+  const s = 1 + Math.sin(t * 0.9) * 0.06;
+  torGroup.scale.set(s, s, s);
 
   renderer.render(scene, camera);
 }
 rafId = requestAnimationFrame(animate);
 
-// При ресайзе — пересчитываем всё и пересобираем размер (дешевле, чем пересоздавать сцену)
+// Ресайз (высота canvas = 100vh, ширину пересчитываем)
 let resizeTimer = null;
 addEventListener("resize", ()=>{
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(()=>{
-    camera.aspect = innerWidth/innerHeight;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth, innerHeight);
+    renderer.setSize(w, h);
   }, 150);
 });
 
-// Ховер-звук не работает на мобилке — экономим CPU
+// Ховер-звук
 if(!IS_MOBILE){
   document.addEventListener("mouseover", (e)=>{
-    const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option");
+    const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option, .profile-action");
     if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
   });
 }
