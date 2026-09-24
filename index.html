@@ -549,71 +549,19 @@ header{
 .nominee-name{font-weight:600;font-size:13px;line-height:1.4;margin-bottom:14px;word-break:break-word;flex-grow:1;display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1}
 
 .vote-actions{width:100%;display:flex;flex-direction:column;gap:6px;position:relative;z-index:1}
-
-.vote-action-btn{
-  background:linear-gradient(90deg,transparent,transparent,transparent);
-  background-size:200% 100%;
-  border:1px solid var(--red);color:var(--red);
-  padding:9px 14px;border-radius:20px;cursor:pointer;font-weight:700;
-  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;
-  transition:all .3s;width:100%;position:relative;overflow:hidden;
-}
-.vote-action-btn:hover{
-  background:linear-gradient(90deg,var(--red),#fff,var(--red));
-  background-size:200% 100%;
-  color:#000;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.9);
-  transform:translateY(-2px);
-  animation:btnShimmer 1.5s linear infinite;
-}
+.vote-action-btn{background:linear-gradient(90deg,transparent,transparent,transparent);background-size:200% 100%;border:1px solid var(--red);color:var(--red);padding:9px 14px;border-radius:20px;cursor:pointer;font-weight:700;font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;transition:all .3s;width:100%;position:relative;overflow:hidden}
+.vote-action-btn:hover{background:linear-gradient(90deg,var(--red),#fff,var(--red));background-size:200% 100%;color:#000;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.9);transform:translateY(-2px);animation:btnShimmer 1.5s linear infinite}
 @keyframes btnShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-.vote-action-btn.cancel-btn{
-  border-color:#fff;color:#fff;
-  background:linear-gradient(90deg, var(--red), var(--red-3), var(--red));
-  background-size:200% 100%;
-  font-size:10.5px;
-  box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.65), inset 0 0 12px rgba(0,0,0,.35);
-  animation:btnShimmer 3s linear infinite;
-}
-.vote-action-btn.cancel-btn:hover{
-  background:linear-gradient(90deg, #fff, #ffccd5, #fff);
-  background-size:200% 100%;
-  color:var(--red-3);
-  box-shadow:0 0 30px rgba(255,255,255,.9);
-  transform:translateY(-2px) scale(1.03);
-}
+.vote-action-btn.cancel-btn{border-color:#fff;color:#fff;background:linear-gradient(90deg, var(--red), var(--red-3), var(--red));background-size:200% 100%;font-size:10.5px;box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.65), inset 0 0 12px rgba(0,0,0,.35);animation:btnShimmer 3s linear infinite}
+.vote-action-btn.cancel-btn:hover{background:linear-gradient(90deg, #fff, #ffccd5, #fff);background-size:200% 100%;color:var(--red-3);box-shadow:0 0 30px rgba(255,255,255,.9);transform:translateY(-2px) scale(1.03)}
 .vote-action-btn.cancel-btn i{margin-right:6px;font-size:10px}
-
-.vote-action-btn:disabled{
-  cursor:not-allowed;
-  opacity:.55;
-}
-.vote-action-btn:disabled:hover{
-  animation:none;
-  transform:none;
-}
-
-.vote-confirm-btn{
-  background:linear-gradient(90deg,var(--red),var(--red-3),var(--red));
-  background-size:200% 100%;
-  border:1px solid #fff;color:#fff;padding:9px 12px;border-radius:20px;cursor:pointer;
-  font-weight:800;font-family:"Orbitron",sans-serif;font-size:10.5px;letter-spacing:1px;
-  transition:all .3s;width:100%;
-  box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), inset 0 0 12px rgba(0,0,0,.25);
-  animation:confirmPulse 1.4s ease-in-out infinite, btnShimmer 2s linear infinite;
-  text-shadow:0 1px 3px rgba(0,0,0,.9);
-}
+.vote-action-btn:disabled{cursor:not-allowed;opacity:.55}
+.vote-action-btn:disabled:hover{animation:none;transform:none}
+.vote-confirm-btn{background:linear-gradient(90deg,var(--red),var(--red-3),var(--red));background-size:200% 100%;border:1px solid #fff;color:#fff;padding:9px 12px;border-radius:20px;cursor:pointer;font-weight:800;font-family:"Orbitron",sans-serif;font-size:10.5px;letter-spacing:1px;transition:all .3s;width:100%;box-shadow:0 0 25px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85), inset 0 0 12px rgba(0,0,0,.25);animation:confirmPulse 1.4s ease-in-out infinite, btnShimmer 2s linear infinite;text-shadow:0 1px 3px rgba(0,0,0,.9)}
 .vote-confirm-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)}
 @keyframes confirmPulse{0%,100%{box-shadow:0 0 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6), inset 0 0 12px rgba(0,0,0,.25)}50%{box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1), inset 0 0 15px rgba(0,0,0,.3)}}
-
-.vote-cancel-small{
-  background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;
-  padding:7px 12px;border-radius:20px;cursor:pointer;font-weight:700;
-  font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;
-  transition:all .3s;width:100%;
-}
+.vote-cancel-small{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:7px 12px;border-radius:20px;cursor:pointer;font-weight:700;font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;transition:all .3s;width:100%}
 .vote-cancel-small:hover{background:rgba(255,255,255,.15);border-color:#fff;transform:translateY(-1px)}
-
 .nominee-card.king-nominee .vote-action-btn{border-color:#ffd24a;color:#ffd24a}
 .nominee-card.king-nominee .vote-action-btn:hover{background:linear-gradient(90deg,#ffd24a,#fff,#ffd24a);background-size:200% 100%;color:#3a2a00;box-shadow:0 0 25px rgba(255,210,74,.9);animation:btnShimmer 1.5s linear infinite}
 .nominee-card.locked{opacity:.28;filter:grayscale(1) brightness(.65);pointer-events:none;transform:scale(.96)}
@@ -718,7 +666,6 @@ header{
   .toast{backdrop-filter:blur(4px)}
   .nomination-card{backdrop-filter:blur(6px)}
 }
-
 @media (max-width: 700px){
   .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px}
   .hero{padding:130px 16px 30px}
@@ -747,7 +694,6 @@ header{
   .theme-widget{right:12px;bottom:12px}
   .theme-panel{width:210px}
 }
-
 body.low-perf .nomination-card,
 body.low-perf .nominee-card,
 body.low-perf .modal-content,
@@ -771,7 +717,8 @@ body.low-perf .vote-dates::before{display:none !important}
       <span class="online-label">ОНЛАЙН</span>
     </div>
 
-    <!-- Кнопка АДМИН сюда НЕ вставляется. Она создаётся JS только для настоящего админа. -->
+    <!-- Кнопка АДМИН создаётся JS-кодом динамически -->
+    <!-- Модалки пароля и админки тоже создаются JS -->
 
     <button class="auth-btn" id="google-login-btn" type="button" onclick="onAuthClick()">
       <i class="fa-brands fa-google" id="auth-icon"></i>
@@ -978,7 +925,7 @@ function applyThemeTo3D(){
 }
 
 /* ============================================================
-   SESSION ID
+   SESSION ID / ONLINE
 ============================================================ */
 function getSessionId(){
   let sid = sessionStorage.getItem("zvawards_sid");
@@ -1046,25 +993,13 @@ const SoundFX = (()=>{
     close(){ tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
     success(){ tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0}); tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08}); tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16}); tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26}); },
     error(){ tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90}); tone({freq:120,dur:0.22,type:"sine",vol:0.04,when:0.05}); },
-    glitch(){
-      tone({freq:220, dur:0.08, type:"square", vol:0.05, slide:80});
-      tone({freq:600, dur:0.05, type:"sawtooth", vol:0.03, when:0.04, slide:140});
-      tone({freq:90,  dur:0.12, type:"square", vol:0.04, when:0.08, slide:60});
-    },
+    glitch(){ tone({freq:220, dur:0.08, type:"square", vol:0.05, slide:80}); tone({freq:600, dur:0.05, type:"sawtooth", vol:0.03, when:0.04, slide:140}); tone({freq:90, dur:0.12, type:"square", vol:0.04, when:0.08, slide:60}); },
     switch(){ tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
     whoosh(){ tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900}); tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300}); },
     cancel(){ tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380}); tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180}); },
     confirm(){ tone({freq:640,dur:0.08,type:"triangle",vol:0.04,slide:900}); tone({freq:900,dur:0.12,type:"triangle",vol:0.035,when:0.07}); },
-    random(){
-      const notes = [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99];
-      const n = notes[Math.floor(Math.random()*notes.length)];
-      tone({freq:n, dur:0.25, type:"triangle", vol:0.05});
-    },
-    easter(){
-      [523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.5].forEach((f,i)=>{
-        tone({freq:f, dur:0.15, type:"triangle", vol:0.05, when:i*0.08});
-      });
-    }
+    random(){ const notes = [261.63,293.66,329.63,349.23,392,440,493.88,523.25,587.33,659.25,698.46,783.99]; const n = notes[Math.floor(Math.random()*notes.length)]; tone({freq:n, dur:0.25, type:"triangle", vol:0.05}); },
+    easter(){ [523.25,587.33,659.25,698.46,783.99,880,987.77,1046.5].forEach((f,i)=>{ tone({freq:f, dur:0.15, type:"triangle", vol:0.05, when:i*0.08}); }); }
   };
 })();
 window.addEventListener("pointerdown", ()=>{ SoundFX.click(); }, {once:true, capture:true});
@@ -1076,7 +1011,6 @@ let currentUser = null;
 let userVotes = {};
 let allVotes = {};
 
-/* Админка — токен хранится ТОЛЬКО в памяти. */
 let adminToken = null;
 let adminGoogleId = null;
 let adminBtnEl = null;
@@ -1181,13 +1115,13 @@ function handleGoogleCredential(response){
   try{
     const payload = parseJwt(response.credential);
     currentUser = { name: payload.name || payload.email, email: payload.email, picture: payload.picture || "" };
-    adminGoogleId = payload.sub;   // устойчивый ID аккаунта, нельзя подделать
+    adminGoogleId = payload.sub;
 
     localStorage.setItem(LS_USER, JSON.stringify(currentUser));
     updateAuthUI();
 
     if(currentUser.email === ADMIN_EMAIL){
-      createAdminButton();  // кнопка появляется только у настоящего админа
+      createAdminButton();
     } else {
       removeAdminButton();
     }
@@ -1312,7 +1246,7 @@ function closeModal(id){ SoundFX.close(); document.getElementById(id).classList.
 function handleModalBg(e,id){ if(e.target.id === id) closeModal(id); }
 
 /* ============================================================
-   АДМИНКА — динамическая, защищённая
+   АДМИНКА — динамическая и защищённая
 ============================================================ */
 function createAdminButton(){
   if(adminBtnEl) return;
@@ -1338,7 +1272,6 @@ function removeAdminButton(){
   }
 }
 
-/* -------- Модалка ввода пароля + секрета -------- */
 function createPasswordModal(){
   if(document.getElementById("admin-pass-modal")) return;
 
@@ -1398,14 +1331,16 @@ async function checkAdminPassword(){
   if(!pass || !secret){ showToast("Введите пароль и секретное слово.", "error"); return; }
   if(!adminGoogleId){ showToast("Ошибка сессии. Войдите заново.", "error"); return; }
 
-  const salt = adminGoogleId + "|" + currentUser.email;
+  // ⚠️ ВАЖНО: email в нижнем регистре — так же, как на сервере
+  const emailLower = currentUser.email.toLowerCase().trim();
+  const salt = adminGoogleId + "|" + emailLower;
   const passHash = await sha256(salt + "|" + pass);
 
   showToast("Проверяем...", "info");
 
   try{
     const url = SHEETS_API + "?action=checkAdmin"
-      + "&email=" + encodeURIComponent(currentUser.email)
+      + "&email=" + encodeURIComponent(emailLower)
       + "&p=" + encodeURIComponent(passHash)
       + "&s=" + encodeURIComponent(secret)
       + "&g=" + encodeURIComponent(adminGoogleId)
@@ -1429,7 +1364,6 @@ async function checkAdminPassword(){
   }
 }
 
-/* -------- Основная модалка админки -------- */
 function createAdminModal(){
   if(document.getElementById("admin-modal")) return;
 
@@ -1486,9 +1420,10 @@ async function refreshAdminStats(){
   }
 
   try{
+    const emailLower = currentUser.email.toLowerCase().trim();
     const url = SHEETS_API + "?action=adminData"
       + "&token=" + encodeURIComponent(adminToken)
-      + "&email=" + encodeURIComponent(currentUser.email)
+      + "&email=" + encodeURIComponent(emailLower)
       + "&g=" + encodeURIComponent(adminGoogleId)
       + "&t=" + Date.now();
     const res = await fetch(url, { method:"GET" });
