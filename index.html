@@ -343,15 +343,7 @@ header{
 @keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(3deg)}}
 .nomination-card:hover i{transform:scale(1.18) rotate(8deg)}
 .nomination-card h3{font-family:"Orbitron",sans-serif;font-size:19px;letter-spacing:1.5px;margin-top:10px;position:relative;z-index:1}
-
-/* КИРКА MINECRAFT — теперь использует currentColor */
-.nomination-card .mc-pick{
-  width:56px;height:56px;margin-bottom:15px;
-  transition:transform .4s;
-  color:var(--red);
-  filter:drop-shadow(0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7));
-  position:relative;z-index:1;
-}
+.nomination-card .mc-pick{width:56px;height:56px;margin-bottom:15px;transition:transform .4s;color:var(--red);filter:drop-shadow(0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7));position:relative;z-index:1}
 .nomination-card:hover .mc-pick{transform:scale(1.12) rotate(-8deg)}
 .mc-pick .mc-bg{fill:currentColor;opacity:.35}
 .mc-pick .mc-bg-2{fill:currentColor;opacity:.55}
@@ -455,21 +447,60 @@ header{
 .toast.success{background:linear-gradient(135deg,#fff,#e6e6e6);color:var(--red-dark);box-shadow:0 0 35px rgba(255,255,255,.7)}
 .toast.info{background:linear-gradient(135deg,var(--red-3),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-2-r),var(--accent-2-g),var(--accent-2-b),.7)}
 
-@media (max-width:900px){
+/* ============================================================
+   МОБИЛЬНАЯ ОПТИМИЗАЦИЯ CSS — упрощаем тяжёлые визуальные эффекты
+============================================================ */
+@media (max-width: 900px){
   header{padding:14px 16px;gap:8px}
-  .logo{font-size:15px;letter-spacing:1.5px}
-  .online-counter{padding:6px 10px;font-size:11px;gap:6px}
+  .logo{font-size:15px;letter-spacing:1.5px;animation:none}
+  .online-counter{padding:6px 10px;font-size:11px;gap:6px;backdrop-filter:blur(4px)}
   .online-counter .online-num{font-size:13px}
   .online-counter .online-label{font-size:9px;letter-spacing:1px}
   .auth-btn{padding:7px 10px;font-size:11px;gap:6px}
   .auth-btn img{width:18px;height:18px}
   .admin-btn{padding:7px 10px;font-size:9px}
-  .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px}
-  .theme-toggle{width:46px;height:46px;font-size:17px}
-  .theme-panel{width:230px;padding:12px}
+  .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px;backdrop-filter:none}
+  .theme-toggle{width:46px;height:46px;font-size:17px;animation:none}
+  .theme-panel{width:230px;padding:12px;backdrop-filter:blur(6px)}
   .theme-option{padding:8px 10px;font-size:12px}
+
+  /* Отключаем тяжёлые анимации */
+  body::before{animation:none;opacity:.7}
+  .logo{animation:none}
+  .hero h1{animation:none;filter:none}
+  .hero p{animation:none}
+  .vote-dates{animation:none}
+  .vote-dates::before{animation:none;display:none}
+  .vote-main-btn{animation:none}
+  .vote-main-btn::before{animation:none;display:none}
+  .section-title::after{animation:none;width:70px;opacity:1}
+  .nomination-card i{animation:none}
+  .nomination-card .mc-pick{filter:none}
+  .nomination-card:hover{transform:none;box-shadow:0 8px 20px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3)}
+  .nomination-card:hover i,
+  .nomination-card:hover .mc-pick{transform:none}
+  .nomination-card::before{display:none}
+  .nominee-avatar{animation:none;box-shadow:0 0 10px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5), inset 0 0 8px rgba(0,0,0,.6)}
+  .nominee-card:hover{transform:none}
+  .nominee-card:hover::after{display:none}
+  .nominee-card.king-nominee.chosen,
+  .nominee-card.chosen{animation:none}
+  .vote-confirm-btn{animation:none}
+  .theme-toggle{animation:none}
+  .theme-toggle:hover{transform:none}
+  .close-modal:hover{transform:none}
+  .admin-loader i{animation:spin 1s linear infinite} /* оставим, он дешёвый */
+  .admin-nom-block,
+  .admin-nom-block *{animation:none}
+
+  /* Уменьшаем backdrop-filter у модалок — самый дорогой эффект */
+  .modal-overlay{backdrop-filter:blur(6px)}
+  .modal-content::before{filter:blur(6px)}
+  .toast{backdrop-filter:blur(4px)}
+  .nomination-card{backdrop-filter:blur(6px)}
 }
-@media (max-width:700px){
+
+@media (max-width: 700px){
   .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px}
   .hero{padding:130px 16px 30px}
   .hero h1{letter-spacing:3px}
@@ -497,6 +528,17 @@ header{
   .theme-widget{right:12px;bottom:12px}
   .theme-panel{width:210px}
 }
+
+/* Отдельно для очень слабых устройств (по кол-ву ядер/памяти) — через JS добавим класс .low-perf */
+body.low-perf .nomination-card,
+body.low-perf .nominee-card,
+body.low-perf .modal-content,
+body.low-perf .toast{backdrop-filter:none !important}
+body.low-perf .nomination-card::before,
+body.low-perf .nominee-card::after,
+body.low-perf .modal-content::before{display:none !important}
+body.low-perf .vote-dates::before{display:none !important}
+body.low-perf body::before{animation:none}
 </style>
 </head>
 <body data-theme="scarlet">
@@ -527,9 +569,7 @@ header{
 
 <div class="theme-widget">
   <div class="theme-panel" id="theme-panel">
-    <div class="theme-panel-title">
-      <i class="fa-solid fa-palette"></i> НАСТРОЙКИ ТЕМ
-    </div>
+    <div class="theme-panel-title"><i class="fa-solid fa-palette"></i> НАСТРОЙКИ ТЕМ</div>
     <div class="theme-option active" data-set-theme="scarlet" onclick="setTheme('scarlet')">
       <span class="theme-dot-circle" style="background:#ff0033;color:#ff0033"></span>
       <span class="theme-name">Алая <span style="color:#b8a0a4;font-size:11px">(стандарт)</span></span>
@@ -556,7 +596,6 @@ header{
       <i class="fa-solid fa-check theme-check"></i>
     </div>
   </div>
-
   <button class="theme-toggle" id="theme-toggle" type="button" onclick="toggleThemePanel(event)" title="Настройки темы">
     <i class="fa-solid fa-gear"></i>
   </button>
@@ -585,7 +624,6 @@ header{
     <div class="nomination-card" onclick="openNomination('Роблоксер года')"><i class="fa-solid fa-cube"></i><h3>Роблоксер года</h3></div>
     <div class="nomination-card" onclick="openNomination('Харизма года')"><i class="fa-solid fa-fire"></i><h3>Харизма года</h3></div>
     <div class="nomination-card" onclick="openNomination('Майнкрафтер года')">
-      <!-- Кирка Minecraft — цвета через currentColor -->
       <svg class="mc-pick" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
         <rect class="mc-bg"    x="6"  y="6"  width="20" height="20"/>
         <rect class="mc-bg-3"  x="26" y="6"  width="20" height="20"/>
@@ -649,7 +687,22 @@ const ADMIN_PASSWORD = "meduzaadmin221";
 const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
 
 /* ============================================================
-   THEME (управление + перекрашивание 3D-сцены)
+   ОПРЕДЕЛЕНИЕ ПРОИЗВОДИТЕЛЬНОСТИ УСТРОЙСТВА
+============================================================ */
+const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
+const IS_SLOW = IS_MOBILE && (
+  (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+  (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+  !window.WebGLRenderingContext
+);
+if(IS_SLOW || IS_MOBILE) document.body.classList.add("low-perf");
+
+// Лимит FPS: 30 на мобилке, 60 на ПК
+const FPS_CAP = IS_MOBILE ? 30 : 60;
+const FRAME_INTERVAL = 1000 / FPS_CAP;
+
+/* ============================================================
+   THEME
 ============================================================ */
 const THEME_KEY = "zvawards_theme";
 
@@ -662,21 +715,18 @@ function setTheme(name){
   applyThemeTo3D();
   SoundFX.switch();
 }
-
 function toggleThemePanel(e){
   if(e) e.stopPropagation();
   const panel = document.getElementById("theme-panel");
   panel.classList.toggle("active");
   SoundFX.click();
 }
-
 document.addEventListener("click", (e)=>{
   const widget = document.querySelector(".theme-widget");
   if(widget && !widget.contains(e.target)){
     document.getElementById("theme-panel").classList.remove("active");
   }
 });
-
 (function restoreTheme(){
   const saved = localStorage.getItem(THEME_KEY) || "scarlet";
   document.body.setAttribute("data-theme", saved);
@@ -684,37 +734,29 @@ document.addEventListener("click", (e)=>{
     document.querySelectorAll(".theme-option").forEach(el=>{
       el.classList.toggle("active", el.dataset.setTheme === saved);
     });
-    // 3D-сцена начнёт работу после загрузки three.js и animate(). Позже применим цвета.
     setTimeout(applyThemeTo3D, 500);
   });
 })();
 
-/* Читаем CSS-переменные текущей темы и красим Three.js */
 function readCSSColor(varName){
-  // varName, например, "--bg-color-3d" или "--particle-1" (значение: 0xRRGGBB)
   const raw = getComputedStyle(document.body).getPropertyValue(varName).trim();
   if(!raw) return null;
-  return parseInt(raw, 16);   // "0xff0033" → 16711731
+  return parseInt(raw, 16);
 }
-
-let themeColorTargets = null;   // ссылки на материалы для перекраски
-
+let themeColorTargets = null;
 function applyThemeTo3D(){
   if(!themeColorTargets) return;
+  const cBg  = readCSSColor("--bg-color-3d");
+  const cFog = readCSSColor("--fog-color-3d");
+  const cP1  = readCSSColor("--particle-1");
+  const cP2  = readCSSColor("--particle-2");
+  const cP3  = readCSSColor("--particle-3");
+  const cR1  = readCSSColor("--ribbon-1");
+  const cR2  = readCSSColor("--ribbon-2");
 
-  const cBg     = readCSSColor("--bg-color-3d");
-  const cFog    = readCSSColor("--fog-color-3d");
-  const cP1     = readCSSColor("--particle-1");
-  const cP2     = readCSSColor("--particle-2");
-  const cP3     = readCSSColor("--particle-3");
-  const cR1     = readCSSColor("--ribbon-1");
-  const cR2     = readCSSColor("--ribbon-2");
-
-  // Фон сцены и туман
   if(cBg != null) scene.background = new THREE.Color(cBg);
   if(cFog != null) scene.fog.color.setHex(cFog);
 
-  // Частицы
   const t = themeColorTargets;
   if(t.particles){
     const colors = t.particles.geometry.attributes.color.array;
@@ -725,33 +767,25 @@ function applyThemeTo3D(){
     for(let i=0;i<N;i++){
       const r = Math.random();
       const c = r < 0.55 ? col1 : (r < 0.85 ? col2 : col3);
-      colors[i*3]   = c.r;
-      colors[i*3+1] = c.g;
-      colors[i*3+2] = c.b;
+      colors[i*3]=c.r; colors[i*3+1]=c.g; colors[i*3+2]=c.b;
     }
     t.particles.geometry.attributes.color.needsUpdate = true;
   }
-
-  // Плавающие фигуры — распределяем по 3 цветам
   t.floaters.forEach((mesh, idx)=>{
     const c = idx % 3 === 0 ? (cP1 ?? 0xff0033)
             : idx % 3 === 1 ? (cP2 ?? 0xb3001b)
             : (cP3 ?? 0xffffff);
     mesh.material.color.setHex(c);
   });
-
-  // Ядро и glow
   if(t.core) t.core.material.color.setHex(cP1 ?? 0xff0033);
   if(t.glow) t.glow.material.color.setHex(cP1 ?? 0xff0033);
-
-  // Ленты
   t.ribbons.forEach((mesh, idx)=>{
     mesh.material.color.setHex(idx % 2 === 0 ? (cR1 ?? 0xff0033) : (cR2 ?? 0xffffff));
   });
 }
 
 /* ============================================================
-   SESSION ID (онлайн)
+   SESSION ID
 ============================================================ */
 function getSessionId(){
   let sid = sessionStorage.getItem("zvawards_sid");
@@ -766,7 +800,7 @@ const SESSION_ID = getSessionId();
 /* ============================================================
    ОНЛАЙН
 ============================================================ */
-const ONLINE_PING_INTERVAL = 25000;
+const ONLINE_PING_INTERVAL = IS_MOBILE ? 40000 : 25000;   // на мобилке реже пингуем
 async function pingOnline(){
   try{
     const url = SHEETS_API + "?action=ping&sid=" + encodeURIComponent(SESSION_ID) + "&t=" + Date.now();
@@ -790,7 +824,7 @@ function updateOnlineUI(n){
 (function startOnline(){
   setTimeout(pingOnline, 1200);
   setInterval(pingOnline, ONLINE_PING_INTERVAL);
-  setInterval(fetchOnline, 60000);
+  setInterval(fetchOnline, 90000);
 })();
 
 /* ============================================================
@@ -817,7 +851,7 @@ const SoundFX = (()=>{
   }
   return {
     click(){ tone({freq:520,dur:0.06,type:"triangle",vol:0.035,slide:680}); },
-    hover(){ tone({freq:800,dur:0.04,type:"sine",vol:0.015}); },
+    hover(){ if(IS_MOBILE) return; tone({freq:800,dur:0.04,type:"sine",vol:0.015}); },
     open(){ tone({freq:320,dur:0.22,type:"sine",vol:0.045,slide:780}); },
     close(){ tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
     success(){ tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0}); tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08}); tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16}); tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26}); },
@@ -871,11 +905,7 @@ userVotes = loadMyVotes();
 ============================================================ */
 async function sendVoteToSheet(payload){
   try{
-    const res = await fetch(SHEETS_API, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(SHEETS_API, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(payload) });
     const data = await res.json();
     return data && data.ok === true;
   }catch(e){ console.error("sendVoteToSheet error:", e); return false; }
@@ -888,11 +918,7 @@ async function fetchAllVotes(){
 }
 async function deleteVoteFromSheet(category, email){
   try{
-    const url = SHEETS_API
-      + "?action=delete"
-      + "&category=" + encodeURIComponent(category)
-      + "&email=" + encodeURIComponent(email)
-      + "&t=" + Date.now();
+    const url = SHEETS_API + "?action=delete&category=" + encodeURIComponent(category) + "&email=" + encodeURIComponent(email) + "&t=" + Date.now();
     const res = await fetch(url, { method:"GET" });
     const data = await res.json();
     return data && data.ok === true;
@@ -912,7 +938,6 @@ function showToast(msg, type="error"){
   if(type === "success") SoundFX.success();
   else if(type === "error") SoundFX.error();
 }
-
 function scrollToNominations(){ SoundFX.whoosh(); document.getElementById("voting-section").scrollIntoView({behavior:"smooth"}); }
 
 /* ============================================================
@@ -922,12 +947,7 @@ let googleInitialized = false;
 function initGoogle(){
   if(googleInitialized) return;
   if(!window.google || !google.accounts) return;
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: handleGoogleCredential,
-    auto_select: false,
-    cancel_on_tap_outside: true
-  });
+  google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleCredential, auto_select: false, cancel_on_tap_outside: true });
   googleInitialized = true;
 }
 function googleLogin(){
@@ -940,8 +960,7 @@ function googleLogin(){
 function renderFallbackGoogleButton(){
   let holder = document.getElementById("g-fallback");
   if(!holder){
-    holder = document.createElement("div");
-    holder.id = "g-fallback";
+    holder = document.createElement("div"); holder.id = "g-fallback";
     holder.style.position = "fixed"; holder.style.top = "-9999px";
     document.body.appendChild(holder);
   }
@@ -1018,10 +1037,8 @@ window.addEventListener("load", ()=>{
 async function resetMyVotes(){
   if(!currentUser){ showToast("Сначала войдите в Google-аккаунт.", "error"); return; }
   if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ваши голоса из Google-таблицы, и вы сможете проголосовать заново.")) return;
-
   SoundFX.cancel();
   showToast("Удаляем ваши голоса...", "info");
-
   const categories = Object.keys(userVotes);
   for(const cat of categories){
     await deleteVoteFromSheet(cat, currentUser.email);
@@ -1050,12 +1067,11 @@ function openNomination(category){
   refreshNominationUI(category);
   openModal("nomination-modal");
 }
-
 function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
   const card = document.createElement("div");
   card.className = "nominee-card";
   if(isKing) card.classList.add("king-nominee");
-  card.style.animationDelay = (idx * 0.05) + "s";
+  card.style.animationDelay = IS_MOBILE ? "0s" : ((idx * 0.05) + "s");
   card.dataset.name = name;
   if(isChosen) card.classList.add("chosen");
   if(isLocked) card.classList.add("locked");
@@ -1091,53 +1107,35 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
     btn.className = "vote-action-btn";
     btn.type = "button";
     btn.textContent = "ПРОГОЛОСОВАТЬ";
-    btn.addEventListener("click", (e)=>{
-      e.stopPropagation();
-      SoundFX.click();
-      showConfirmActions(actions, category, name);
-    });
+    btn.addEventListener("click", (e)=>{ e.stopPropagation(); SoundFX.click(); showConfirmActions(actions, category, name); });
     actions.appendChild(btn);
   }
-
   card.appendChild(avatar); card.appendChild(nm); card.appendChild(actions);
   return card;
 }
-
 function showConfirmActions(actionsEl, category, name){
   actionsEl.innerHTML = "";
   const confirmBtn = document.createElement("button");
   confirmBtn.className = "vote-confirm-btn";
   confirmBtn.type = "button";
   confirmBtn.textContent = "ПОДТВЕРДИТЬ";
-  confirmBtn.addEventListener("click", async (e)=>{
-    e.stopPropagation();
-    SoundFX.confirm();
-    await submitVote(category, name);
-  });
+  confirmBtn.addEventListener("click", async (e)=>{ e.stopPropagation(); SoundFX.confirm(); await submitVote(category, name); });
   const cancelBtn = document.createElement("button");
   cancelBtn.className = "vote-cancel-small";
   cancelBtn.type = "button";
   cancelBtn.textContent = "ОТМЕНА";
-  cancelBtn.addEventListener("click", (e)=>{
-    e.stopPropagation();
-    SoundFX.cancel();
-    refreshNominationUI(category);
-  });
+  cancelBtn.addEventListener("click", (e)=>{ e.stopPropagation(); SoundFX.cancel(); refreshNominationUI(category); });
   actionsEl.appendChild(confirmBtn);
   actionsEl.appendChild(cancelBtn);
 }
-
 async function submitVote(category, name){
   if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); return; }
   if(userVotes[category]){ showToast("Вы уже голосовали в этой номинации! Сначала отмените выбор.", "error"); return; }
-
   const now = new Date();
   const timeStr = now.toLocaleString("ru-RU", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit", second:"2-digit" });
-
   userVotes[category] = name;
   saveMyVotes(userVotes);
   refreshNominationUI(category);
-
   const ok = await sendVoteToSheet({ time: timeStr, category, nominee: name, user: currentUser.name, email: currentUser.email });
   if(ok) showToast("Спасибо за ваш голос, переходите к следующей номинации!", "success");
   else {
@@ -1145,7 +1143,6 @@ async function submitVote(category, name){
     showToast("Не удалось отправить голос. Проверьте интернет.", "error");
   }
 }
-
 async function cancelVote(category, name){
   if(!currentUser){ showToast("Необходимо войти в Google аккаунт!", "error"); return; }
   if(userVotes[category] !== name) return;
@@ -1157,7 +1154,6 @@ async function cancelVote(category, name){
   if(ok) showToast("Выбор отменён, голос удалён из таблицы. Можно голосовать заново.", "info");
   else   showToast("Выбор отменён локально, но с сервера удалить не удалось.", "info");
 }
-
 function refreshNominationUI(category){
   const container = document.getElementById("nominees-container");
   const subtitle = document.getElementById("modal-category-subtitle");
@@ -1166,12 +1162,7 @@ function refreshNominationUI(category){
   const isKing = category === "ZV KING";
   container.innerHTML = "";
   nominees.forEach((name, idx)=>{
-    container.appendChild(buildNomineeCard({
-      category, name, isKing,
-      isChosen: alreadyVoted === name,
-      isLocked: !!alreadyVoted && alreadyVoted !== name,
-      idx
-    }));
+    container.appendChild(buildNomineeCard({ category, name, isKing, isChosen: alreadyVoted === name, isLocked: !!alreadyVoted && alreadyVoted !== name, idx }));
   });
   if(alreadyVoted) subtitle.innerHTML = `Ваш выбор: <b class="${isKing?"gold":""}">${escapeHtml(alreadyVoted)}</b>.`;
   else subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
@@ -1264,16 +1255,23 @@ function escapeHtml(s){
 document.addEventListener("keydown", e=>{ if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal"].forEach(closeModal); });
 
 /* ============================================================
-   THREE.JS (с перекраской под тему)
+   THREE.JS — ОПТИМИЗИРОВАННЫЙ
 ============================================================ */
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const renderer = new THREE.WebGLRenderer({
+  antialias: !IS_MOBILE,          // сглаживание отключаем на мобилке — большой прирост FPS
+  alpha: false,                    // фон рисуется через CSS body, scene.background тоже ставим
+  powerPreference: "high-performance",
+  stencil: false,
+  depth: true
+});
+// Мобилка: ограничиваем pixel ratio до 1.25; ПК: до 2
+const PR = IS_MOBILE ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
+renderer.setPixelRatio(PR);
 renderer.setSize(innerWidth, innerHeight);
 document.getElementById("canvas-container").appendChild(renderer.domElement);
 
-// Начальные цвета берём из CSS текущей темы
 const initP1 = readCSSColor("--particle-1") ?? 0xff0033;
 const initP2 = readCSSColor("--particle-2") ?? 0xb3001b;
 const initP3 = readCSSColor("--particle-3") ?? 0xffffff;
@@ -1283,7 +1281,8 @@ const initBg = readCSSColor("--bg-color-3d") ?? null;
 if(initBg != null) scene.background = new THREE.Color(initBg);
 scene.fog = new THREE.FogExp2(initFog, 0.045);
 
-const pCount = 1200;
+// Частицы: на мобилке 450, на ПК 1200
+const pCount = IS_MOBILE ? 450 : 1200;
 const pGeo = new THREE.BufferGeometry();
 const pPos = new Float32Array(pCount*3);
 const pColors = new Float32Array(pCount*3);
@@ -1298,12 +1297,25 @@ for(let i=0;i<pCount;i++){
 }
 pGeo.setAttribute("position", new THREE.BufferAttribute(pPos,3));
 pGeo.setAttribute("color", new THREE.BufferAttribute(pColors,3));
-const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ size:0.055, vertexColors:true, transparent:true, opacity:0.9, blending:THREE.AdditiveBlending, depthWrite:false }));
+const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
+  size: IS_MOBILE ? 0.07 : 0.055,
+  vertexColors:true, transparent:true, opacity:0.9,
+  blending:THREE.AdditiveBlending, depthWrite:false
+}));
 scene.add(particles);
 
+// Плавающие фигуры: на мобилке 6, на ПК 14
+const floatersCount = IS_MOBILE ? 6 : 14;
 const floaters = [];
-const geos = [ new THREE.IcosahedronGeometry(1.1,0), new THREE.OctahedronGeometry(1.0,0), new THREE.TorusGeometry(0.85,0.28,12,28), new THREE.TetrahedronGeometry(1.1,0), new THREE.TorusKnotGeometry(0.6,0.18,64,8), new THREE.BoxGeometry(1.2,1.2,1.2) ];
-for(let i=0;i<14;i++){
+const geos = [
+  new THREE.IcosahedronGeometry(1.1,0),
+  new THREE.OctahedronGeometry(1.0,0),
+  new THREE.TorusGeometry(0.85,0.28,10,20),   // было 12,28 — уменьшили сегменты
+  new THREE.TetrahedronGeometry(1.1,0),
+  new THREE.TorusKnotGeometry(0.6,0.18,48,6), // было 64,8
+  new THREE.BoxGeometry(1.2,1.2,1.2)
+];
+for(let i=0;i<floatersCount;i++){
   const g = geos[Math.floor(Math.random()*geos.length)];
   const m = new THREE.MeshBasicMaterial({color:initP1,wireframe:true,transparent:true,opacity:0.45});
   const mesh = new THREE.Mesh(g, m);
@@ -1312,22 +1324,29 @@ for(let i=0;i<14;i++){
   scene.add(mesh); floaters.push(mesh);
 }
 
-const core = new THREE.Mesh(new THREE.SphereGeometry(2.6,32,32), new THREE.MeshBasicMaterial({color:initP1, wireframe:true, transparent:true, opacity:0.1}));
+// Ядро: на мобилке меньше полигонов
+const coreSegments = IS_MOBILE ? 18 : 32;
+const core = new THREE.Mesh(new THREE.SphereGeometry(2.6, coreSegments, coreSegments), new THREE.MeshBasicMaterial({color:initP1, wireframe:true, transparent:true, opacity:0.1}));
 core.position.set(0,0,-7); scene.add(core);
-const glow = new THREE.Mesh(new THREE.SphereGeometry(1.6,32,32), new THREE.MeshBasicMaterial({color:initP1, transparent:true, opacity:0.07}));
+const glow = new THREE.Mesh(new THREE.SphereGeometry(1.6, coreSegments, coreSegments), new THREE.MeshBasicMaterial({color:initP1, transparent:true, opacity:0.07}));
 glow.position.copy(core.position); scene.add(glow);
 
+// Ленты: на мобилке 2, на ПК 3; сегментов меньше на мобилке
+const ribbonCount = IS_MOBILE ? 2 : 3;
+const ribbonSegments = IS_MOBILE ? 100 : 200;
+const ribbonRadial = IS_MOBILE ? 4 : 6;
 const ribbonGroup = new THREE.Group();
 const ribbons = [];
-for(let r=0; r<3; r++){
+for(let r=0; r<ribbonCount; r++){
   const pts = [];
-  for(let i=0;i<=200;i++){
-    const t = i/200 * Math.PI * 2 * 6;
+  const steps = ribbonSegments;
+  for(let i=0;i<=steps;i++){
+    const t = i/steps * Math.PI * 2 * 6;
     const rad = 5 + Math.sin(t*1.5 + r)*1.5;
     pts.push(new THREE.Vector3(Math.cos(t)*rad, Math.sin(t*0.7 + r)*3, Math.sin(t)*rad));
   }
   const curve = new THREE.CatmullRomCurve3(pts);
-  const geo = new THREE.TubeGeometry(curve, 200, 0.02, 6, false);
+  const geo = new THREE.TubeGeometry(curve, steps, 0.02, ribbonRadial, false);
   const mat = new THREE.MeshBasicMaterial({ color: r % 2 === 0 ? initP1 : initP3, transparent:true, opacity: r % 2 === 0 ? 0.4 : 0.2 });
   const ribbon = new THREE.Mesh(geo, mat);
   ribbonGroup.add(ribbon);
@@ -1335,47 +1354,85 @@ for(let r=0; r<3; r++){
 }
 ribbonGroup.position.z = -6; scene.add(ribbonGroup);
 
-// Сохраняем ссылки на объекты для перекраски при смене темы
 themeColorTargets = { particles, floaters, core, glow, ribbons };
-
-// Сразу применяем цвета темы (на случай, если сохранена не scarlet)
 setTimeout(applyThemeTo3D, 50);
 
 camera.position.z = 8;
+
 let mouseX = 0, mouseY = 0;
-document.addEventListener("mousemove", e=>{ mouseX = (e.clientX - innerWidth/2)*0.0007; mouseY = (e.clientY - innerHeight/2)*0.0007; });
+if(!IS_MOBILE){
+  document.addEventListener("mousemove", e=>{ mouseX = (e.clientX - innerWidth/2)*0.0007; mouseY = (e.clientY - innerHeight/2)*0.0007; }, { passive: true });
+}
 
 let t = 0;
-function animate(){
-  requestAnimationFrame(animate);
+let lastFrame = 0;
+let rafId = null;
+let isVisible = !document.hidden;
+
+// Пауза рендера, если вкладка неактивна
+document.addEventListener("visibilitychange", ()=>{
+  isVisible = !document.hidden;
+  if(isVisible && !rafId){ rafId = requestAnimationFrame(animate); }
+});
+
+function animate(now){
+  rafId = requestAnimationFrame(animate);
+  if(!isVisible) { rafId = null; return; }
+
+  // FPS-cap
+  if(now - lastFrame < FRAME_INTERVAL) return;
+  lastFrame = now;
+
   t += 0.008;
-  particles.rotation.y += 0.001; particles.rotation.x += 0.0004;
-  particles.rotation.x += (mouseY*2 - particles.rotation.x)*0.02;
-  particles.rotation.y += (mouseX*2 - particles.rotation.y)*0.02;
+
+  particles.rotation.y += 0.001;
+  particles.rotation.x += 0.0004;
+  if(!IS_MOBILE){
+    particles.rotation.x += (mouseY*2 - particles.rotation.x)*0.02;
+    particles.rotation.y += (mouseX*2 - particles.rotation.y)*0.02;
+  }
+
   floaters.forEach(m=>{
     m.rotation.x += m.userData.rx; m.rotation.y += m.userData.ry; m.rotation.z += m.userData.rz;
     m.userData.float += m.userData.floatSpeed;
     m.position.y = m.userData.baseY + Math.sin(m.userData.float)*0.9;
     m.position.x += Math.sin(m.userData.float*0.7)*0.002;
   });
+
   const s = 1 + Math.sin(t*1.4)*0.08;
   core.scale.set(s,s,s); glow.scale.set(s*1.1, s*1.1, s*1.1);
   core.rotation.y += 0.0018; core.rotation.x += 0.0008; glow.rotation.y -= 0.001;
   ribbonGroup.rotation.y += 0.0025; ribbonGroup.rotation.x = Math.sin(t*0.3)*0.25;
-  camera.position.x += (mouseX*3.5 - camera.position.x)*0.03;
-  camera.position.y += (-mouseY*3.5 - camera.position.y)*0.03;
+
+  if(!IS_MOBILE){
+    camera.position.x += (mouseX*3.5 - camera.position.x)*0.03;
+    camera.position.y += (-mouseY*3.5 - camera.position.y)*0.03;
+  }
   camera.lookAt(0,0,-3);
   camera.position.z = 8 + Math.sin(t*0.4)*0.35;
+
   renderer.render(scene, camera);
 }
-animate();
+rafId = requestAnimationFrame(animate);
 
-addEventListener("resize", ()=>{ camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
-
-document.addEventListener("mouseover", (e)=>{
-  const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option");
-  if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
+// При ресайзе — пересчитываем всё и пересобираем размер (дешевле, чем пересоздавать сцену)
+let resizeTimer = null;
+addEventListener("resize", ()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(()=>{
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  }, 150);
 });
+
+// Ховер-звук не работает на мобилке — экономим CPU
+if(!IS_MOBILE){
+  document.addEventListener("mouseover", (e)=>{
+    const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option");
+    if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
+  });
+}
 </script>
 
 </body>
