@@ -21,10 +21,8 @@
   --red-3:#b3001b;
   --red-dark:#7a0012;
   --white:#ffffff;
-  --white-soft:#ffe8ec;
   --gold:#ffd24a;
-  --gold-2:#e8b400;
-  --gold-deep:#a87c00;
+  --online:#22ff88;
   --muted:#b8a0a4;
   --card:rgba(30,3,8,.6);
   --admin:#ff3355;
@@ -59,7 +57,7 @@ header{
   position:fixed;top:0;left:0;width:100%;
   padding:20px 40px;display:flex;justify-content:space-between;align-items:center;
   z-index:100;background:linear-gradient(to bottom,rgba(10,2,3,.92),transparent);
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);gap:16px;
 }
 .logo{
   font-family:"Orbitron",sans-serif;font-size:24px;font-weight:900;letter-spacing:3px;
@@ -67,13 +65,42 @@ header{
   background-size:300% 300%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   filter:drop-shadow(0 0 12px rgba(255,0,51,.6));
-  animation:logoShine 5s ease-in-out infinite;
+  animation:logoShine 5s ease-in-out infinite;white-space:nowrap;
 }
 @keyframes logoShine{
   0%,100%{background-position:0% 50%}
   50%{background-position:100% 50%}
 }
-.header-actions{display:flex;gap:12px;align-items:center}
+.header-actions{display:flex;gap:12px;align-items:center;flex-wrap:nowrap}
+
+.online-counter{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,20,10,.55);
+  border:1px solid rgba(34,255,136,.4);
+  padding:8px 14px;border-radius:30px;
+  font-family:"Orbitron",sans-serif;
+  font-size:13px;font-weight:700;letter-spacing:1px;
+  color:#d6ffe6;
+  box-shadow:0 0 15px rgba(34,255,136,.2), inset 0 0 10px rgba(34,255,136,.06);
+  backdrop-filter:blur(8px);
+  transition:transform .3s;white-space:nowrap;
+}
+.online-counter:hover{transform:translateY(-1px)}
+.online-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--online);
+  box-shadow:0 0 8px var(--online), 0 0 16px var(--online);
+  animation:pulseOnline 1.4s ease-in-out infinite;
+}
+@keyframes pulseOnline{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.45;transform:scale(.75)}
+}
+.online-counter .online-num{
+  color:var(--online);text-shadow:0 0 8px rgba(34,255,136,.85);
+  font-weight:900;font-size:15px;min-width:22px;text-align:center;display:inline-block;
+}
+.online-counter .online-label{color:#8fdbb1;font-size:11px;letter-spacing:1.5px;font-weight:600}
 
 .auth-btn{
   background:rgba(255,0,51,.06);border:1px solid rgba(255,0,51,.4);color:#fff;
@@ -100,10 +127,9 @@ header{
 .admin-btn:hover{background:var(--admin);color:#fff;box-shadow:0 0 25px rgba(255,51,85,.65);transform:translateY(-2px)}
 .admin-btn.visible{display:flex}
 
-/* HERO */
 .hero{
   min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:120px 20px 40px;position:relative;
+  text-align:center;padding:140px 20px 40px;position:relative;
 }
 .hero h1{
   font-family:"Orbitron",sans-serif;font-size:clamp(48px,9vw,90px);font-weight:900;
@@ -113,19 +139,41 @@ header{
   filter:drop-shadow(0 0 25px rgba(255,0,51,.6));
   animation:glitch 4s infinite, floatY 6s ease-in-out infinite;
 }
-@keyframes floatY{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.vote-dates{
+  font-family:"Orbitron",sans-serif;
+  font-size:clamp(14px, 2vw, 22px);font-weight:800;
+  letter-spacing:4px;text-transform:uppercase;margin-bottom:28px;
+  padding:12px 28px;border-radius:40px;display:inline-block;
+  background:linear-gradient(90deg, #ffffff, #ffd24a, #ff0033, #ff6680, #ffffff, #ffd24a, #ff0033);
+  background-size:400% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 0 12px rgba(255,0,51,.55));
+  animation:dateShine 6s linear infinite, dateGlow 3s ease-in-out infinite;
+  border:1px solid rgba(255,210,74,.25);
+  box-shadow:0 0 25px rgba(255,0,51,.35), inset 0 0 25px rgba(255,210,74,.08);
+  position:relative;overflow:hidden;
 }
+.vote-dates::before{
+  content:"";position:absolute;inset:0;border-radius:40px;pointer-events:none;
+  background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,.25) 50%, transparent 100%);
+  transform:translateX(-100%);
+  animation:dateSweep 3.5s ease-in-out infinite;
+}
+@keyframes dateShine{0%{background-position:0% 50%}100%{background-position:400% 50%}}
+@keyframes dateGlow{
+  0%,100%{filter:drop-shadow(0 0 10px rgba(255,0,51,.5))}
+  50%{filter:drop-shadow(0 0 22px rgba(255,210,74,.85))}
+}
+@keyframes dateSweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+
 .hero p{
   font-size:18px;color:var(--muted);margin-bottom:45px;max-width:640px;
-  line-height:1.7;letter-spacing:1px;
-  animation:fadeUp 1.2s ease both;
+  line-height:1.7;letter-spacing:1px;animation:fadeUp 1.2s ease both;
 }
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
 .vote-main-btn{
   font-family:"Orbitron",sans-serif;
@@ -144,22 +192,17 @@ header{
   background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
   animation:shine 3.2s ease-in-out infinite;
 }
-@keyframes shine{
-  0%{left:-100%}
-  60%,100%{left:120%}
-}
+@keyframes shine{0%{left:-100%}60%,100%{left:120%}}
 @keyframes pulseBtn{
   0%,100%{box-shadow:0 0 30px rgba(255,0,51,.5), inset 0 0 15px rgba(255,255,255,.06)}
   50%{box-shadow:0 0 55px rgba(255,0,51,.95), inset 0 0 25px rgba(255,255,255,.14)}
 }
 .vote-main-btn:hover{transform:scale(1.06);background-position:100% 50%}
 
-/* CONTAINER */
 .container{max-width:1200px;margin:0 auto;padding:80px 20px;position:relative}
 .section-title{
   font-family:"Orbitron",sans-serif;font-size:32px;text-align:center;
-  margin-bottom:50px;letter-spacing:4px;position:relative;
-  text-transform:uppercase;
+  margin-bottom:50px;letter-spacing:4px;position:relative;text-transform:uppercase;
 }
 .section-title::after{
   content:"";display:block;width:70px;height:3px;
@@ -167,70 +210,48 @@ header{
   margin:15px auto 0;box-shadow:0 0 15px var(--red);
   animation:linePulse 2.4s ease-in-out infinite;
 }
-@keyframes linePulse{
-  0%,100%{width:70px;opacity:.85}
-  50%{width:120px;opacity:1}
-}
+@keyframes linePulse{0%,100%{width:70px;opacity:.85}50%{width:120px;opacity:1}}
 
-/* NOMINATION CARDS */
 .nominations-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:30px;margin-bottom:80px;
 }
 .nomination-card{
-  background:var(--card);
-  border:1px solid rgba(255,0,51,.2);
-  border-radius:18px;
-  aspect-ratio:1/1;
+  background:var(--card);border:1px solid rgba(255,0,51,.2);
+  border-radius:18px;aspect-ratio:1/1;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden;
   backdrop-filter:blur(14px);
-  transition:transform .45s cubic-bezier(.175,.885,.32,1.275),
-             border-color .3s, box-shadow .3s;
+  transition:transform .45s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s;
 }
-/* Статичная мягкая подсветка при наведении (без вращения) */
 .nomination-card::before{
   content:"";position:absolute;inset:0;border-radius:18px;
   background:radial-gradient(circle at 50% 30%, rgba(255,0,51,.35), transparent 65%);
-  opacity:0;transition:opacity .4s ease;
-  pointer-events:none;
+  opacity:0;transition:opacity .4s ease;pointer-events:none;
 }
 .nomination-card:hover::before{opacity:1}
 .nomination-card:hover{
-  transform:translateY(-10px) scale(1.03);
-  border-color:var(--red);
+  transform:translateY(-10px) scale(1.03);border-color:var(--red);
   box-shadow:0 15px 45px rgba(255,0,51,.4), 0 0 30px rgba(255,0,51,.3);
 }
 .nomination-card i{
   font-size:45px;margin-bottom:15px;color:var(--red);
-  text-shadow:0 0 20px rgba(255,0,51,.9);
-  transition:transform .4s;
-  animation:iconFloat 3.5s ease-in-out infinite;
-  position:relative;z-index:1;
+  text-shadow:0 0 20px rgba(255,0,51,.9);transition:transform .4s;
+  animation:iconFloat 3.5s ease-in-out infinite;position:relative;z-index:1;
 }
-@keyframes iconFloat{
-  0%,100%{transform:translateY(0) rotate(0)}
-  50%{transform:translateY(-5px) rotate(3deg)}
-}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(3deg)}}
 .nomination-card:hover i{transform:scale(1.18) rotate(8deg)}
 .nomination-card h3{font-family:"Orbitron",sans-serif;font-size:19px;letter-spacing:1.5px;margin-top:10px;position:relative;z-index:1}
 .nomination-card .mc-pick{width:56px;height:56px;margin-bottom:15px;transition:transform .4s;filter:drop-shadow(0 0 12px rgba(255,0,51,.6));position:relative;z-index:1}
 .nomination-card:hover .mc-pick{transform:scale(1.12) rotate(-8deg)}
 
-/* =====================================================
-   ZV KING — золотой цвет, без вращения
-===================================================== */
 .king-section{display:flex;justify-content:center;margin-bottom:60px}
 .nomination-card.king-card{
   max-width:400px;width:100%;
   border:2px solid rgba(255,210,74,.55);
   background:linear-gradient(135deg,rgba(60,40,0,.55),rgba(20,3,5,.95) 60%, rgba(60,40,0,.45));
-  box-shadow:
-    0 0 45px rgba(255,210,74,.35),
-    0 0 90px rgba(255,210,74,.15),
-    inset 0 0 40px rgba(255,210,74,.08);
+  box-shadow:0 0 45px rgba(255,210,74,.35),0 0 90px rgba(255,210,74,.15),inset 0 0 40px rgba(255,210,74,.08);
 }
-/* отключаем общий ::before hover-фон для king */
 .nomination-card.king-card::before{display:none}
 .nomination-card.king-card::after{
   content:"";position:absolute;inset:0;border-radius:18px;
@@ -238,42 +259,22 @@ header{
   opacity:.7;pointer-events:none;
 }
 .nomination-card.king-card .king-label{
-  content:"ГЛАВНАЯ НОМИНАЦИЯ";
   position:absolute;top:18px;left:0;right:0;text-align:center;font-size:10px;
   font-family:"Orbitron",sans-serif;letter-spacing:3px;color:var(--gold);
-  text-shadow:0 0 12px rgba(255,210,74,.9);
-  z-index:2;
+  text-shadow:0 0 12px rgba(255,210,74,.9);z-index:2;
 }
 .nomination-card.king-card:hover{
-  border-color:var(--gold);
-  transform:translateY(-6px) scale(1.02);
-  box-shadow:
-    0 15px 70px rgba(255,210,74,.55),
-    0 0 100px rgba(255,210,74,.35),
-    inset 0 0 50px rgba(255,210,74,.15);
+  border-color:var(--gold);transform:translateY(-6px) scale(1.02);
+  box-shadow:0 15px 70px rgba(255,210,74,.55),0 0 100px rgba(255,210,74,.35),inset 0 0 50px rgba(255,210,74,.15);
 }
-/* Корона — золотая, БЕЗ вращения и плавания */
 .nomination-card.king-card > i{
-  color:var(--gold);
-  font-size:64px;
-  text-shadow:
-    0 0 20px rgba(255,210,74,.95),
-    0 0 45px rgba(255,210,74,.7),
-    0 0 80px rgba(255,210,74,.45);
-  animation:none !important;
-  transition:none;
-  position:relative;z-index:2;
+  color:var(--gold);font-size:64px;
+  text-shadow:0 0 20px rgba(255,210,74,.95),0 0 45px rgba(255,210,74,.7),0 0 80px rgba(255,210,74,.45);
+  animation:none !important;transition:none;position:relative;z-index:2;
 }
-.nomination-card.king-card:hover > i{
-  transform:none !important;
-}
-.nomination-card.king-card h3{
-  color:var(--gold);
-  text-shadow:0 0 15px rgba(255,210,74,.7);
-  position:relative;z-index:2;
-}
+.nomination-card.king-card:hover > i{transform:none !important}
+.nomination-card.king-card h3{color:var(--gold);text-shadow:0 0 15px rgba(255,210,74,.7);position:relative;z-index:2}
 
-/* MODAL */
 .modal-overlay{
   position:fixed;inset:0;width:100%;height:100%;
   background:radial-gradient(circle at 50% 50%, rgba(30,3,8,.92), rgba(5,0,1,.97));
@@ -310,20 +311,16 @@ header{
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   animation:logoShine 4s linear infinite;
 }
-/* Золотой заголовок для ZV KING */
 .modal-title.king-title{
   background:linear-gradient(90deg,#fff,#ffd24a,#fff,#ffd24a,#fff);
-  background-size:300% auto;
-  filter:drop-shadow(0 0 12px rgba(255,210,74,.6));
+  background-size:300% auto;filter:drop-shadow(0 0 12px rgba(255,210,74,.6));
 }
 .modal-subtitle{
-  text-align:center;color:var(--muted);font-size:12px;margin-top:-15px;margin-bottom:22px;
-  letter-spacing:.5px;
+  text-align:center;color:var(--muted);font-size:12px;margin-top:-15px;margin-bottom:22px;letter-spacing:.5px;
 }
 .modal-subtitle b{color:#fff}
 .modal-subtitle b.gold{color:var(--gold)}
 
-/* NOMINEES */
 .nominees-list{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
   gap:18px;overflow-y:auto;padding:5px 8px 5px 5px;
@@ -340,10 +337,7 @@ header{
   min-height:190px;transition:all .35s;position:relative;overflow:hidden;
   animation:cardIn .5s ease both;
 }
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(20px) scale(.95)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 .nominee-card::after{
   content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
   background:radial-gradient(circle, rgba(255,0,51,.3), transparent 40%);
@@ -351,8 +345,7 @@ header{
 }
 .nominee-card:hover::after{opacity:1}
 .nominee-card:hover{
-  border-color:var(--red);
-  transform:translateY(-4px) scale(1.02);
+  border-color:var(--red);transform:translateY(-4px) scale(1.02);
   box-shadow:0 10px 30px rgba(255,0,51,.4), inset 0 0 20px rgba(255,0,51,.12);
 }
 .nominee-avatar{
@@ -363,30 +356,22 @@ header{
   border:1.5px solid rgba(255,255,255,.5);
   box-shadow:0 0 18px rgba(255,0,51,.55), inset 0 0 12px rgba(0,0,0,.6);
   transition:transform .4s, box-shadow .4s;
-  animation:avatarPulse 3s ease-in-out infinite;
-  position:relative;z-index:1;
+  animation:avatarPulse 3s ease-in-out infinite;position:relative;z-index:1;
 }
 @keyframes avatarPulse{
   0%,100%{box-shadow:0 0 12px rgba(255,0,51,.4), inset 0 0 10px rgba(0,0,0,.6)}
   50%{box-shadow:0 0 25px rgba(255,0,51,.85), inset 0 0 15px rgba(0,0,0,.6)}
 }
-.nominee-card:hover .nominee-avatar{
-  transform:scale(1.1) rotate(-4deg);
-  box-shadow:0 0 30px rgba(255,0,51,1), inset 0 0 15px rgba(0,0,0,.6);
-}
-/* Аватар для номинантов номинации ZV KING — золотой */
+.nominee-card:hover .nominee-avatar{transform:scale(1.1) rotate(-4deg);box-shadow:0 0 30px rgba(255,0,51,1), inset 0 0 15px rgba(0,0,0,.6)}
 .nominee-card.king-nominee .nominee-avatar{
   background:radial-gradient(circle at 30% 30%, #ffe58a, #b8860b);
-  color:#3a2a00;
-  border-color:var(--gold);
-  box-shadow:0 0 20px rgba(255,210,74,.7), inset 0 0 12px rgba(0,0,0,.4);
-  animation:none;
+  color:#3a2a00;border-color:var(--gold);
+  box-shadow:0 0 20px rgba(255,210,74,.7), inset 0 0 12px rgba(0,0,0,.4);animation:none;
 }
 .nominee-name{
   font-weight:600;font-size:13px;line-height:1.4;margin-bottom:14px;
   word-break:break-word;flex-grow:1;
-  display:flex;align-items:center;justify-content:center;
-  color:#fff;position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1;
 }
 .vote-action-btn{
   background:transparent;border:1px solid var(--red);color:var(--red);
@@ -394,45 +379,25 @@ header{
   font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;
   transition:all .3s;width:100%;position:relative;overflow:hidden;z-index:1;
 }
-.vote-action-btn:hover{
-  background:var(--red);color:#fff;
-  box-shadow:0 0 20px rgba(255,0,51,.8);
-  transform:translateY(-2px);
-}
-
-/* Кнопка отмены */
+.vote-action-btn:hover{background:var(--red);color:#fff;box-shadow:0 0 20px rgba(255,0,51,.8);transform:translateY(-2px)}
 .vote-action-btn.cancel-btn{
-  border-color:#fff;
-  color:#fff;
+  border-color:#fff;color:#fff;
   background:linear-gradient(90deg, #ff0033, #b3001b);
   font-size:10.5px;
   box-shadow:0 0 20px rgba(255,0,51,.65), inset 0 0 12px rgba(0,0,0,.35);
 }
 .vote-action-btn.cancel-btn:hover{
-  background:linear-gradient(90deg, #fff, #ffccd5);
-  color:#b3001b;
-  box-shadow:0 0 30px rgba(255,255,255,.9);
-  transform:translateY(-2px) scale(1.03);
+  background:linear-gradient(90deg, #fff, #ffccd5);color:#b3001b;
+  box-shadow:0 0 30px rgba(255,255,255,.9);transform:translateY(-2px) scale(1.03);
 }
 .vote-action-btn.cancel-btn i{margin-right:6px;font-size:10px}
 
-/* Кнопка в золотой номинации */
-.nominee-card.king-nominee .vote-action-btn{
-  border-color:var(--gold);
-  color:var(--gold);
-}
-.nominee-card.king-nominee .vote-action-btn:hover{
-  background:var(--gold);color:#3a2a00;
-  box-shadow:0 0 20px rgba(255,210,74,.9);
-}
+.nominee-card.king-nominee .vote-action-btn{border-color:var(--gold);color:var(--gold)}
+.nominee-card.king-nominee .vote-action-btn:hover{background:var(--gold);color:#3a2a00;box-shadow:0 0 20px rgba(255,210,74,.9)}
 
-.nominee-card.locked{
-  opacity:.28;filter:grayscale(1) brightness(.65);pointer-events:none;
-  transform:scale(.96);
-}
+.nominee-card.locked{opacity:.28;filter:grayscale(1) brightness(.65);pointer-events:none;transform:scale(.96)}
 .nominee-card.chosen{
-  opacity:1;filter:none;
-  border-color:#fff;
+  opacity:1;filter:none;border-color:#fff;
   background:linear-gradient(160deg, rgba(255,0,51,.25), rgba(179,0,27,.15));
   box-shadow:0 0 40px rgba(255,255,255,.55), 0 0 60px rgba(255,0,51,.6), inset 0 0 25px rgba(255,255,255,.15);
   animation:chosenPulse 2s ease-in-out infinite;
@@ -442,31 +407,23 @@ header{
   50%{box-shadow:0 0 50px rgba(255,255,255,.85), 0 0 80px rgba(255,0,51,.85), inset 0 0 30px rgba(255,255,255,.2)}
 }
 .nominee-card.chosen .nominee-avatar{
-  border-color:#fff;
-  background:radial-gradient(circle at 30% 30%, #fff, #ff0033);
-  color:#b3001b;
-  box-shadow:0 0 25px rgba(255,255,255,.95), inset 0 0 12px rgba(0,0,0,.25);
+  border-color:#fff;background:radial-gradient(circle at 30% 30%, #fff, #ff0033);
+  color:#b3001b;box-shadow:0 0 25px rgba(255,255,255,.95), inset 0 0 12px rgba(0,0,0,.25);
 }
-/* Chosen в золотой номинации */
 .nominee-card.king-nominee.chosen{
   border-color:var(--gold);
   background:linear-gradient(160deg, rgba(255,210,74,.2), rgba(179,124,0,.12));
   box-shadow:0 0 40px rgba(255,210,74,.7), 0 0 70px rgba(255,210,74,.4), inset 0 0 25px rgba(255,210,74,.15);
 }
 .nominee-card.king-nominee.chosen .nominee-avatar{
-  border-color:var(--gold);
-  background:radial-gradient(circle at 30% 30%, #fff, #ffd24a);
-  color:#3a2a00;
-  box-shadow:0 0 30px rgba(255,210,74,.95), inset 0 0 12px rgba(0,0,0,.25);
+  border-color:var(--gold);background:radial-gradient(circle at 30% 30%, #fff, #ffd24a);
+  color:#3a2a00;box-shadow:0 0 30px rgba(255,210,74,.95), inset 0 0 12px rgba(0,0,0,.25);
 }
 .nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{
-  background:linear-gradient(90deg, #ffd24a, #b8860b);
-  color:#3a2a00;
-  border-color:#fff;
+  background:linear-gradient(90deg, #ffd24a, #b8860b);color:#3a2a00;border-color:#fff;
   box-shadow:0 0 25px rgba(255,210,74,.9);
 }
 
-/* ADMIN */
 .admin-overlay .modal-content{max-width:1000px;max-height:92vh;border-color:rgba(255,51,85,.5)}
 .admin-stats{overflow-y:auto;padding-right:8px}
 .admin-stats::-webkit-scrollbar{width:6px}
@@ -480,8 +437,7 @@ header{
   font-family:"Orbitron",sans-serif;font-size:16px;color:var(--admin);
   margin-bottom:14px;letter-spacing:1.5px;
   display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:8px;
-  text-shadow:0 0 10px rgba(255,51,85,.5);
+  flex-wrap:wrap;gap:8px;text-shadow:0 0 10px rgba(255,51,85,.5);
 }
 .admin-nom-title .total-badge{
   font-size:11px;background:rgba(255,51,85,.18);color:var(--admin);
@@ -513,6 +469,12 @@ header{
 .admin-tool-btn:hover{background:var(--admin);color:#fff;box-shadow:0 0 20px rgba(255,51,85,.6);transform:translateY(-2px)}
 .admin-tool-btn.danger{border-color:#ff3355;color:#ff3355}
 .admin-tool-btn.danger:hover{background:#ff3355;color:#fff}
+.admin-loader{
+  text-align:center;color:var(--admin);font-family:"Orbitron",sans-serif;
+  font-size:13px;letter-spacing:2px;padding:30px 0;
+}
+.admin-loader i{margin-right:8px;animation:spin 1s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 .pass-input{
   width:100%;padding:14px 18px;border-radius:12px;background:rgba(255,0,51,.06);
@@ -529,7 +491,6 @@ header{
 }
 .pass-submit:hover{transform:scale(1.02);box-shadow:0 0 40px rgba(255,51,85,.8);color:#fff;background:linear-gradient(90deg,#ff0033,#b3001b)}
 
-/* TOAST */
 .toast{
   position:fixed;bottom:30px;right:30px;padding:16px 26px;border-radius:14px;
   font-weight:600;z-index:3000;transform:translateY(150%);color:#fff;font-size:14px;
@@ -538,30 +499,28 @@ header{
   backdrop-filter:blur(10px);
 }
 .toast.active{transform:translateY(0)}
-.toast.error{
-  background:linear-gradient(135deg,#e60026,#7a0012);
-  box-shadow:0 0 30px rgba(255,0,51,.7);
-}
-.toast.success{
-  background:linear-gradient(135deg,#fff,#ffb3bf);
-  color:#7a0012;
-  box-shadow:0 0 35px rgba(255,255,255,.7);
-}
-.toast.info{
-  background:linear-gradient(135deg,#b3001b,#7a0012);
-  box-shadow:0 0 30px rgba(230,0,38,.7);
-}
+.toast.error{background:linear-gradient(135deg,#e60026,#7a0012);box-shadow:0 0 30px rgba(255,0,51,.7)}
+.toast.success{background:linear-gradient(135deg,#fff,#ffb3bf);color:#7a0012;box-shadow:0 0 35px rgba(255,255,255,.7)}
+.toast.info{background:linear-gradient(135deg,#b3001b,#7a0012);box-shadow:0 0 30px rgba(230,0,38,.7)}
 
 @keyframes glitch{
   0%,100%{text-shadow:0 0 25px rgba(255,0,51,.6)}
   50%{text-shadow:2px 2px rgba(255,0,51,.7), -2px -2px rgba(255,255,255,.5), 0 0 30px rgba(255,0,51,.8)}
 }
 
+@media (max-width:900px){
+  header{padding:14px 16px;gap:8px}
+  .logo{font-size:15px;letter-spacing:1.5px}
+  .online-counter{padding:6px 10px;font-size:11px;gap:6px}
+  .online-counter .online-num{font-size:13px}
+  .online-counter .online-label{font-size:9px;letter-spacing:1px}
+  .auth-btn{padding:7px 10px;font-size:11px;gap:6px}
+  .auth-btn img{width:18px;height:18px}
+  .admin-btn{padding:7px 10px;font-size:9px}
+}
 @media (max-width:700px){
-  header{padding:14px 16px}
-  .logo{font-size:17px;letter-spacing:2px}
-  .auth-btn{padding:8px 12px;font-size:12px}
-  .admin-btn{padding:8px 12px;font-size:10px}
+  .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px}
+  .hero{padding:130px 16px 30px}
   .hero h1{letter-spacing:3px}
   .hero p{font-size:15px}
   .container{padding:60px 15px}
@@ -592,8 +551,13 @@ header{
 <header>
   <div class="logo">ZV-AWARDS</div>
   <div class="header-actions">
+    <div class="online-counter" title="Сейчас на сайте">
+      <span class="online-dot"></span>
+      <span class="online-num" id="online-count">23</span>
+      <span class="online-label">ОНЛАЙН</span>
+    </div>
     <button class="admin-btn" id="admin-btn" type="button" onclick="openAdminPassword()">
-      <i class="fa-solid fa-shield-halved"></i> АДМИН-ПАНЕЛЬ
+      <i class="fa-solid fa-shield-halved"></i> АДМИН
     </button>
     <button class="auth-btn" id="google-login-btn" type="button" onclick="googleLogin()">
       <i class="fa-brands fa-google"></i>
@@ -604,6 +568,7 @@ header{
 
 <section class="hero">
   <h1>ZV-AWARDS</h1>
+  <div class="vote-dates">ГОЛОСОВАНИЕ ПРОВОДИТСЯ С 24.09.26 ДО 31.12.26</div>
   <p>Голосование за лучших участников сообщества. Выбери своих фаворитов в каждой номинации.</p>
   <button class="vote-main-btn" type="button" onclick="scrollToNominations()">НАЧАТЬ ГОЛОСОВАНИЕ</button>
 </section>
@@ -620,22 +585,15 @@ header{
 
   <h2 class="section-title">Дополнительные номинации</h2>
   <div class="nominations-grid">
-
     <div class="nomination-card" onclick="openNomination('Фейл года')">
-      <i class="fa-solid fa-face-dizzy"></i>
-      <h3>Фейл года</h3>
+      <i class="fa-solid fa-face-dizzy"></i><h3>Фейл года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('Роблоксер года')">
-      <i class="fa-solid fa-cube"></i>
-      <h3>Роблоксер года</h3>
+      <i class="fa-solid fa-cube"></i><h3>Роблоксер года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('Харизма года')">
-      <i class="fa-solid fa-fire"></i>
-      <h3>Харизма года</h3>
+      <i class="fa-solid fa-fire"></i><h3>Харизма года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('Майнкрафтер года')">
       <svg class="mc-pick" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
         <rect x="6" y="6" width="20" height="20" fill="#8b0012"/>
@@ -649,27 +607,18 @@ header{
       </svg>
       <h3>Майнкрафтер года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('КСер года')">
-      <i class="fa-solid fa-crosshairs"></i>
-      <h3>КСер года</h3>
+      <i class="fa-solid fa-crosshairs"></i><h3>КСер года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('Мультигеймер года')">
-      <i class="fa-solid fa-gamepad"></i>
-      <h3>Мультигеймер года</h3>
+      <i class="fa-solid fa-gamepad"></i><h3>Мультигеймер года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('Игра года')">
-      <i class="fa-solid fa-trophy"></i>
-      <h3>Игра года</h3>
+      <i class="fa-solid fa-trophy"></i><h3>Игра года</h3>
     </div>
-
     <div class="nomination-card" onclick="openNomination('Актив года')">
-      <i class="fa-solid fa-bolt"></i>
-      <h3>Актив года</h3>
+      <i class="fa-solid fa-bolt"></i><h3>Актив года</h3>
     </div>
-
   </div>
 </main>
 
@@ -677,7 +626,7 @@ header{
   <div class="modal-content">
     <span class="close-modal" onclick="closeModal('nomination-modal')">×</span>
     <h2 class="modal-title" id="modal-category-title">Номинация</h2>
-    <p class="modal-subtitle" id="modal-category-subtitle">Выберите одного номинанта. Выбор можно отменить до закрытия окна.</p>
+    <p class="modal-subtitle" id="modal-category-subtitle">Выберите одного номинанта.</p>
     <div class="nominees-list" id="nominees-container"></div>
   </div>
 </div>
@@ -703,7 +652,7 @@ header{
     <div class="admin-toolbar">
       <button class="admin-tool-btn" onclick="refreshAdminStats()"><i class="fa-solid fa-rotate"></i> ОБНОВИТЬ</button>
       <button class="admin-tool-btn" onclick="exportResults()"><i class="fa-solid fa-download"></i> ЭКСПОРТ JSON</button>
-      <button class="admin-tool-btn danger" onclick="clearResults()"><i class="fa-solid fa-trash"></i> ОЧИСТИТЬ</button>
+      <button class="admin-tool-btn danger" onclick="clearResults()"><i class="fa-solid fa-trash"></i> ОЧИСТИТЬ ЛОКАЛЬНЫЙ КЭШ</button>
     </div>
   </div>
 </div>
@@ -719,24 +668,48 @@ const GOOGLE_CLIENT_ID = "193095894603-4jefaanb9nv73gonatbprs9cuokqua7v.apps.goo
 const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const ADMIN_PASSWORD = "meduzaadmin221";
 
+/* ⚠️ ВАЖНО: сюда вставлен URL твоего Google Apps Script.
+   Если передеплоишь скрипт — замени эту ссылку. */
+const SHEETS_API = "https://script.google.com/macros/s/AKfycbzWWtxkYWjEfR9Rv1VKdcEmpt6eo6EnI__6kYklDJZp_5U_Ce3VzYD1T-ZYY-Qtyowprg/exec";
+
 /* ============================================================
-   SOUND ENGINE
+   ONLINE COUNTER (имитация)
+============================================================ */
+(function(){
+  const el = document.getElementById("online-count");
+  if(!el) return;
+  let current = Math.floor(Math.random()*28) + 14;
+  el.textContent = current;
+  function next(){
+    const delay = 3000 + Math.random()*5000;
+    setTimeout(()=>{
+      let delta = Math.floor(Math.random()*7) - 3;
+      let n = current + delta;
+      if(n < 12) n = 12 + Math.floor(Math.random()*4);
+      if(n > 47) n = 47 - Math.floor(Math.random()*4);
+      if(n === current) n = current + (Math.random() < 0.5 ? 1 : -1);
+      current = Math.max(12, Math.min(47, n));
+      el.textContent = current;
+      next();
+    }, delay);
+  }
+  next();
+})();
+
+/* ============================================================
+   SOUND
 ============================================================ */
 const SoundFX = (()=>{
   let ctx = null;
   function ensureCtx(){
-    if(!ctx){
-      try{ ctx = new (window.AudioContext || window.webkitAudioContext)(); }
-      catch(e){ ctx = null; }
-    }
+    if(!ctx){ try{ ctx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ ctx = null; } }
     if(ctx && ctx.state === "suspended") ctx.resume();
     return ctx;
   }
-  function tone({freq=440, dur=0.1, type="sine", vol=0.04, when=0, slide=null}){
+  function tone({freq=440,dur=0.1,type="sine",vol=0.04,when=0,slide=null}){
     const c = ensureCtx(); if(!c) return;
     const t0 = c.currentTime + when;
-    const osc = c.createOscillator();
-    const gain = c.createGain();
+    const osc = c.createOscillator(); const gain = c.createGain();
     osc.type = type;
     osc.frequency.setValueAtTime(freq, t0);
     if(slide) osc.frequency.exponentialRampToValueAtTime(slide, t0 + dur);
@@ -744,128 +717,103 @@ const SoundFX = (()=>{
     gain.gain.exponentialRampToValueAtTime(vol, t0 + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     osc.connect(gain).connect(c.destination);
-    osc.start(t0);
-    osc.stop(t0 + dur + 0.05);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
   }
   return {
-    click(){ tone({freq:520, dur:0.06, type:"triangle", vol:0.035, slide:680}); },
-    hover(){ tone({freq:800, dur:0.04, type:"sine", vol:0.015}); },
-    open(){ tone({freq:320, dur:0.22, type:"sine", vol:0.045, slide:780}); },
-    close(){ tone({freq:560, dur:0.18, type:"sine", vol:0.035, slide:240}); },
+    click(){ tone({freq:520,dur:0.06,type:"triangle",vol:0.035,slide:680}); },
+    hover(){ tone({freq:800,dur:0.04,type:"sine",vol:0.015}); },
+    open(){ tone({freq:320,dur:0.22,type:"sine",vol:0.045,slide:780}); },
+    close(){ tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
     success(){
-      tone({freq:523.25, dur:0.18, type:"triangle", vol:0.05, when:0});
-      tone({freq:659.25, dur:0.18, type:"triangle", vol:0.05, when:0.08});
-      tone({freq:783.99, dur:0.28, type:"triangle", vol:0.055, when:0.16});
-      tone({freq:1046.5, dur:0.35, type:"sine", vol:0.04, when:0.26});
+      tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0});
+      tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08});
+      tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16});
+      tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26});
     },
     error(){
-      tone({freq:180, dur:0.18, type:"sawtooth", vol:0.035, slide:90});
-      tone({freq:120, dur:0.22, type:"sine", vol:0.04, when:0.05});
+      tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90});
+      tone({freq:120,dur:0.22,type:"sine",vol:0.04,when:0.05});
     },
-    switch(){ tone({freq:420, dur:0.05, type:"square", vol:0.02, slide:560}); },
+    switch(){ tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
     whoosh(){
-      tone({freq:200, dur:0.35, type:"sine", vol:0.03, slide:900});
-      tone({freq:900, dur:0.25, type:"triangle", vol:0.02, when:0.05, slide:300});
+      tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900});
+      tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300});
     },
     cancel(){
-      tone({freq:720, dur:0.14, type:"triangle", vol:0.045, slide:380});
-      tone({freq:380, dur:0.22, type:"sine",     vol:0.035, when:0.10, slide:180});
+      tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380});
+      tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180});
     }
   };
 })();
-
 window.addEventListener("pointerdown", ()=>{ SoundFX.click(); }, {once:true, capture:true});
 
 /* ============================================================
    STATE
 ============================================================ */
 let currentUser = null;
-let userVotes = {};
+let userVotes = {};        // локально: чтобы UI не давал голосовать дважды
 let adminUnlocked = false;
+let allVotes = {};         // данные из Google Sheets (для админки)
 
 /* ============================================================
    NOMINEES
 ============================================================ */
 const nomineesDatabase = {
-  "ZV KING": [
-    "MrAdiviK (Артём младший)",
-    "Медуза (Никита)",
-    "FACTOVSKII (Даня)",
-    "Maks (Максим)",
-    "Neverst (Назар)"
-  ],
+  "ZV KING": ["MrAdiviK (Артём младший)","Медуза (Никита)","FACTOVSKII (Даня)","Maks (Максим)","Neverst (Назар)"],
   "Фейл года": [
     "Кража более 10.000 обезьян у Neverst (Назара)",
     "Абьюз обезьян (Накрутка обезьян до бесконечности) - MrAdiviK (Артём младший)",
     "𝕯𝖆𝖗𝖐 𝕬𝖓𝖌𝖊𝖑 (Сагит) Скачал запрет с вирусом"
   ],
-  "Роблоксер года": [
-    "MrAdiviK (Артём младший)",
-    "FACTOVSKII (Даня)",
-    "Maks (Максим)",
-    "Neverst (Назар)",
-    "Dark Angel (Сагит)",
-    "Maktraxer (Артём старший)",
-    "Charkagryz (Егор)",
-    "Пирожок (Степан)"
-  ],
-  "Харизма года": [
-    "FACTOVSKII (Даня)",
-    "Медуза (Никита)",
-    "Maktraxer (Артём старший)",
-    "Maks (Максим)"
-  ],
-  "Майнкрафтер года": [
-    "Медуза (Никита)",
-    "FACTOVSKII (Даня)",
-    "Charkagryz (Егор)",
-    "Maks (Максим)",
-    "MrAdiviK (Артём младший)"
-  ],
-  "КСер года": [
-    "Dark Angel (Сагит)",
-    "Медуза (Никита)",
-    "Тiмур (Тимур)",
-    "FrozEn (Арсений)"
-  ],
-  "Мультигеймер года": [
-    "Dark Angel (Сагит)",
-    "Медуза (Никита)",
-    "Тiмур (Тимур)",
-    "Maktraxer (Артём старший)"
-  ],
-  "Игра года": [
-    "R.E.P.O",
-    "Minecraft",
-    "ROBLOX",
-    "Meccha Chameleon",
-    "Counter Strike 2",
-    "SiGame"
-  ],
-  "Актив года": [
-    "FACTOVSKII (Даня)",
-    "Maks (Максим)",
-    "Neverst (Назар)",
-    "Dark Angel (Сагит)",
-    "Медуза (Никита)",
-    "Charkagryz (Егор)",
-    "MrAdiviK (Артём младший)"
-  ]
+  "Роблоксер года": ["MrAdiviK (Артём младший)","FACTOVSKII (Даня)","Maks (Максим)","Neverst (Назар)","Dark Angel (Сагит)","Maktraxer (Артём старший)","Charkagryz (Егор)","Пирожок (Степан)"],
+  "Харизма года": ["FACTOVSKII (Даня)","Медуза (Никита)","Maktraxer (Артём старший)","Maks (Максим)"],
+  "Майнкрафтер года": ["Медуза (Никита)","FACTOVSKII (Даня)","Charkagryz (Егор)","Maks (Максим)","MrAdiviK (Артём младший)"],
+  "КСер года": ["Dark Angel (Сагит)","Медуза (Никита)","Тiмур (Тимур)","FrozEn (Арсений)"],
+  "Мультигеймер года": ["Dark Angel (Сагит)","Медуза (Никита)","Тiмур (Тимур)","Maktraxer (Артём старший)"],
+  "Игра года": ["R.E.P.O","Minecraft","ROBLOX","Meccha Chameleon","Counter Strike 2","SiGame"],
+  "Актив года": ["FACTOVSKII (Даня)","Maks (Максим)","Neverst (Назар)","Dark Angel (Сагит)","Медуза (Никита)","Charkagryz (Егор)","MrAdiviK (Артём младший)"]
 };
 
 /* ============================================================
-   STORAGE
+   STORAGE (локально)
 ============================================================ */
-const LS_VOTES = "zvawards_votes";
+const LS_VOTES = "zvawards_my_votes";
 const LS_USER  = "zvawards_user";
-
-function loadVotes(){
-  try{ const r = localStorage.getItem(LS_VOTES); return r ? JSON.parse(r) : {}; }
-  catch(e){ return {}; }
+function loadMyVotes(){
+  try{ const r = localStorage.getItem(LS_VOTES); return r ? JSON.parse(r) : {}; }catch(e){ return {}; }
 }
-function saveVotes(v){ localStorage.setItem(LS_VOTES, JSON.stringify(v)); }
+function saveMyVotes(v){ localStorage.setItem(LS_VOTES, JSON.stringify(v)); }
+userVotes = loadMyVotes();
 
-let allVotes = loadVotes();
+/* ============================================================
+   GOOGLE SHEETS API
+============================================================ */
+async function sendVoteToSheet(payload){
+  try{
+    const res = await fetch(SHEETS_API, {
+      method: "POST",
+      // text/plain — чтобы избежать CORS preflight
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    return data && data.ok === true;
+  }catch(e){
+    console.error("sendVoteToSheet error:", e);
+    return false;
+  }
+}
+
+async function fetchAllVotes(){
+  try{
+    const res = await fetch(SHEETS_API + "?t=" + Date.now(), { method: "GET" });
+    const data = await res.json();
+    return data || {};
+  }catch(e){
+    console.error("fetchAllVotes error:", e);
+    return null;
+  }
+}
 
 /* ============================================================
    TOAST
@@ -882,9 +830,6 @@ function showToast(msg, type="error"){
   else if(type === "error") SoundFX.error();
 }
 
-/* ============================================================
-   SCROLL
-============================================================ */
 function scrollToNominations(){
   SoundFX.whoosh();
   document.getElementById("voting-section").scrollIntoView({behavior:"smooth"});
@@ -894,7 +839,6 @@ function scrollToNominations(){
    GOOGLE SIGN-IN
 ============================================================ */
 let googleInitialized = false;
-
 function initGoogle(){
   if(googleInitialized) return;
   if(!window.google || !google.accounts) return;
@@ -906,22 +850,15 @@ function initGoogle(){
   });
   googleInitialized = true;
 }
-
 function googleLogin(){
   SoundFX.click();
   if(currentUser){ logout(); return; }
-  if(!window.google || !google.accounts){
-    showToast("Google API ещё загружается, попробуйте через секунду...", "error");
-    return;
-  }
+  if(!window.google || !google.accounts){ showToast("Google API ещё загружается...", "error"); return; }
   initGoogle();
-  google.accounts.id.prompt((notification)=>{
-    if(notification.isNotDisplayed() || notification.isSkippedMoment()){
-      renderFallbackGoogleButton();
-    }
+  google.accounts.id.prompt((n)=>{
+    if(n.isNotDisplayed() || n.isSkippedMoment()) renderFallbackGoogleButton();
   });
 }
-
 function renderFallbackGoogleButton(){
   let holder = document.getElementById("g-fallback");
   if(!holder){
@@ -932,35 +869,21 @@ function renderFallbackGoogleButton(){
     document.body.appendChild(holder);
   }
   holder.innerHTML = "";
-  google.accounts.id.renderButton(holder, {
-    type:"standard", theme:"outline", size:"large", width:300
-  });
+  google.accounts.id.renderButton(holder, { type:"standard", theme:"outline", size:"large", width:300 });
   const btn = holder.querySelector('div[role="button"]') || holder.querySelector("button");
   if(btn) btn.click();
 }
-
 function handleGoogleCredential(response){
   try{
     const payload = parseJwt(response.credential);
-    currentUser = {
-      name: payload.name || payload.email,
-      email: payload.email,
-      picture: payload.picture || ""
-    };
+    currentUser = { name: payload.name || payload.email, email: payload.email, picture: payload.picture || "" };
     localStorage.setItem(LS_USER, JSON.stringify(currentUser));
     updateAuthUI();
-    if(currentUser.email === ADMIN_EMAIL){
-      document.getElementById("admin-btn").classList.add("visible");
-    } else {
-      document.getElementById("admin-btn").classList.remove("visible");
-    }
+    if(currentUser.email === ADMIN_EMAIL) document.getElementById("admin-btn").classList.add("visible");
+    else document.getElementById("admin-btn").classList.remove("visible");
     showToast(`Вы вошли как ${currentUser.name}`, "success");
-  }catch(e){
-    showToast("Ошибка входа через Google", "error");
-    console.error(e);
-  }
+  }catch(e){ showToast("Ошибка входа через Google", "error"); console.error(e); }
 }
-
 function logout(){
   SoundFX.close();
   currentUser = null;
@@ -971,93 +894,57 @@ function logout(){
   if(window.google && google.accounts) google.accounts.id.disableAutoSelect();
   showToast("Вы вышли из аккаунта", "error");
 }
-
 function updateAuthUI(){
   const txt = document.getElementById("auth-btn-text");
   const btn = document.getElementById("google-login-btn");
   if(currentUser){
     txt.textContent = currentUser.name;
     btn.classList.add("logged-in");
-    const oldImg = btn.querySelector("img");
-    if(oldImg) oldImg.remove();
-    const icon = btn.querySelector("i.fa-google");
-    if(icon) icon.style.display = "none";
+    const oldImg = btn.querySelector("img"); if(oldImg) oldImg.remove();
+    const icon = btn.querySelector("i.fa-google"); if(icon) icon.style.display = "none";
     if(currentUser.picture){
       const img = document.createElement("img");
-      img.src = currentUser.picture;
-      img.referrerPolicy = "no-referrer";
+      img.src = currentUser.picture; img.referrerPolicy = "no-referrer";
       btn.insertBefore(img, txt);
     }
   } else {
     txt.textContent = "Войти через Google";
     btn.classList.remove("logged-in");
-    const oldImg = btn.querySelector("img");
-    if(oldImg) oldImg.remove();
-    const icon = btn.querySelector("i.fa-google");
-    if(icon) icon.style.display = "";
+    const oldImg = btn.querySelector("img"); if(oldImg) oldImg.remove();
+    const icon = btn.querySelector("i.fa-google"); if(icon) icon.style.display = "";
   }
 }
-
 function parseJwt(token){
-  const base64Url = token.split(".")[1];
-  const base64 = base64Url.replace(/-/g,"+").replace(/_/g,"/");
-  const json = decodeURIComponent(
-    atob(base64).split("").map(c =>
-      "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join("")
-  );
-  return JSON.parse(json);
+  const b = token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+  return JSON.parse(decodeURIComponent(atob(b).split("").map(c=>"%"+("00"+c.charCodeAt(0).toString(16)).slice(-2)).join("")));
 }
-
 (function restore(){
   try{
     const raw = localStorage.getItem(LS_USER);
     if(raw){
       currentUser = JSON.parse(raw);
       updateAuthUI();
-      if(currentUser.email === ADMIN_EMAIL){
-        document.getElementById("admin-btn").classList.add("visible");
-      }
+      if(currentUser.email === ADMIN_EMAIL) document.getElementById("admin-btn").classList.add("visible");
     }
   }catch(e){}
 })();
-
 window.addEventListener("load", ()=>{
-  const t = setInterval(()=>{
-    if(window.google && google.accounts){
-      initGoogle();
-      clearInterval(t);
-    }
-  }, 300);
+  const t = setInterval(()=>{ if(window.google && google.accounts){ initGoogle(); clearInterval(t); } }, 300);
 });
 
 /* ============================================================
    MODAL
 ============================================================ */
-function openModal(id){
-  SoundFX.open();
-  document.getElementById(id).classList.add("active");
-  document.body.style.overflow = "hidden";
-}
-function closeModal(id){
-  SoundFX.close();
-  document.getElementById(id).classList.remove("active");
-  document.body.style.overflow = "";
-}
-function handleModalBg(event, id){
-  if(event.target.id === id) closeModal(id);
-}
+function openModal(id){ SoundFX.open(); document.getElementById(id).classList.add("active"); document.body.style.overflow = "hidden"; }
+function closeModal(id){ SoundFX.close(); document.getElementById(id).classList.remove("active"); document.body.style.overflow = ""; }
+function handleModalBg(e,id){ if(e.target.id === id) closeModal(id); }
 
 /* ============================================================
    NOMINATION
 ============================================================ */
 function openNomination(category){
   SoundFX.click();
-  if(!currentUser){
-    showToast("Для голосования необходимо войти в Google аккаунт!", "error");
-    googleLogin();
-    return;
-  }
+  if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); googleLogin(); return; }
   const title = document.getElementById("modal-category-title");
   title.textContent = category;
   title.classList.toggle("king-title", category === "ZV KING");
@@ -1071,7 +958,6 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
   if(isKing) card.classList.add("king-nominee");
   card.style.animationDelay = (idx * 0.05) + "s";
   card.dataset.name = name;
-
   if(isChosen) card.classList.add("chosen");
   if(isLocked) card.classList.add("locked");
 
@@ -1082,42 +968,29 @@ function buildNomineeCard({category, name, isKing, isChosen, isLocked, idx}){
   avatar.appendChild(icon);
 
   const nm = document.createElement("div");
-  nm.className = "nominee-name";
-  nm.textContent = name;
+  nm.className = "nominee-name"; nm.textContent = name;
 
   const btn = document.createElement("button");
-  btn.className = "vote-action-btn";
-  btn.type = "button";
+  btn.className = "vote-action-btn"; btn.type = "button";
 
   if(isChosen){
     btn.classList.add("cancel-btn");
     btn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> ОТМЕНИТЬ ВЫБОР';
     btn.addEventListener("click", (e)=>{ e.stopPropagation(); cancelVote(category, name); });
   } else if(isLocked){
-    btn.textContent = "ГОЛОС ОТДАН";
-    btn.disabled = true;
+    btn.textContent = "ГОЛОС ОТДАН"; btn.disabled = true;
   } else {
     btn.textContent = "ПРОГОЛОСОВАТЬ";
     btn.addEventListener("click", (e)=>{ e.stopPropagation(); submitVote(category, name); });
   }
 
-  card.appendChild(avatar);
-  card.appendChild(nm);
-  card.appendChild(btn);
+  card.appendChild(avatar); card.appendChild(nm); card.appendChild(btn);
   return card;
 }
 
-function submitVote(category, name){
-  if(!currentUser){
-    showToast("Для голосования необходимо войти в Google аккаунт!", "error");
-    return;
-  }
-  if(userVotes[category]){
-    showToast("Вы уже голосовали в этой номинации! Сначала отмените выбор.", "error");
-    return;
-  }
-
-  userVotes[category] = name;
+async function submitVote(category, name){
+  if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); return; }
+  if(userVotes[category]){ showToast("Вы уже голосовали в этой номинации! Сначала отмените выбор.", "error"); return; }
 
   const now = new Date();
   const timeStr = now.toLocaleString("ru-RU", {
@@ -1125,44 +998,39 @@ function submitVote(category, name){
     hour:"2-digit", minute:"2-digit", second:"2-digit"
   });
 
-  if(!allVotes[category]) allVotes[category] = {};
-  if(!allVotes[category][name]) allVotes[category][name] = [];
-  allVotes[category][name].push({
-    time: timeStr,
-    user: currentUser.name,
-    email: currentUser.email
-  });
-  saveVotes(allVotes);
-
+  // Оптимистично фиксируем локально
+  userVotes[category] = name;
+  saveMyVotes(userVotes);
   refreshNominationUI(category);
-  showToast("Спасибо за ваш голос, переходите к следующей номинации!", "success");
+
+  // Отправляем на сервер
+  const ok = await sendVoteToSheet({
+    time: timeStr, category, nominee: name,
+    user: currentUser.name, email: currentUser.email
+  });
+
+  if(ok){
+    showToast("Спасибо за ваш голос, переходите к следующей номинации!", "success");
+  } else {
+    // откатываем
+    delete userVotes[category];
+    saveMyVotes(userVotes);
+    refreshNominationUI(category);
+    showToast("Не удалось отправить голос. Проверьте интернет.", "error");
+  }
 }
 
 function cancelVote(category, name){
-  if(!currentUser){
-    showToast("Необходимо войти в Google аккаунт!", "error");
-    return;
-  }
+  if(!currentUser){ showToast("Необходимо войти в Google аккаунт!", "error"); return; }
   if(userVotes[category] !== name) return;
 
-  if(allVotes[category] && allVotes[category][name]){
-    const arr = allVotes[category][name];
-    for(let i = arr.length - 1; i >= 0; i--){
-      if(arr[i].email === currentUser.email){
-        arr.splice(i, 1);
-        break;
-      }
-    }
-    if(arr.length === 0) delete allVotes[category][name];
-    if(Object.keys(allVotes[category]).length === 0) delete allVotes[category];
-  }
-  saveVotes(allVotes);
-
+  // ВАЖНО: локально голос убираем, но в Google-таблице строка остаётся.
+  // Если хочешь реально удалять из таблицы — нужен отдельный endpoint.
   delete userVotes[category];
+  saveMyVotes(userVotes);
 
   SoundFX.cancel();
   showToast("Выбор отменён. Теперь можно проголосовать заново.", "info");
-
   refreshNominationUI(category);
 }
 
@@ -1184,8 +1052,7 @@ function refreshNominationUI(category){
   });
 
   if(alreadyVoted){
-    const labelClass = isKing ? "gold" : "";
-    subtitle.innerHTML = `Ваш выбор: <b class="${labelClass}">${escapeHtml(alreadyVoted)}</b>. Вы можете отменить его кнопкой «Отменить выбор».`;
+    subtitle.innerHTML = `Ваш выбор: <b class="${isKing?"gold":""}">${escapeHtml(alreadyVoted)}</b>.`;
   } else {
     subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
   }
@@ -1196,33 +1063,40 @@ function refreshNominationUI(category){
 ============================================================ */
 function openAdminPassword(){
   SoundFX.click();
-  if(!currentUser || currentUser.email !== ADMIN_EMAIL){
-    showToast("Доступ только для администратора.", "error");
-    return;
-  }
+  if(!currentUser || currentUser.email !== ADMIN_EMAIL){ showToast("Доступ только для администратора.", "error"); return; }
   document.getElementById("admin-pass-input").value = "";
   openModal("admin-pass-modal");
   setTimeout(()=>document.getElementById("admin-pass-input").focus(), 300);
 }
-
 function checkAdminPassword(){
   const val = document.getElementById("admin-pass-input").value;
   if(val === ADMIN_PASSWORD){
     adminUnlocked = true;
     closeModal("admin-pass-modal");
     openAdminPanel();
-  } else {
-    showToast("Неверный пароль!", "error");
-  }
+  } else showToast("Неверный пароль!", "error");
+}
+function openAdminPanel(){
+  if(!adminUnlocked){ showToast("Сначала введите пароль.", "error"); return; }
+  openModal("admin-modal");
+  // Показываем лоадер
+  document.getElementById("admin-stats").innerHTML =
+    '<div class="admin-loader"><i class="fa-solid fa-spinner"></i> Загрузка голосов из таблицы...</div>';
+  refreshAdminStats();
 }
 
-function openAdminPanel(){
-  if(!adminUnlocked){
-    showToast("Сначала введите пароль.", "error");
+async function refreshAdminStats(){
+  const wrap = document.getElementById("admin-stats");
+  wrap.innerHTML = '<div class="admin-loader"><i class="fa-solid fa-spinner"></i> Загрузка голосов...</div>';
+
+  const data = await fetchAllVotes();
+  if(!data){
+    wrap.innerHTML = '<div class="admin-empty">Не удалось загрузить данные. Нажми «Обновить».</div>';
     return;
   }
+  allVotes = data;
   renderAdminStats();
-  openModal("admin-modal");
+  showToast("Статистика обновлена", "success");
 }
 
 function renderAdminStats(){
@@ -1259,8 +1133,7 @@ function renderAdminStats(){
           <div class="a-count">${cnt}</div>
           <div class="a-pct">${pct}%</div>
           ${timesHTML}
-        </div>
-      `;
+        </div>`;
     });
 
     block.innerHTML = `
@@ -1268,62 +1141,49 @@ function renderAdminStats(){
         <span>${escapeHtml(cat)}</span>
         <span class="total-badge">Всего голосов: ${totalCat}</span>
       </div>
-      ${rowsHTML}
-    `;
+      ${rowsHTML}`;
     wrap.appendChild(block);
   });
 
   if(!hasAny){
-    const empty = document.createElement("div");
-    empty.className = "admin-empty";
-    empty.textContent = "Пока нет ни одного голоса.";
-    wrap.appendChild(empty);
+    const e = document.createElement("div");
+    e.className = "admin-empty"; e.textContent = "Пока нет ни одного голоса.";
+    wrap.appendChild(e);
   }
 }
 
-function refreshAdminStats(){ SoundFX.switch(); renderAdminStats(); showToast("Статистика обновлена", "success"); }
-
 function exportResults(){
   SoundFX.click();
-  const dataStr = JSON.stringify(allVotes, null, 2);
-  const blob = new Blob([dataStr], {type:"application/json"});
+  const blob = new Blob([JSON.stringify(allVotes, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url;
-  a.download = "zv-awards-results.json";
-  a.click();
+  a.href = url; a.download = "zv-awards-results.json"; a.click();
   URL.revokeObjectURL(url);
   showToast("Результаты экспортированы", "success");
 }
 
 function clearResults(){
   SoundFX.error();
-  if(!confirm("Точно очистить ВСЕ результаты голосования?")) return;
-  allVotes = {};
+  if(!confirm("Очистить ЛОКАЛЬНЫЙ кэш голосов в этом браузере? Данные в Google-таблице НЕ удаляются.")) return;
   userVotes = {};
-  saveVotes(allVotes);
-  renderAdminStats();
-  showToast("Результаты очищены", "error");
+  saveMyVotes(userVotes);
+  showToast("Локальный кэш очищен", "info");
 }
 
 function escapeHtml(s){
-  return String(s)
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 
 document.addEventListener("keydown", e=>{
-  if(e.key === "Escape"){
-    ["nomination-modal","admin-pass-modal","admin-modal"].forEach(closeModal);
-  }
+  if(e.key === "Escape") ["nomination-modal","admin-pass-modal","admin-modal"].forEach(closeModal);
 });
 
 /* ============================================================
-   THREE.JS — красная абстрактная сцена
+   THREE.JS
 ============================================================ */
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x1a0005, 0.045);
-
 const camera = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -1334,138 +1194,100 @@ const pCount = 1200;
 const pGeo = new THREE.BufferGeometry();
 const pPos = new Float32Array(pCount*3);
 const pColors = new Float32Array(pCount*3);
-const cRed    = new THREE.Color(0xff0033);
-const cWhite  = new THREE.Color(0xffffff);
-const cDeep   = new THREE.Color(0xb3001b);
+const cRed = new THREE.Color(0xff0033), cWhite = new THREE.Color(0xffffff), cDeep = new THREE.Color(0xb3001b);
 for(let i=0;i<pCount;i++){
-  pPos[i*3]   = (Math.random()-0.5)*26;
-  pPos[i*3+1] = (Math.random()-0.5)*26;
-  pPos[i*3+2] = (Math.random()-0.5)*26;
+  pPos[i*3]=(Math.random()-0.5)*26; pPos[i*3+1]=(Math.random()-0.5)*26; pPos[i*3+2]=(Math.random()-0.5)*26;
   const r = Math.random();
   const col = r < 0.55 ? cRed.clone() : (r < 0.85 ? cDeep.clone() : cWhite.clone());
-  pColors[i*3] = col.r; pColors[i*3+1] = col.g; pColors[i*3+2] = col.b;
+  pColors[i*3]=col.r; pColors[i*3+1]=col.g; pColors[i*3+2]=col.b;
 }
 pGeo.setAttribute("position", new THREE.BufferAttribute(pPos,3));
 pGeo.setAttribute("color", new THREE.BufferAttribute(pColors,3));
-const pMat = new THREE.PointsMaterial({
+const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
   size:0.055, vertexColors:true, transparent:true, opacity:0.9,
   blending:THREE.AdditiveBlending, depthWrite:false
-});
-const particles = new THREE.Points(pGeo, pMat);
+}));
 scene.add(particles);
 
 const floaters = [];
 const geos = [
-  new THREE.IcosahedronGeometry(1.1, 0),
-  new THREE.OctahedronGeometry(1.0, 0),
-  new THREE.TorusGeometry(0.85, 0.28, 12, 28),
-  new THREE.TetrahedronGeometry(1.1, 0),
-  new THREE.TorusKnotGeometry(0.6, 0.18, 64, 8),
-  new THREE.BoxGeometry(1.2, 1.2, 1.2)
+  new THREE.IcosahedronGeometry(1.1,0),
+  new THREE.OctahedronGeometry(1.0,0),
+  new THREE.TorusGeometry(0.85,0.28,12,28),
+  new THREE.TetrahedronGeometry(1.1,0),
+  new THREE.TorusKnotGeometry(0.6,0.18,64,8),
+  new THREE.BoxGeometry(1.2,1.2,1.2)
 ];
-const matRed   = new THREE.MeshBasicMaterial({color:0xff0033, wireframe:true, transparent:true, opacity:0.5});
-const matDeep  = new THREE.MeshBasicMaterial({color:0xb3001b, wireframe:true, transparent:true, opacity:0.4});
-const matWhite = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true, transparent:true, opacity:0.35});
-
+const matRed = new THREE.MeshBasicMaterial({color:0xff0033,wireframe:true,transparent:true,opacity:0.5});
+const matDeep = new THREE.MeshBasicMaterial({color:0xb3001b,wireframe:true,transparent:true,opacity:0.4});
+const matWhite = new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:0.35});
 for(let i=0;i<14;i++){
   const g = geos[Math.floor(Math.random()*geos.length)];
   const variants = [matRed, matDeep, matWhite];
   const m = variants[Math.floor(Math.random()*variants.length)].clone();
   const mesh = new THREE.Mesh(g, m);
-  mesh.position.set(
-    (Math.random()-0.5)*22,
-    (Math.random()-0.5)*16,
-    (Math.random()-0.5)*16 - 5
-  );
+  mesh.position.set((Math.random()-0.5)*22,(Math.random()-0.5)*16,(Math.random()-0.5)*16-5);
   mesh.userData = {
     rx:(Math.random()-0.5)*0.005, ry:(Math.random()-0.5)*0.005, rz:(Math.random()-0.5)*0.005,
     float: Math.random()*Math.PI*2, floatSpeed: 0.004 + Math.random()*0.007,
     baseY: mesh.position.y
   };
-  scene.add(mesh);
-  floaters.push(mesh);
+  scene.add(mesh); floaters.push(mesh);
 }
 
-const core = new THREE.Mesh(
-  new THREE.SphereGeometry(2.6, 32, 32),
-  new THREE.MeshBasicMaterial({color:0xff0033, wireframe:true, transparent:true, opacity:0.1})
-);
-core.position.set(0,0,-7);
-scene.add(core);
-
-const glow = new THREE.Mesh(
-  new THREE.SphereGeometry(1.6, 32, 32),
-  new THREE.MeshBasicMaterial({color:0xff0033, transparent:true, opacity:0.07})
-);
-glow.position.copy(core.position);
-scene.add(glow);
+const core = new THREE.Mesh(new THREE.SphereGeometry(2.6,32,32),
+  new THREE.MeshBasicMaterial({color:0xff0033, wireframe:true, transparent:true, opacity:0.1}));
+core.position.set(0,0,-7); scene.add(core);
+const glow = new THREE.Mesh(new THREE.SphereGeometry(1.6,32,32),
+  new THREE.MeshBasicMaterial({color:0xff0033, transparent:true, opacity:0.07}));
+glow.position.copy(core.position); scene.add(glow);
 
 const ribbonGroup = new THREE.Group();
 for(let r=0; r<3; r++){
   const pts = [];
-  const turns = 6;
   for(let i=0;i<=200;i++){
-    const t = i/200 * Math.PI * 2 * turns;
-    const rad = 5 + Math.sin(t*1.5 + r) * 1.5;
-    pts.push(new THREE.Vector3(
-      Math.cos(t) * rad,
-      Math.sin(t*0.7 + r) * 3,
-      Math.sin(t) * rad
-    ));
+    const t = i/200 * Math.PI * 2 * 6;
+    const rad = 5 + Math.sin(t*1.5 + r)*1.5;
+    pts.push(new THREE.Vector3(Math.cos(t)*rad, Math.sin(t*0.7 + r)*3, Math.sin(t)*rad));
   }
   const curve = new THREE.CatmullRomCurve3(pts);
   const geo = new THREE.TubeGeometry(curve, 200, 0.02, 6, false);
-  const mat = new THREE.MeshBasicMaterial({
+  ribbonGroup.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
     color: r % 2 === 0 ? 0xff0033 : 0xffffff,
     transparent:true, opacity: r % 2 === 0 ? 0.4 : 0.2
-  });
-  ribbonGroup.add(new THREE.Mesh(geo, mat));
+  })));
 }
-ribbonGroup.position.z = -6;
-scene.add(ribbonGroup);
+ribbonGroup.position.z = -6; scene.add(ribbonGroup);
 
 camera.position.z = 8;
-
 let mouseX = 0, mouseY = 0;
 document.addEventListener("mousemove", e=>{
-  mouseX = (e.clientX - innerWidth/2) * 0.0007;
-  mouseY = (e.clientY - innerHeight/2) * 0.0007;
+  mouseX = (e.clientX - innerWidth/2)*0.0007;
+  mouseY = (e.clientY - innerHeight/2)*0.0007;
 });
 
 let t = 0;
 function animate(){
   requestAnimationFrame(animate);
   t += 0.008;
-
-  particles.rotation.y += 0.001;
-  particles.rotation.x += 0.0004;
-  particles.rotation.x += (mouseY*2 - particles.rotation.x) * 0.02;
-  particles.rotation.y += (mouseX*2 - particles.rotation.y) * 0.02;
-
+  particles.rotation.y += 0.001; particles.rotation.x += 0.0004;
+  particles.rotation.x += (mouseY*2 - particles.rotation.x)*0.02;
+  particles.rotation.y += (mouseX*2 - particles.rotation.y)*0.02;
   floaters.forEach(m=>{
-    m.rotation.x += m.userData.rx;
-    m.rotation.y += m.userData.ry;
-    m.rotation.z += m.userData.rz;
+    m.rotation.x += m.userData.rx; m.rotation.y += m.userData.ry; m.rotation.z += m.userData.rz;
     m.userData.float += m.userData.floatSpeed;
-    m.position.y = m.userData.baseY + Math.sin(m.userData.float) * 0.9;
-    m.position.x += Math.sin(m.userData.float * 0.7) * 0.002;
+    m.position.y = m.userData.baseY + Math.sin(m.userData.float)*0.9;
+    m.position.x += Math.sin(m.userData.float*0.7)*0.002;
   });
-
-  const s = 1 + Math.sin(t * 1.4) * 0.08;
-  core.scale.set(s, s, s);
-  glow.scale.set(s * 1.1, s * 1.1, s * 1.1);
-  core.rotation.y += 0.0018;
-  core.rotation.x += 0.0008;
-  glow.rotation.y -= 0.001;
-
+  const s = 1 + Math.sin(t*1.4)*0.08;
+  core.scale.set(s,s,s); glow.scale.set(s*1.1, s*1.1, s*1.1);
+  core.rotation.y += 0.0018; core.rotation.x += 0.0008; glow.rotation.y -= 0.001;
   ribbonGroup.rotation.y += 0.0025;
-  ribbonGroup.rotation.x = Math.sin(t * 0.3) * 0.25;
-
-  camera.position.x += (mouseX*3.5 - camera.position.x) * 0.03;
-  camera.position.y += (-mouseY*3.5 - camera.position.y) * 0.03;
+  ribbonGroup.rotation.x = Math.sin(t*0.3)*0.25;
+  camera.position.x += (mouseX*3.5 - camera.position.x)*0.03;
+  camera.position.y += (-mouseY*3.5 - camera.position.y)*0.03;
   camera.lookAt(0,0,-3);
-  camera.position.z = 8 + Math.sin(t * 0.4) * 0.35;
-
+  camera.position.z = 8 + Math.sin(t*0.4)*0.35;
   renderer.render(scene, camera);
 }
 animate();
@@ -1477,10 +1299,8 @@ addEventListener("resize", ()=>{
 });
 
 document.addEventListener("mouseover", (e)=>{
-  const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal");
-  if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)){
-    SoundFX.hover();
-  }
+  const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter");
+  if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
 });
 </script>
 
