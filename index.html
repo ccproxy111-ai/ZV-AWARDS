@@ -21,12 +21,7 @@ html,body{height:100%}
 body{background:radial-gradient(circle at 20% 10%,var(--bg-rad-1),transparent 55%),radial-gradient(circle at 80% 80%,var(--bg-rad-2),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg-2));color:#fff;font-family:"Inter",sans-serif;overflow-x:hidden;position:relative;min-height:100vh;transition:background .5s ease}
 body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(circle at 30% 40%,var(--bg-rad-3),transparent 45%),radial-gradient(circle at 70% 60%,var(--bg-rad-4),transparent 50%);animation:breathe 9s ease-in-out infinite alternate}
 @keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
-/* Статичная картинка тора — показывается на мобилке вместо 3D canvas */
-#tor-fallback{
-  position:absolute;top:0;left:0;width:100%;height:100vh;z-index:-1;
-  display:none;pointer-events:none;overflow:hidden;
-  align-items:center;justify-content:center;
-}
+#tor-fallback{position:absolute;top:0;left:0;width:100%;height:100vh;z-index:-1;display:none;pointer-events:none;overflow:hidden;align-items:center;justify-content:center}
 #tor-fallback svg{width:min(90vw, 480px);height:auto;display:block;opacity:.35}
 #canvas-container{position:absolute;top:0;left:0;width:100%;height:100vh;z-index:-1;pointer-events:none;overflow:hidden}
 #canvas-container canvas{display:block;width:100%;height:100%}
@@ -235,47 +230,22 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 .toast.error{background:linear-gradient(135deg,var(--red-2),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7)}
 .toast.success{background:linear-gradient(135deg,#fff,#e6e6e6);color:var(--red-dark);box-shadow:0 0 35px rgba(255,255,255,.7)}
 .toast.info{background:linear-gradient(135deg,var(--red-3),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-2-r),var(--accent-2-g),var(--accent-2-b),.7)}
-
-/* ============================================================
-   МОБИЛЬНАЯ ЭКСТРЕМАЛЬНАЯ ОПТИМИЗАЦИЯ
-============================================================ */
 @media (max-width:900px){
-  /* Полное отключение всех тяжёлых эффектов */
-  *,*::before,*::after{
-    backdrop-filter:none !important;
-    -webkit-backdrop-filter:none !important;
-    filter:none !important;
-    animation:none !important;
-    transition:none !important;
-    mix-blend-mode:normal !important;
-    box-shadow:none !important;
-    text-shadow:none !important;
-    will-change:auto !important;
-    transform-style:flat !important;
-  }
-  /* Оставляем только критичные тени для читаемости */
+  *,*::before,*::after{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;filter:none !important;animation:none !important;transition:none !important;mix-blend-mode:normal !important;box-shadow:none !important;text-shadow:none !important;will-change:auto !important;transform-style:flat !important}
   .hero h1{text-shadow:0 2px 4px rgba(0,0,0,.95) !important}
   .vote-dates{text-shadow:0 2px 4px rgba(0,0,0,.95) !important}
   .hero p{text-shadow:0 1px 3px rgba(0,0,0,.95) !important}
   .section-title{text-shadow:0 1px 3px rgba(0,0,0,.95) !important}
   .logo{text-shadow:0 1px 3px rgba(0,0,0,.9) !important}
-
-  /* Скрываем всё интерактивное */
   .ripple,.cursor-particle,.bubble,.flash-overlay{display:none !important}
-
-  /* Показываем статичную картинку тора вместо 3D */
   #canvas-container{display:none !important}
   #tor-fallback{display:flex !important}
-
-  /* Упрощаем карточки до статичных блоков */
   .nomination-card{background:rgba(20,2,6,.85) !important}
   .nomination-card::before{display:none !important}
   .nomination-card>i{color:#fff !important}
   .nomination-card.king-card{background:#2a0d10 !important}
   .nomination-card.king-card::after{display:none !important}
   .nomination-card.king-card>i{color:#ffd24a !important}
-
-  /* Убираем градиентные свечения */
   .nominee-card{background:rgba(25,5,10,.85) !important}
   .nominee-card::after{display:none !important}
   .nominee-card.chosen{background:linear-gradient(160deg,rgba(255,0,51,.35),rgba(179,0,27,.25)) !important;border-color:#fff !important}
@@ -284,57 +254,22 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
   .vote-action-btn,.vote-confirm-btn,.vote-cancel-small,.pass-submit,.btn-yes,.btn-no{box-shadow:none !important}
   .vote-confirm-btn{background:linear-gradient(90deg,var(--red),var(--red-3)) !important;animation:none !important}
   .vote-action-btn.cancel-btn{background:var(--red) !important;animation:none !important}
-
-  /* Убираем сложные тени у модалок */
   .modal-content{box-shadow:0 5px 30px rgba(0,0,0,.8) !important;border:1px solid rgba(255,255,255,.15) !important;background:#150508 !important}
   .modal-content::before{display:none !important}
   .modal-overlay{background:rgba(5,0,1,.96) !important}
-
-  /* Упрощаем хедер */
   header{background:rgba(5,2,3,.9) !important}
-
-  /* Онлайн счётчик без свечения */
   .online-counter{box-shadow:none !important;border-color:rgba(34,255,136,.5) !important}
   .online-dot{box-shadow:0 0 4px var(--online) !important}
-
-  /* Кнопка темы */
   .theme-toggle{box-shadow:none !important;animation:none !important;background:var(--red) !important}
   .theme-panel{background:#150508 !important;box-shadow:0 5px 20px rgba(0,0,0,.85) !important}
-
-  /* Профиль-меню */
   .profile-menu{background:#150508 !important;box-shadow:0 5px 20px rgba(0,0,0,.85) !important}
-
-  /* Маскот без мерцания */
   .mascot-btn{animation:none !important;background:var(--red) !important;box-shadow:none !important;border-color:#fff !important}
-
-  /* Счётчик кликов без blur */
   .click-counter{background:rgba(0,0,0,.75) !important;box-shadow:none !important}
-
-  /* Основная кнопка — сплошной цвет */
-  .vote-main-btn{
-    background:linear-gradient(90deg,var(--red-3),var(--red)) !important;
-    box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35) !important;
-    animation:none !important;
-  }
+  .vote-main-btn{background:linear-gradient(90deg,var(--red-3),var(--red)) !important;box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35) !important;animation:none !important}
   .vote-main-btn::before{display:none !important}
-
-  /* Даты — упрощённый градиент */
-  .vote-dates{
-    background:#000 !important;
-    -webkit-text-fill-color:var(--red) !important;
-    animation:none !important;
-  }
+  .vote-dates{background:#000 !important;-webkit-text-fill-color:var(--red) !important;animation:none !important}
   .vote-dates::before{display:none !important}
-
-  /* Заголовок — простой цвет */
-  .hero h1{
-    background:linear-gradient(180deg,#fff 0%,#ff0033 60%,#b3001b 100%) !important;
-    -webkit-background-clip:text !important;background-clip:text !important;
-    animation:none !important;
-    filter:none !important;
-  }
-
-  /* Размеры для мобилки */
+  .hero h1{background:linear-gradient(180deg,#fff 0%,#ff0033 60%,#b3001b 100%) !important;-webkit-background-clip:text !important;background-clip:text !important;animation:none !important;filter:none !important}
   header{padding:14px 16px;gap:8px}
   .logo{font-size:15px;letter-spacing:1.5px}
   .online-counter{padding:6px 10px;font-size:11px;gap:6px}
@@ -388,7 +323,36 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 </head>
 <body data-theme="scarlet">
 
-<!-- Статичная картинка тора для мобилки -->
+<script>
+(function(){
+  document.addEventListener("contextmenu", function(e){ e.preventDefault(); return false; }, false);
+  document.addEventListener("keydown", function(e){
+    if(e.key === "F12" ||
+       (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j" || e.key === "C" || e.key === "c")) ||
+       (e.ctrlKey && (e.key === "U" || e.key === "u")) ||
+       (e.ctrlKey && (e.key === "S" || e.key === "s")) ||
+       (e.metaKey && e.altKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j" || e.key === "C" || e.key === "c"))){
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+  }, false);
+  var devtoolsOpen = false, threshold = 160;
+  setInterval(function(){
+    var w = window.outerWidth - window.innerWidth;
+    var h = window.outerHeight - window.innerHeight;
+    if(w > threshold || h > threshold){
+      if(!devtoolsOpen){
+        devtoolsOpen = true;
+        try{
+          console.clear();
+          console.log("%c⛔ ДОСТУП ЗАПРЕЩЁН", "color:#ff0033;font-size:40px;font-weight:900;text-shadow:0 0 20px #ff0033;");
+          console.log("%cЭтот сайт защищён.", "color:#fff;font-size:16px;");
+        }catch(e){}
+      }
+    } else { devtoolsOpen = false; }
+  }, 1000);
+})();
+</script>
+
 <div id="tor-fallback">
   <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -402,17 +366,14 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
       </linearGradient>
     </defs>
     <g style="color:var(--red)">
-      <!-- Внешняя сетка тора -->
       <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1.5" opacity=".35"/>
       <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(30 300 300) scale(1,1)"/>
       <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(-30 300 300)"/>
       <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(60 300 300)"/>
       <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(-60 300 300)"/>
-      <!-- Внутреннее кольцо -->
       <ellipse cx="300" cy="300" rx="150" ry="75" fill="none" stroke="url(#tg2)" stroke-width="1.5" opacity=".45"/>
       <ellipse cx="300" cy="300" rx="150" ry="75" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".25" transform="rotate(45 300 300)"/>
       <ellipse cx="300" cy="300" rx="150" ry="75" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".25" transform="rotate(-45 300 300)"/>
-      <!-- Пятно свечения -->
       <circle cx="300" cy="300" r="240" fill="url(#tg1)"/>
     </g>
   </svg>
@@ -562,9 +523,6 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 <div class="toast" id="toast"></div>
 
 <script>
-/* ============================================================
-   CONFIG
-============================================================ */
 const GOOGLE_CLIENT_ID = "193095894603-4jefaanb9nv73gonatbprs9cuokqua7v.apps.googleusercontent.com";
 const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
@@ -572,9 +530,6 @@ const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
 if(IS_MOBILE) document.body.classList.add("low-perf");
 
-/* ============================================================
-   THEME
-============================================================ */
 const THEME_KEY = "zvawards_theme";
 function setTheme(name){
   document.body.setAttribute("data-theme", name);
@@ -626,9 +581,6 @@ function applyThemeTo3D(){
   if(themeColorTargets.torGlow) themeColorTargets.torGlow.material.color.setHex(cTor ?? 0xb8002a);
 }
 
-/* ============================================================
-   SESSION ID
-============================================================ */
 function getSessionId(){
   let sid = sessionStorage.getItem("zvawards_sid");
   if(!sid){
@@ -639,9 +591,6 @@ function getSessionId(){
 }
 const SESSION_ID = getSessionId();
 
-/* ============================================================
-   API (POST — обход CORS)
-============================================================ */
 async function callAPI(action, params){
   params = params || {};
   try{
@@ -661,9 +610,6 @@ async function callAPI(action, params){
   }
 }
 
-/* ============================================================
-   ОНЛАЙН
-============================================================ */
 async function pingOnline(){
   const r = await callAPI("ping", { sid: SESSION_ID });
   if(r && r.ok && typeof r.online === "number") updateOnlineUI(r.online);
@@ -682,9 +628,6 @@ function updateOnlineUI(n){
   setInterval(fetchOnline, 120000);
 })();
 
-/* ============================================================
-   SOUND (на мобилке тише и реже)
-============================================================ */
 const SoundFX = (()=>{
   let ctx = null;
   function ensureCtx(){
@@ -723,9 +666,6 @@ const SoundFX = (()=>{
 })();
 window.addEventListener("pointerdown", ()=>{ if(!IS_MOBILE) SoundFX.click(); }, {once:true, capture:true});
 
-/* ============================================================
-   STATE
-============================================================ */
 let currentUser = null;
 let userVotes = {};
 let allVotes = {};
@@ -772,18 +712,12 @@ function showToast(msg, type){
 }
 function scrollToNominations(){ SoundFX.whoosh(); document.getElementById("voting-section").scrollIntoView({behavior:"smooth"}); }
 
-/* ============================================================
-   SHA-256
-============================================================ */
 async function sha256(str){
   const buf = new TextEncoder().encode(str);
   const hash = await crypto.subtle.digest("SHA-256", buf);
   return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 
-/* ============================================================
-   GOOGLE SIGN-IN
-============================================================ */
 let googleInitialized = false;
 function initGoogle(){
   if(googleInitialized) return;
@@ -909,9 +843,6 @@ window.addEventListener("load", ()=>{
   const t = setInterval(()=>{ if(window.google && google.accounts){ initGoogle(); clearInterval(t); } }, 300);
 });
 
-/* ============================================================
-   RESET
-============================================================ */
 async function resetMyVotes(){
   if(!currentUser){ showToast("Сначала войдите в Google-аккаунт.", "error"); return; }
   if(!confirm("Сбросить ВСЕ ваши голоса?\n\nЭто удалит ВСЕ ваши строки из Google-таблицы.")) return;
@@ -924,16 +855,10 @@ async function resetMyVotes(){
   else showToast("Локальный кэш очищен, но с сервером связи не было.", "error");
 }
 
-/* ============================================================
-   МОДАЛКИ
-============================================================ */
 function openModal(id){ SoundFX.open(); document.getElementById(id).classList.add("active"); document.body.style.overflow = "hidden"; }
 function closeModal(id){ SoundFX.close(); document.getElementById(id).classList.remove("active"); document.body.style.overflow = ""; }
 function handleModalBg(e,id){ if(e.target.id === id) closeModal(id); }
 
-/* ============================================================
-   АДМИНКА
-============================================================ */
 function createAdminButton(){
   if(adminBtnEl) return;
   const actions = document.querySelector(".header-actions");
@@ -991,10 +916,8 @@ async function checkAdminPassword(){
   if(!pass || !secret){ showToast("Введите пароль и секретное слово.", "error"); return; }
   if(!adminGoogleId){ showToast("Ошибка сессии. Войдите заново.", "error"); return; }
   const emailLower = currentUser.email.toLowerCase().trim();
-  const salt = adminGoogleId + "|" + emailLower;
-  const passHash = await sha256(salt + "|" + pass);
   showToast("Проверяем...", "info");
-  const data = await callAPI("checkAdmin", { email:emailLower, p:passHash, s:secret, g:adminGoogleId });
+  const data = await callAPI("checkAdmin", { email:emailLower, p:pass, s:secret, g:adminGoogleId });
   if(data && data.ok && data.token){
     adminToken = data.token;
     closePasswordModal();
@@ -1125,9 +1048,6 @@ document.addEventListener("keydown", e=>{
   }
 });
 
-/* ============================================================
-   ГОЛОСОВАНИЕ
-============================================================ */
 function openNomination(category){
   SoundFX.click();
   if(!currentUser){ showToast("Для голосования необходимо войти в Google аккаунт!", "error"); onAuthClick(); return; }
@@ -1248,9 +1168,6 @@ function refreshNominationUI(category){
   else subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
 }
 
-/* ============================================================
-   ПРИКОЛЫ — только на ПК
-============================================================ */
 const LS_CLICKS_KEY = "zvawards_clicks";
 let myClicks = parseInt(localStorage.getItem(LS_CLICKS_KEY) || "0", 10);
 function updateClickCounter(){
@@ -1370,9 +1287,6 @@ function mascotClick(){
   setTimeout(()=>label.remove(), 1300);
 }
 
-/* ============================================================
-   THREE.JS — ТОЛЬКО на ПК
-============================================================ */
 if(!IS_MOBILE){
   const container = document.getElementById("canvas-container");
   const scene = new THREE.Scene();
