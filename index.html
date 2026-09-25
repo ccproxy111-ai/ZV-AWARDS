@@ -202,6 +202,21 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 .toast.error{background:linear-gradient(135deg,var(--red-2),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7)}
 .toast.success{background:linear-gradient(135deg,#fff,#e6e6e6);color:var(--red-dark);box-shadow:0 0 35px rgba(255,255,255,.7)}
 .toast.info{background:linear-gradient(135deg,var(--red-3),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-2-r),var(--accent-2-g),var(--accent-2-b),.7)}
+
+/* ========== ОБРАТНЫЙ ОТСЧЁТ ========== */
+.countdown-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:28px;padding:22px 34px;border-radius:24px;background:linear-gradient(160deg,rgba(30,3,8,.75),rgba(5,0,1,.9));border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35);box-shadow:0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35),0 0 80px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.15),inset 0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.08);position:relative;z-index:2;backdrop-filter:blur(10px);animation:cdWrapPulse 3s ease-in-out infinite}
+@keyframes cdWrapPulse{0%,100%{box-shadow:0 0 35px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.3),0 0 70px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.12),inset 0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.08)}50%{box-shadow:0 0 55px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.65),0 0 110px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.28),inset 0 0 40px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.15)}}
+.countdown-label{font-family:"Orbitron",sans-serif;font-size:clamp(11px,1.3vw,14px);font-weight:800;letter-spacing:4px;text-transform:uppercase;background:linear-gradient(90deg,#fff,var(--red),#fff,var(--red-2),#fff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:cdLabelShine 4s linear infinite;filter:drop-shadow(0 0 12px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.6))}
+@keyframes cdLabelShine{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.countdown{display:flex;align-items:center;gap:clamp(6px,1vw,14px);flex-wrap:nowrap}
+.cd-block{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:clamp(52px,6.5vw,86px)}
+.cd-num{font-family:"Orbitron",sans-serif;font-size:clamp(26px,4.5vw,56px);font-weight:900;letter-spacing:2px;line-height:1;color:#fff;background:linear-gradient(180deg,#fff 0%,rgba(var(--accent-r),var(--accent-g),var(--accent-b),1) 50%,var(--red-3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.8)) drop-shadow(0 2px 4px rgba(0,0,0,.95));transition:transform .3s ease;display:inline-block}
+.cd-num.flip{animation:cdFlip .5s ease}
+@keyframes cdFlip{0%{transform:scale(1)}40%{transform:scale(1.18) rotateX(-25deg);filter:drop-shadow(0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)) drop-shadow(0 2px 4px rgba(0,0,0,.95))}100%{transform:scale(1)}}
+.cd-cap{font-family:"Orbitron",sans-serif;font-size:clamp(8px,1vw,11px);font-weight:700;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+.cd-sep{font-family:"Orbitron",sans-serif;font-size:clamp(22px,3.5vw,44px);font-weight:900;color:var(--red);text-shadow:0 0 18px rgba(var(--accent-r),var(--accent-g),var(--accent-b),1),0 2px 4px rgba(0,0,0,1);margin-bottom:22px;animation:cdSepPulse 1s ease-in-out infinite}
+@keyframes cdSepPulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.05)}}
+
 @media (max-width:900px){
   *,*::before,*::after{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;filter:none !important;animation:none !important;transition:none !important;mix-blend-mode:normal !important;box-shadow:none !important;text-shadow:none !important;will-change:auto !important;transform-style:flat !important}
   .hero h1{text-shadow:0 2px 4px rgba(0,0,0,.95) !important}
@@ -242,6 +257,10 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
   .vote-dates{background:#000 !important;-webkit-text-fill-color:var(--red) !important;animation:none !important}
   .vote-dates::before{display:none !important}
   .hero h1{background:linear-gradient(180deg,#fff 0%,#ff0033 60%,#b3001b 100%) !important;-webkit-background-clip:text !important;background-clip:text !important;animation:none !important;filter:none !important}
+  .countdown-wrap{background:rgba(20,2,6,.85) !important;box-shadow:none !important;animation:none !important}
+  .countdown-label{background:linear-gradient(90deg,#ff0033,#b3001b) !important;-webkit-background-clip:text !important;background-clip:text !important;animation:none !important;filter:none !important}
+  .cd-num{background:linear-gradient(180deg,#fff,#ff0033) !important;-webkit-background-clip:text !important;background-clip:text !important;filter:none !important;animation:none !important}
+  .cd-sep{animation:none !important;opacity:.8 !important}
   header{padding:14px 16px;gap:8px}
   .logo{font-size:15px;letter-spacing:1.5px}
   .online-counter{padding:6px 10px;font-size:11px;gap:6px}
@@ -287,6 +306,12 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
   .toast{left:16px;right:16px;bottom:16px;text-align:center;max-width:none;background:var(--red-dark) !important;box-shadow:none !important}
   .theme-widget{right:12px;bottom:12px}
   .theme-panel{width:210px}
+  .countdown-wrap{padding:16px 14px;gap:10px;border-radius:18px}
+  .countdown-label{letter-spacing:2px;font-size:10px}
+  .countdown{gap:4px}
+  .cd-block{min-width:44px;gap:4px}
+  .cd-cap{letter-spacing:1.2px;font-size:8px}
+  .cd-sep{font-size:20px;margin-bottom:16px}
 }
 </style>
 </head>
@@ -395,7 +420,34 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 
 <section class="hero">
   <h1>ZV-AWARDS</h1>
-  <div class="vote-dates">ГОЛОСОВАНИЕ ПРОВОДИТСЯ С 24.09.26 ДО 31.12.26</div>
+
+  <div class="countdown-wrap" id="countdown-wrap">
+    <div class="countdown-label">ДО КОНЦА ГОЛОСОВАНИЯ ОСТАЛОСЬ</div>
+    <div class="countdown" id="countdown">
+      <div class="cd-block">
+        <div class="cd-num" id="cd-days">00</div>
+        <div class="cd-cap">ДНЕЙ</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-hours">00</div>
+        <div class="cd-cap">ЧАСОВ</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-minutes">00</div>
+        <div class="cd-cap">МИНУТ</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-seconds">00</div>
+        <div class="cd-cap">СЕКУНД</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vote-dates">ОТ 24.09.26 ДО 31.12.26</div>
+
   <p>Голосование за лучших участников сообщества. Выбери своих фаворитов в каждой номинации.</p>
   <button class="vote-main-btn" type="button" onclick="scrollToNominations()">НАЧАТЬ ГОЛОСОВАНИЕ</button>
 </section>
@@ -529,6 +581,59 @@ function getSessionId(){
 }
 const SESSION_ID = getSessionId();
 
+/* ============================================================
+   ОБРАТНЫЙ ОТСЧЁТ ДО КОНЦА ГОЛОСОВАНИЯ
+============================================================ */
+(function countdownInit(){
+  const END_DATE = new Date("2026-12-31T23:59:59+03:00").getTime();
+
+  const elDays    = document.getElementById("cd-days");
+  const elHours   = document.getElementById("cd-hours");
+  const elMinutes = document.getElementById("cd-minutes");
+  const elSeconds = document.getElementById("cd-seconds");
+
+  if(!elDays || !elHours || !elMinutes || !elSeconds) return;
+
+  function pad(n){ return String(n).padStart(2, "0"); }
+
+  function flip(el){
+    if(!el) return;
+    el.classList.remove("flip");
+    void el.offsetWidth;
+    el.classList.add("flip");
+  }
+
+  let prev = { d:"", h:"", m:"", s:"" };
+
+  function tick(){
+    const now = Date.now();
+    let diff = END_DATE - now;
+
+    if(diff <= 0){
+      elDays.textContent = "00";
+      elHours.textContent = "00";
+      elMinutes.textContent = "00";
+      elSeconds.textContent = "00";
+      return;
+    }
+
+    const days    = Math.floor(diff / 86400000);
+    const hours   = Math.floor((diff % 86400000) / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    const dStr = pad(days), hStr = pad(hours), mStr = pad(minutes), sStr = pad(seconds);
+
+    if(prev.d !== dStr){ elDays.textContent = dStr; if(prev.d) flip(elDays); prev.d = dStr; }
+    if(prev.h !== hStr){ elHours.textContent = hStr; if(prev.h) flip(elHours); prev.h = hStr; }
+    if(prev.m !== mStr){ elMinutes.textContent = mStr; if(prev.m) flip(elMinutes); prev.m = mStr; }
+    if(prev.s !== sStr){ elSeconds.textContent = sStr; if(prev.s) flip(elSeconds); prev.s = sStr; }
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+
 async function callAPI(action, params){
   params = params || {};
   try{
@@ -605,7 +710,6 @@ window.addEventListener("pointerdown", ()=>{ if(!IS_MOBILE) SoundFX.click(); }, 
 
 let currentUser = null;
 let userVotes = {};
-let allVotes = {};
 
 const nomineesDatabase = {
   "ZV KING": ["MrAdiviK (Артём младший)","Медуза (Никита)","FACTOVSKII (Даня)","Maks (Максим)","Neverst (Назар)"],
@@ -638,11 +742,10 @@ async function sendVoteToSheet(payload){
       redirect: "follow"
     });
     const text = await res.text();
-    console.log("[ZV] ответ сервера:", text);
     const data = JSON.parse(text);
     return data && data.ok === true;
   }catch(e){
-    console.error("[ZV] sendVoteToSheet error:", e);
+    console.error("sendVoteToSheet error:", e);
     return false;
   }
 }
