@@ -629,7 +629,23 @@ function loadMyVotes(){ try{ const r=localStorage.getItem(LS_VOTES); return r?JS
 function saveMyVotes(v){ localStorage.setItem(LS_VOTES, JSON.stringify(v)); }
 userVotes = loadMyVotes();
 
-async function sendVoteToSheet(payload){ const r=await callAPI("vote",payload); return r&&r.ok===true; }
+async function sendVoteToSheet(payload){
+  try{
+    const res = await fetch(SHEETS_API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ ...payload, t: Date.now() }),
+      redirect: "follow"
+    });
+    const text = await res.text();
+    console.log("[ZV] ответ сервера:", text);
+    const data = JSON.parse(text);
+    return data && data.ok === true;
+  }catch(e){
+    console.error("[ZV] sendVoteToSheet error:", e);
+    return false;
+  }
+}
 async function deleteVoteFromSheet(category,email){ const r=await callAPI("delete",{category,email}); return r&&r.ok===true; }
 async function deleteAllVotesByEmail(email){ const r=await callAPI("deleteAll",{email}); return r&&r.ok===true; }
 
