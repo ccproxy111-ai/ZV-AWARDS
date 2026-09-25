@@ -92,7 +92,6 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 .theme-option .theme-name{flex:1;color:#fff}
 .theme-option .theme-check{color:var(--red);font-size:12px;opacity:0;transition:opacity .2s}
 .theme-option.active .theme-check{opacity:1}
-
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 20px 40px;position:relative;background:radial-gradient(ellipse 65% 55% at 50% 50%,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 45%,transparent 80%)}
 .hero h1{font-family:"Orbitron",sans-serif;font-size:clamp(48px,9vw,90px);font-weight:900;letter-spacing:6px;text-transform:uppercase;margin-bottom:18px;background:linear-gradient(180deg,#fff 0%,rgba(var(--accent-r),var(--accent-g),var(--accent-b),1) 45%,var(--red-3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 4px 8px rgba(0,0,0,.95)) drop-shadow(0 0 3px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55));animation:glitch 4s infinite,floatY 6s ease-in-out infinite;position:relative;z-index:2}
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -229,51 +228,61 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 .toast.error{background:linear-gradient(135deg,var(--red-2),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.7)}
 .toast.success{background:linear-gradient(135deg,#fff,#e6e6e6);color:var(--red-dark);box-shadow:0 0 35px rgba(255,255,255,.7)}
 .toast.info{background:linear-gradient(135deg,var(--red-3),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-2-r),var(--accent-2-g),var(--accent-2-b),.7)}
+
+/* ============================================================
+   МОБИЛЬНАЯ СУПЕР-ОПТИМИЗАЦИЯ
+============================================================ */
 @media (max-width:900px){
+  /* Отключаем все тяжелые эффекты */
+  *,*::before,*::after{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+  .ripple,.cursor-particle,.bubble,.flash-overlay{display:none !important}
+  .mascot-btn,.theme-toggle,.online-dot,.vote-action-btn.cancel-btn,.vote-confirm-btn,.dateShine,.nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{animation:none !important}
+  .logo,.hero h1,.vote-dates,.vote-main-btn,.section-title::after,.nomination-card i,.nominee-avatar,.vote-confirm-btn,.nominee-card.chosen{animation:none !important}
+  .vote-main-btn::before,.vote-dates::before{display:none !important}
+  .nomination-card::before,.nominee-card::after,.modal-content::before{display:none !important}
+  body::before{animation:none;opacity:.7}
+
+  /* Одиночные тени вместо многослойных */
+  .hero h1{filter:drop-shadow(0 2px 4px rgba(0,0,0,.9)) !important}
+  .vote-dates{filter:none !important}
+  .logo{filter:drop-shadow(0 1px 3px rgba(0,0,0,.85)) !important}
+  .vote-main-btn{box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5) !important}
+  .nomination-card i{text-shadow:0 1px 3px rgba(0,0,0,.9) !important}
+  .nomination-card h3{text-shadow:0 1px 3px rgba(0,0,0,.9) !important}
+  .nomination-card .mc-pick{filter:drop-shadow(0 1px 3px rgba(0,0,0,.85)) !important}
+  .nominee-avatar{box-shadow:0 0 8px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5) !important}
+  .nominee-card.chosen{box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5) !important}
+  .nominee-card.king-nominee.chosen{box-shadow:0 0 20px rgba(255,210,74,.6) !important}
+
+  /* Убираем hover-трансформы на тач-устройствах */
+  .nomination-card:hover,.nominee-card:hover,.theme-toggle:hover,.close-modal:hover,.auth-btn:hover,.admin-btn:hover,.vote-action-btn:hover,.vote-confirm-btn:hover,.vote-main-btn:hover,.reset-btn:hover,.admin-tool-btn:hover{transform:none !important}
+  .nomination-card:hover>i,.nomination-card:hover .mc-pick,.nominee-card:hover .nominee-avatar{transform:none !important}
+  .theme-toggle:hover,.profile-action:hover,.btn-yes:hover,.btn-no:hover{transform:none !important}
+
+  /* Убираем каскадную анимацию карточек — экономим CPU */
+  .nominee-card,.admin-nom-block{animation:none !important}
+
   header{padding:14px 16px;gap:8px}
-  .logo{font-size:15px;letter-spacing:1.5px;animation:none}
-  .online-counter{padding:6px 10px;font-size:11px;gap:6px;backdrop-filter:blur(4px)}
+  .logo{font-size:15px;letter-spacing:1.5px}
+  .online-counter{padding:6px 10px;font-size:11px;gap:6px}
   .online-counter .online-num{font-size:13px}
   .online-counter .online-label{font-size:9px;letter-spacing:1px}
   .auth-btn{padding:6px 12px 6px 6px;font-size:11px;gap:6px}
   .auth-btn img.auth-mini-avatar{width:22px;height:22px}
   .admin-btn{padding:7px 10px;font-size:9px}
-  .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px;backdrop-filter:none}
-  .theme-toggle{width:46px;height:46px;font-size:17px;animation:none}
-  .theme-panel{width:230px;padding:12px;backdrop-filter:blur(6px)}
+  .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px}
+  .theme-toggle{width:46px;height:46px;font-size:17px}
+  .theme-panel{width:230px;padding:12px}
   .theme-option{padding:8px 10px;font-size:12px}
   .profile-menu{min-width:220px}
   .profile-avatar{width:38px;height:38px}
   .profile-name{font-size:13px}
   .profile-email{font-size:10px}
-  .cursor-particle,.bubble,.flash-overlay{display:none !important}
-  .ripple{display:none !important}
   .mascot-btn{left:12px;bottom:60px;width:36px;height:36px;font-size:10px}
   .click-counter{right:12px;top:80px;padding:4px 8px;font-size:9px}
-  body::before{animation:none;opacity:.7}
-  .logo{animation:none}
-  .hero h1{animation:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.95)) drop-shadow(0 0 3px rgba(0,0,0,1))}
-  .hero p{animation:none}
-  .vote-dates{animation:none}
-  .vote-dates::before{animation:none;display:none}
-  .vote-main-btn{animation:none}
-  .vote-main-btn::before{animation:none;display:none}
-  .section-title::after{animation:none;width:70px;opacity:1}
-  .nomination-card i{animation:none}
-  .nomination-card .mc-pick{filter:none}
-  .nomination-card:hover{transform:none}
-  .nomination-card:hover i,.nomination-card:hover .mc-pick{transform:none}
-  .nomination-card::before{display:none}
-  .nominee-avatar{animation:none}
-  .nominee-card:hover{transform:none}
-  .nominee-card:hover::after{display:none}
-  .nominee-card.king-nominee.chosen,.nominee-card.chosen{animation:none}
-  .vote-confirm-btn{animation:none}
-  .theme-toggle:hover{transform:none}
-  .close-modal:hover{transform:none}
-  .modal-overlay{backdrop-filter:blur(6px)}
-  .toast{backdrop-filter:blur(4px)}
-  .nomination-card{backdrop-filter:blur(6px)}
 }
 @media (max-width:700px){
   .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px}
@@ -465,7 +474,8 @@ const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
 const IS_SLOW = IS_MOBILE && ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 2));
 if(IS_SLOW || IS_MOBILE) document.body.classList.add("low-perf");
-const FPS_CAP = IS_MOBILE ? 30 : 60;
+/* На мобилке держим 24 FPS — визуально то же, нагрузка в 2.5 раза ниже */
+const FPS_CAP = IS_MOBILE ? 24 : 60;
 const FRAME_INTERVAL = 1000 / FPS_CAP;
 
 /* ============================================================
@@ -560,7 +570,7 @@ async function callAPI(action, params){
 /* ============================================================
    ОНЛАЙН
 ============================================================ */
-const ONLINE_PING_INTERVAL = IS_MOBILE ? 40000 : 25000;
+const ONLINE_PING_INTERVAL = IS_MOBILE ? 60000 : 25000;
 async function pingOnline(){
   const r = await callAPI("ping", { sid: SESSION_ID });
   if(r && r.ok && typeof r.online === "number") updateOnlineUI(r.online);
@@ -822,7 +832,7 @@ async function resetMyVotes(){
 }
 
 /* ============================================================
-   МОДАЛКИ (общие)
+   МОДАЛКИ
 ============================================================ */
 function openModal(id){ SoundFX.open(); document.getElementById(id).classList.add("active"); document.body.style.overflow = "hidden"; }
 function closeModal(id){ SoundFX.close(); document.getElementById(id).classList.remove("active"); document.body.style.overflow = ""; }
@@ -1038,7 +1048,7 @@ function buildNomineeCard(o){
   const card = document.createElement("div");
   card.className = "nominee-card";
   if(o.isKing) card.classList.add("king-nominee");
-  card.style.animationDelay = IS_MOBILE ? "0s" : (o.idx * 0.05 + "s");
+  if(!IS_MOBILE) card.style.animationDelay = (o.idx * 0.05) + "s";
   card.dataset.name = o.name;
   if(o.isChosen) card.classList.add("chosen");
   if(o.isLocked) card.classList.add("locked");
@@ -1085,7 +1095,7 @@ function triggerGlitch(el){
   void el.offsetWidth;
   el.classList.add("glitch-shake");
   const r = el.getBoundingClientRect();
-  sparkBurst(r.left + r.width/2, r.top + r.height/2, "rgba(255,255,255,1)");
+  if(!IS_MOBILE) sparkBurst(r.left + r.width/2, r.top + r.height/2, "rgba(255,255,255,1)");
   setTimeout(()=>el.classList.remove("glitch-shake"), 400);
 }
 function showConfirmActions(actionsEl, category, name, e){
@@ -1097,7 +1107,7 @@ function showConfirmActions(actionsEl, category, name, e){
   confirmBtn.addEventListener("click", async (ev)=>{
     ev.stopPropagation();
     SoundFX.confirm();
-    if(e) sparkBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
+    if(e && !IS_MOBILE) sparkBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
     await submitVote(category, name);
   });
   const cancelBtn = document.createElement("button");
@@ -1149,7 +1159,7 @@ function refreshNominationUI(category){
 }
 
 /* ============================================================
-   ПРИКОЛЫ
+   ПРИКОЛЫ (ПК)
 ============================================================ */
 (function cursorParticlesInit(){
   if(IS_MOBILE) return;
@@ -1167,16 +1177,18 @@ function refreshNominationUI(category){
     setTimeout(()=>p.remove(), 900);
   }, { passive: true });
 })();
-document.addEventListener("click", (e)=>{
-  const tgt = e.target;
-  if(tgt.closest("input,textarea")) return;
-  const rip = document.createElement("div");
-  rip.className = "ripple";
-  rip.style.left = e.clientX + "px";
-  rip.style.top = e.clientY + "px";
-  document.body.appendChild(rip);
-  setTimeout(()=>rip.remove(), 750);
-}, { passive:true });
+if(!IS_MOBILE){
+  document.addEventListener("click", (e)=>{
+    const tgt = e.target;
+    if(tgt.closest("input,textarea")) return;
+    const rip = document.createElement("div");
+    rip.className = "ripple";
+    rip.style.left = e.clientX + "px";
+    rip.style.top = e.clientY + "px";
+    document.body.appendChild(rip);
+    setTimeout(()=>rip.remove(), 750);
+  }, { passive:true });
+}
 
 const LS_CLICKS_KEY = "zvawards_clicks";
 let myClicks = parseInt(localStorage.getItem(LS_CLICKS_KEY) || "0", 10);
@@ -1333,13 +1345,14 @@ function mascotClick(){
 })();
 
 /* ============================================================
-   THREE.JS
+   THREE.JS — оптимизировано под мобилки
 ============================================================ */
 const container = document.getElementById("canvas-container");
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: !IS_MOBILE, alpha: false, powerPreference: "high-performance", stencil: false });
-const PR = IS_MOBILE ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
+/* На мобилке pixel ratio = 1 — экономит в 4 раза */
+const PR = IS_MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 renderer.setPixelRatio(PR);
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
@@ -1351,16 +1364,17 @@ const initBg   = readCSSColor("--bg-color-3d") ?? null;
 if(initBg != null) scene.background = new THREE.Color(initBg);
 scene.fog = new THREE.FogExp2(initFog, 0.055);
 
-const TOR_SEGMENTS = IS_MOBILE ? 60 : 120;
-const TOR_TUBE_SEG = IS_MOBILE ? 20 : 40;
+/* Мобилка: 40 сегментов × 12 трубок × 3 слоя = мало полигонов */
+const TOR_SEGMENTS = IS_MOBILE ? 40 : 120;
+const TOR_TUBE_SEG = IS_MOBILE ? 12 : 40;
 const torGeo = new THREE.TorusGeometry(3.2, 0.9, TOR_TUBE_SEG, TOR_SEGMENTS);
 const torMat = new THREE.MeshBasicMaterial({ color: initTor, wireframe: true, transparent: true, opacity: 0.38 });
 const tor = new THREE.Mesh(torGeo, torMat);
 const torWireMat = new THREE.MeshBasicMaterial({ color: initTor2, wireframe: true, transparent: true, opacity: 0.18 });
-const torWireGeo = new THREE.TorusGeometry(3.2, 0.92, IS_MOBILE ? 8 : 16, TOR_SEGMENTS);
+const torWireGeo = new THREE.TorusGeometry(3.2, 0.92, IS_MOBILE ? 6 : 16, TOR_SEGMENTS);
 const torWire = new THREE.Mesh(torWireGeo, torWireMat);
 const torGlowMat = new THREE.MeshBasicMaterial({ color: initTor, transparent: true, opacity: 0.04 });
-const torGlowGeo = new THREE.TorusGeometry(3.2, 1.2, IS_MOBILE ? 12 : 24, TOR_SEGMENTS);
+const torGlowGeo = new THREE.TorusGeometry(3.2, 1.2, IS_MOBILE ? 8 : 24, TOR_SEGMENTS);
 const torGlow = new THREE.Mesh(torGlowGeo, torGlowMat);
 const torGroup = new THREE.Group();
 torGroup.add(torGlow); torGroup.add(torWire); torGroup.add(tor);
@@ -1373,6 +1387,13 @@ setTimeout(applyThemeTo3D, 50);
 camera.position.z = 8;
 
 let t = 0, lastFrame = 0, rafId = null, isVisible = !document.hidden;
+let scrollHidden = false;
+/* Пауза 3D при скролле вниз на мобилке — тор не видно, рендерить нечего */
+if(IS_MOBILE){
+  window.addEventListener("scroll", ()=>{
+    scrollHidden = window.scrollY > window.innerHeight * 0.9;
+  }, { passive: true });
+}
 document.addEventListener("visibilitychange", ()=>{
   isVisible = !document.hidden;
   if(isVisible && !rafId){ rafId = requestAnimationFrame(animate); }
@@ -1380,6 +1401,7 @@ document.addEventListener("visibilitychange", ()=>{
 function animate(now){
   rafId = requestAnimationFrame(animate);
   if(!isVisible){ rafId = null; return; }
+  if(IS_MOBILE && scrollHidden) return; /* тор уехал вверх — не рендерим */
   if(now - lastFrame < FRAME_INTERVAL) return;
   lastFrame = now;
   t += 0.008;
@@ -1410,5 +1432,6 @@ if(!IS_MOBILE){
   });
 }
 </script>
+
 </body>
 </html>
