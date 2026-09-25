@@ -21,6 +21,13 @@ html,body{height:100%}
 body{background:radial-gradient(circle at 20% 10%,var(--bg-rad-1),transparent 55%),radial-gradient(circle at 80% 80%,var(--bg-rad-2),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg-2));color:#fff;font-family:"Inter",sans-serif;overflow-x:hidden;position:relative;min-height:100vh;transition:background .5s ease}
 body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(circle at 30% 40%,var(--bg-rad-3),transparent 45%),radial-gradient(circle at 70% 60%,var(--bg-rad-4),transparent 50%);animation:breathe 9s ease-in-out infinite alternate}
 @keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
+/* Статичная картинка тора — показывается на мобилке вместо 3D canvas */
+#tor-fallback{
+  position:absolute;top:0;left:0;width:100%;height:100vh;z-index:-1;
+  display:none;pointer-events:none;overflow:hidden;
+  align-items:center;justify-content:center;
+}
+#tor-fallback svg{width:min(90vw, 480px);height:auto;display:block;opacity:.35}
 #canvas-container{position:absolute;top:0;left:0;width:100%;height:100vh;z-index:-1;pointer-events:none;overflow:hidden}
 #canvas-container canvas{display:block;width:100%;height:100%}
 .ripple{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;border:2px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.85);width:10px;height:10px;transform:translate(-50%,-50%) scale(1);animation:rippleOut .7s ease-out forwards}
@@ -230,41 +237,104 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
 .toast.info{background:linear-gradient(135deg,var(--red-3),var(--red-dark));box-shadow:0 0 30px rgba(var(--accent-2-r),var(--accent-2-g),var(--accent-2-b),.7)}
 
 /* ============================================================
-   МОБИЛЬНАЯ СУПЕР-ОПТИМИЗАЦИЯ
+   МОБИЛЬНАЯ ЭКСТРЕМАЛЬНАЯ ОПТИМИЗАЦИЯ
 ============================================================ */
 @media (max-width:900px){
-  /* Отключаем все тяжелые эффекты */
+  /* Полное отключение всех тяжёлых эффектов */
   *,*::before,*::after{
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
+    filter:none !important;
+    animation:none !important;
+    transition:none !important;
+    mix-blend-mode:normal !important;
+    box-shadow:none !important;
+    text-shadow:none !important;
+    will-change:auto !important;
+    transform-style:flat !important;
   }
+  /* Оставляем только критичные тени для читаемости */
+  .hero h1{text-shadow:0 2px 4px rgba(0,0,0,.95) !important}
+  .vote-dates{text-shadow:0 2px 4px rgba(0,0,0,.95) !important}
+  .hero p{text-shadow:0 1px 3px rgba(0,0,0,.95) !important}
+  .section-title{text-shadow:0 1px 3px rgba(0,0,0,.95) !important}
+  .logo{text-shadow:0 1px 3px rgba(0,0,0,.9) !important}
+
+  /* Скрываем всё интерактивное */
   .ripple,.cursor-particle,.bubble,.flash-overlay{display:none !important}
-  .mascot-btn,.theme-toggle,.online-dot,.vote-action-btn.cancel-btn,.vote-confirm-btn,.dateShine,.nominee-card.king-nominee.chosen .vote-action-btn.cancel-btn{animation:none !important}
-  .logo,.hero h1,.vote-dates,.vote-main-btn,.section-title::after,.nomination-card i,.nominee-avatar,.vote-confirm-btn,.nominee-card.chosen{animation:none !important}
-  .vote-main-btn::before,.vote-dates::before{display:none !important}
-  .nomination-card::before,.nominee-card::after,.modal-content::before{display:none !important}
-  body::before{animation:none;opacity:.7}
 
-  /* Одиночные тени вместо многослойных */
-  .hero h1{filter:drop-shadow(0 2px 4px rgba(0,0,0,.9)) !important}
-  .vote-dates{filter:none !important}
-  .logo{filter:drop-shadow(0 1px 3px rgba(0,0,0,.85)) !important}
-  .vote-main-btn{box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5) !important}
-  .nomination-card i{text-shadow:0 1px 3px rgba(0,0,0,.9) !important}
-  .nomination-card h3{text-shadow:0 1px 3px rgba(0,0,0,.9) !important}
-  .nomination-card .mc-pick{filter:drop-shadow(0 1px 3px rgba(0,0,0,.85)) !important}
-  .nominee-avatar{box-shadow:0 0 8px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5) !important}
-  .nominee-card.chosen{box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.5) !important}
-  .nominee-card.king-nominee.chosen{box-shadow:0 0 20px rgba(255,210,74,.6) !important}
+  /* Показываем статичную картинку тора вместо 3D */
+  #canvas-container{display:none !important}
+  #tor-fallback{display:flex !important}
 
-  /* Убираем hover-трансформы на тач-устройствах */
-  .nomination-card:hover,.nominee-card:hover,.theme-toggle:hover,.close-modal:hover,.auth-btn:hover,.admin-btn:hover,.vote-action-btn:hover,.vote-confirm-btn:hover,.vote-main-btn:hover,.reset-btn:hover,.admin-tool-btn:hover{transform:none !important}
-  .nomination-card:hover>i,.nomination-card:hover .mc-pick,.nominee-card:hover .nominee-avatar{transform:none !important}
-  .theme-toggle:hover,.profile-action:hover,.btn-yes:hover,.btn-no:hover{transform:none !important}
+  /* Упрощаем карточки до статичных блоков */
+  .nomination-card{background:rgba(20,2,6,.85) !important}
+  .nomination-card::before{display:none !important}
+  .nomination-card>i{color:#fff !important}
+  .nomination-card.king-card{background:#2a0d10 !important}
+  .nomination-card.king-card::after{display:none !important}
+  .nomination-card.king-card>i{color:#ffd24a !important}
 
-  /* Убираем каскадную анимацию карточек — экономим CPU */
-  .nominee-card,.admin-nom-block{animation:none !important}
+  /* Убираем градиентные свечения */
+  .nominee-card{background:rgba(25,5,10,.85) !important}
+  .nominee-card::after{display:none !important}
+  .nominee-card.chosen{background:linear-gradient(160deg,rgba(255,0,51,.35),rgba(179,0,27,.25)) !important;border-color:#fff !important}
+  .nominee-card.king-nominee.chosen{background:linear-gradient(160deg,rgba(255,210,74,.35),rgba(179,124,0,.25)) !important;border-color:#ffd24a !important}
+  .nominee-avatar{box-shadow:none !important}
+  .vote-action-btn,.vote-confirm-btn,.vote-cancel-small,.pass-submit,.btn-yes,.btn-no{box-shadow:none !important}
+  .vote-confirm-btn{background:linear-gradient(90deg,var(--red),var(--red-3)) !important;animation:none !important}
+  .vote-action-btn.cancel-btn{background:var(--red) !important;animation:none !important}
 
+  /* Убираем сложные тени у модалок */
+  .modal-content{box-shadow:0 5px 30px rgba(0,0,0,.8) !important;border:1px solid rgba(255,255,255,.15) !important;background:#150508 !important}
+  .modal-content::before{display:none !important}
+  .modal-overlay{background:rgba(5,0,1,.96) !important}
+
+  /* Упрощаем хедер */
+  header{background:rgba(5,2,3,.9) !important}
+
+  /* Онлайн счётчик без свечения */
+  .online-counter{box-shadow:none !important;border-color:rgba(34,255,136,.5) !important}
+  .online-dot{box-shadow:0 0 4px var(--online) !important}
+
+  /* Кнопка темы */
+  .theme-toggle{box-shadow:none !important;animation:none !important;background:var(--red) !important}
+  .theme-panel{background:#150508 !important;box-shadow:0 5px 20px rgba(0,0,0,.85) !important}
+
+  /* Профиль-меню */
+  .profile-menu{background:#150508 !important;box-shadow:0 5px 20px rgba(0,0,0,.85) !important}
+
+  /* Маскот без мерцания */
+  .mascot-btn{animation:none !important;background:var(--red) !important;box-shadow:none !important;border-color:#fff !important}
+
+  /* Счётчик кликов без blur */
+  .click-counter{background:rgba(0,0,0,.75) !important;box-shadow:none !important}
+
+  /* Основная кнопка — сплошной цвет */
+  .vote-main-btn{
+    background:linear-gradient(90deg,var(--red-3),var(--red)) !important;
+    box-shadow:0 0 15px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35) !important;
+    animation:none !important;
+  }
+  .vote-main-btn::before{display:none !important}
+
+  /* Даты — упрощённый градиент */
+  .vote-dates{
+    background:#000 !important;
+    -webkit-text-fill-color:var(--red) !important;
+    animation:none !important;
+  }
+  .vote-dates::before{display:none !important}
+
+  /* Заголовок — простой цвет */
+  .hero h1{
+    background:linear-gradient(180deg,#fff 0%,#ff0033 60%,#b3001b 100%) !important;
+    -webkit-background-clip:text !important;background-clip:text !important;
+    animation:none !important;
+    filter:none !important;
+  }
+
+  /* Размеры для мобилки */
   header{padding:14px 16px;gap:8px}
   .logo{font-size:15px;letter-spacing:1.5px}
   .online-counter{padding:6px 10px;font-size:11px;gap:6px}
@@ -285,12 +355,13 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
   .click-counter{right:12px;top:80px;padding:4px 8px;font-size:9px}
 }
 @media (max-width:700px){
-  .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px}
+  .vote-dates{font-size:12px;letter-spacing:2px;padding:10px 18px;margin-bottom:22px;border:1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4) !important}
   .hero{padding:130px 16px 30px}
   .hero h1{letter-spacing:3px}
   .hero p{font-size:15px}
   .container{padding:60px 15px}
   .section-title{font-size:22px;letter-spacing:2px}
+  .section-title::after{box-shadow:none !important;animation:none !important;width:70px;opacity:1}
   .nominations-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .nomination-card{padding:12px;border-radius:14px}
   .nomination-card>i{font-size:32px}
@@ -300,24 +371,52 @@ header{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;jus
   .modal-content{padding:24px 16px;border-radius:18px}
   .nominees-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .nominee-card{min-height:180px;padding:14px 8px}
-  .nominee-avatar{width:44px;height:44px;font-size:18px}
+  .nominee-avatar{width:44px;height:44px;font-size:18px;border:1.5px solid rgba(255,255,255,.35) !important}
+  .nominee-card.king-nominee .nominee-avatar{border-color:#ffd24a !important}
   .nominee-name{font-size:11px}
-  .vote-action-btn{font-size:10px;padding:7px 8px;letter-spacing:.5px}
+  .vote-action-btn{font-size:10px;padding:7px 8px;letter-spacing:.5px;border-width:1px}
   .vote-action-btn.cancel-btn{font-size:9.5px}
   .vote-confirm-btn{font-size:9.5px;padding:8px 10px}
   .vote-cancel-small{font-size:9px;padding:6px 10px}
-  .toast{left:16px;right:16px;bottom:16px;text-align:center;max-width:none}
+  .toast{left:16px;right:16px;bottom:16px;text-align:center;max-width:none;background:var(--red-dark) !important;box-shadow:none !important}
   .admin-nominee-row{grid-template-columns:1fr auto;font-size:12px}
   .admin-nominee-row .a-pct{grid-column:2}
   .theme-widget{right:12px;bottom:12px}
   .theme-panel{width:210px}
 }
-body.low-perf .nomination-card,body.low-perf .nominee-card,body.low-perf .modal-content,body.low-perf .toast{backdrop-filter:none !important}
-body.low-perf .nomination-card::before,body.low-perf .nominee-card::after,body.low-perf .modal-content::before{display:none !important}
-body.low-perf .vote-dates::before{display:none !important}
 </style>
 </head>
 <body data-theme="scarlet">
+
+<!-- Статичная картинка тора для мобилки -->
+<div id="tor-fallback">
+  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="tg1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="rgba(255,255,255,.15)"/>
+        <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+      </radialGradient>
+      <linearGradient id="tg2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="currentColor" stop-opacity=".9"/>
+        <stop offset="100%" stop-color="currentColor" stop-opacity=".4"/>
+      </linearGradient>
+    </defs>
+    <g style="color:var(--red)">
+      <!-- Внешняя сетка тора -->
+      <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1.5" opacity=".35"/>
+      <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(30 300 300) scale(1,1)"/>
+      <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(-30 300 300)"/>
+      <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(60 300 300)"/>
+      <ellipse cx="300" cy="300" rx="230" ry="130" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".2" transform="rotate(-60 300 300)"/>
+      <!-- Внутреннее кольцо -->
+      <ellipse cx="300" cy="300" rx="150" ry="75" fill="none" stroke="url(#tg2)" stroke-width="1.5" opacity=".45"/>
+      <ellipse cx="300" cy="300" rx="150" ry="75" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".25" transform="rotate(45 300 300)"/>
+      <ellipse cx="300" cy="300" rx="150" ry="75" fill="none" stroke="url(#tg2)" stroke-width="1" opacity=".25" transform="rotate(-45 300 300)"/>
+      <!-- Пятно свечения -->
+      <circle cx="300" cy="300" r="240" fill="url(#tg1)"/>
+    </g>
+  </svg>
+</div>
 
 <div id="canvas-container"></div>
 
@@ -462,7 +561,6 @@ body.low-perf .vote-dates::before{display:none !important}
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ============================================================
    CONFIG
@@ -472,11 +570,7 @@ const ADMIN_EMAIL = "meduzakryt222@gmail.com";
 const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2YmghFtGL26jtc12XZyaS1l30XjOkVKfgjXBSr1g-WhofCuXOQ/exec";
 
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
-const IS_SLOW = IS_MOBILE && ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 2));
-if(IS_SLOW || IS_MOBILE) document.body.classList.add("low-perf");
-/* На мобилке держим 24 FPS — визуально то же, нагрузка в 2.5 раза ниже */
-const FPS_CAP = IS_MOBILE ? 24 : 60;
-const FRAME_INTERVAL = 1000 / FPS_CAP;
+if(IS_MOBILE) document.body.classList.add("low-perf");
 
 /* ============================================================
    THEME
@@ -488,7 +582,7 @@ function setTheme(name){
   document.querySelectorAll(".theme-option").forEach(el=>{
     el.classList.toggle("active", el.dataset.setTheme === name);
   });
-  applyThemeTo3D();
+  if(!IS_MOBILE) applyThemeTo3D();
   SoundFX.switch();
 }
 function toggleThemePanel(e){
@@ -509,7 +603,7 @@ document.addEventListener("click", (e)=>{
     document.querySelectorAll(".theme-option").forEach(el=>{
       el.classList.toggle("active", el.dataset.setTheme === saved);
     });
-    setTimeout(applyThemeTo3D, 500);
+    if(!IS_MOBILE) setTimeout(applyThemeTo3D, 500);
   });
 })();
 
@@ -546,7 +640,7 @@ function getSessionId(){
 const SESSION_ID = getSessionId();
 
 /* ============================================================
-   УНИВЕРСАЛЬНЫЙ API — POST (обход CORS)
+   API (POST — обход CORS)
 ============================================================ */
 async function callAPI(action, params){
   params = params || {};
@@ -570,7 +664,6 @@ async function callAPI(action, params){
 /* ============================================================
    ОНЛАЙН
 ============================================================ */
-const ONLINE_PING_INTERVAL = IS_MOBILE ? 60000 : 25000;
 async function pingOnline(){
   const r = await callAPI("ping", { sid: SESSION_ID });
   if(r && r.ok && typeof r.online === "number") updateOnlineUI(r.online);
@@ -584,13 +677,13 @@ function updateOnlineUI(n){
   if(el) el.textContent = n;
 }
 (function startOnline(){
-  setTimeout(pingOnline, 1200);
-  setInterval(pingOnline, ONLINE_PING_INTERVAL);
-  setInterval(fetchOnline, 90000);
+  setTimeout(pingOnline, 1500);
+  setInterval(pingOnline, IS_MOBILE ? 90000 : 30000);
+  setInterval(fetchOnline, 120000);
 })();
 
 /* ============================================================
-   SOUND
+   SOUND (на мобилке тише и реже)
 ============================================================ */
 const SoundFX = (()=>{
   let ctx = null;
@@ -601,7 +694,7 @@ const SoundFX = (()=>{
   }
   function tone(p){
     const c = ensureCtx(); if(!c) return;
-    const freq = p.freq || 440, dur = p.dur || 0.1, type = p.type || "sine", vol = p.vol || 0.04, when = p.when || 0, slide = p.slide || null;
+    const freq = p.freq || 440, dur = p.dur || 0.1, type = p.type || "sine", vol = (p.vol || 0.04) * (IS_MOBILE ? 0.5 : 1), when = p.when || 0, slide = p.slide || null;
     const t0 = c.currentTime + when;
     const osc = c.createOscillator(); const gain = c.createGain();
     osc.type = type; osc.frequency.setValueAtTime(freq, t0);
@@ -613,22 +706,22 @@ const SoundFX = (()=>{
     osc.start(t0); osc.stop(t0 + dur + 0.05);
   }
   return {
-    click(){ tone({freq:520,dur:0.06,type:"triangle",vol:0.035,slide:680}); },
-    hover(){ if(IS_MOBILE) return; tone({freq:800,dur:0.04,type:"sine",vol:0.015}); },
-    open(){ tone({freq:320,dur:0.22,type:"sine",vol:0.045,slide:780}); },
-    close(){ tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
-    success(){ tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0}); tone({freq:659.25,dur:0.18,type:"triangle",vol:0.05,when:0.08}); tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16}); tone({freq:1046.5,dur:0.35,type:"sine",vol:0.04,when:0.26}); },
-    error(){ tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90}); tone({freq:120,dur:0.22,type:"sine",vol:0.04,when:0.05}); },
-    glitch(){ tone({freq:220,dur:0.08,type:"square",vol:0.05,slide:80}); tone({freq:600,dur:0.05,type:"sawtooth",vol:0.03,when:0.04,slide:140}); tone({freq:90,dur:0.12,type:"square",vol:0.04,when:0.08,slide:60}); },
-    switch(){ tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
-    whoosh(){ tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900}); tone({freq:900,dur:0.25,type:"triangle",vol:0.02,when:0.05,slide:300}); },
-    cancel(){ tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380}); tone({freq:380,dur:0.22,type:"sine",vol:0.035,when:0.10,slide:180}); },
-    confirm(){ tone({freq:640,dur:0.08,type:"triangle",vol:0.04,slide:900}); tone({freq:900,dur:0.12,type:"triangle",vol:0.035,when:0.07}); },
+    click(){ if(IS_MOBILE) return; tone({freq:520,dur:0.06,type:"triangle",vol:0.035,slide:680}); },
+    hover(){ return; },
+    open(){ if(IS_MOBILE) return; tone({freq:320,dur:0.22,type:"sine",vol:0.045,slide:780}); },
+    close(){ if(IS_MOBILE) return; tone({freq:560,dur:0.18,type:"sine",vol:0.035,slide:240}); },
+    success(){ tone({freq:523.25,dur:0.18,type:"triangle",vol:0.05,when:0}); tone({freq:783.99,dur:0.28,type:"triangle",vol:0.055,when:0.16}); },
+    error(){ tone({freq:180,dur:0.18,type:"sawtooth",vol:0.035,slide:90}); },
+    glitch(){ if(IS_MOBILE) return; tone({freq:220,dur:0.08,type:"square",vol:0.05,slide:80}); },
+    switch(){ if(IS_MOBILE) return; tone({freq:420,dur:0.05,type:"square",vol:0.02,slide:560}); },
+    whoosh(){ if(IS_MOBILE) return; tone({freq:200,dur:0.35,type:"sine",vol:0.03,slide:900}); },
+    cancel(){ if(IS_MOBILE) return; tone({freq:720,dur:0.14,type:"triangle",vol:0.045,slide:380}); },
+    confirm(){ tone({freq:640,dur:0.08,type:"triangle",vol:0.04,slide:900}); },
     random(){ const notes=[261.63,293.66,329.63,349.23,392,440,493.88,523.25,587.33,659.25,698.46,783.99]; const n=notes[Math.floor(Math.random()*notes.length)]; tone({freq:n,dur:0.25,type:"triangle",vol:0.05}); },
-    easter(){ [523.25,587.33,659.25,698.46,783.99,880,987.77,1046.5].forEach((f,i)=>{ tone({freq:f,dur:0.15,type:"triangle",vol:0.05,when:i*0.08}); }); }
+    easter(){ if(IS_MOBILE) return; [523.25,659.25,783.99,1046.5].forEach((f,i)=>{ tone({freq:f,dur:0.15,type:"triangle",vol:0.05,when:i*0.1}); }); }
   };
 })();
-window.addEventListener("pointerdown", ()=>{ SoundFX.click(); }, {once:true, capture:true});
+window.addEventListener("pointerdown", ()=>{ if(!IS_MOBILE) SoundFX.click(); }, {once:true, capture:true});
 
 /* ============================================================
    STATE
@@ -817,7 +910,7 @@ window.addEventListener("load", ()=>{
 });
 
 /* ============================================================
-   RESET MY VOTES
+   RESET
 ============================================================ */
 async function resetMyVotes(){
   if(!currentUser){ showToast("Сначала войдите в Google-аккаунт.", "error"); return; }
@@ -1094,8 +1187,6 @@ function triggerGlitch(el){
   el.classList.remove("glitch-shake");
   void el.offsetWidth;
   el.classList.add("glitch-shake");
-  const r = el.getBoundingClientRect();
-  if(!IS_MOBILE) sparkBurst(r.left + r.width/2, r.top + r.height/2, "rgba(255,255,255,1)");
   setTimeout(()=>el.classList.remove("glitch-shake"), 400);
 }
 function showConfirmActions(actionsEl, category, name, e){
@@ -1107,7 +1198,6 @@ function showConfirmActions(actionsEl, category, name, e){
   confirmBtn.addEventListener("click", async (ev)=>{
     ev.stopPropagation();
     SoundFX.confirm();
-    if(e && !IS_MOBILE) sparkBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
     await submitVote(category, name);
   });
   const cancelBtn = document.createElement("button");
@@ -1159,37 +1249,8 @@ function refreshNominationUI(category){
 }
 
 /* ============================================================
-   ПРИКОЛЫ (ПК)
+   ПРИКОЛЫ — только на ПК
 ============================================================ */
-(function cursorParticlesInit(){
-  if(IS_MOBILE) return;
-  let last = 0;
-  document.addEventListener("mousemove", (e)=>{
-    const now = performance.now();
-    if(now - last < 55) return;
-    last = now;
-    if(Math.random() < 0.5) return;
-    const p = document.createElement("div");
-    p.className = "cursor-particle";
-    p.style.left = (e.clientX + (Math.random()-0.5)*12) + "px";
-    p.style.top = (e.clientY + (Math.random()-0.5)*12) + "px";
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(), 900);
-  }, { passive: true });
-})();
-if(!IS_MOBILE){
-  document.addEventListener("click", (e)=>{
-    const tgt = e.target;
-    if(tgt.closest("input,textarea")) return;
-    const rip = document.createElement("div");
-    rip.className = "ripple";
-    rip.style.left = e.clientX + "px";
-    rip.style.top = e.clientY + "px";
-    document.body.appendChild(rip);
-    setTimeout(()=>rip.remove(), 750);
-  }, { passive:true });
-}
-
 const LS_CLICKS_KEY = "zvawards_clicks";
 let myClicks = parseInt(localStorage.getItem(LS_CLICKS_KEY) || "0", 10);
 function updateClickCounter(){
@@ -1203,89 +1264,83 @@ document.addEventListener("click", ()=>{
 });
 updateClickCounter();
 
-(function bubblesInit(){
-  if(IS_MOBILE) return;
-  const MAX = 8;
-  let active = 0;
-  function spawn(){
-    if(active >= MAX) return;
-    active++;
-    const size = 30 + Math.random()*60;
-    const left = Math.random() * 100;
-    const dur = 16 + Math.random()*14;
-    const b = document.createElement("div");
-    b.className = "bubble";
-    b.style.width = size + "px";
-    b.style.height = size + "px";
-    b.style.left = left + "vw";
-    b.style.animationDuration = dur + "s";
-    b.style.setProperty("--bubble-x", ((Math.random()-0.5)*80) + "px");
-    document.body.appendChild(b);
-    setTimeout(()=>{ b.remove(); active--; }, dur*1000);
-  }
-  for(let i=0;i<3;i++) setTimeout(spawn, i*1200);
-  setInterval(spawn, 2000);
-})();
-(function flashInit(){
-  if(IS_MOBILE) return;
-  function flash(){
-    const f = document.createElement("div");
-    f.className = "flash-overlay";
-    f.style.setProperty("--flash-x", (20 + Math.random()*60) + "%");
-    f.style.setProperty("--flash-y", (20 + Math.random()*60) + "%");
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(), 1300);
-    setTimeout(flash, 9000 + Math.random()*7000);
-  }
-  setTimeout(flash, 5000);
-})();
-(function parallaxInit(){
-  if(IS_MOBILE) return;
-  document.querySelectorAll(".nomination-card").forEach(card=>{
-    let rafId = null;
-    card.addEventListener("mousemove", (e)=>{
-      const r = card.getBoundingClientRect();
-      const tx = (e.clientX - r.left) / r.width - 0.5;
-      const ty = (e.clientY - r.top) / r.height - 0.5;
-      if(rafId) return;
-      rafId = requestAnimationFrame(()=>{
-        rafId = null;
-        card.style.transform = 'perspective(700px) rotateY(' + (tx*14) + 'deg) rotateX(' + (-ty*14) + 'deg) translateY(-12px) scale(1.05)';
+if(!IS_MOBILE){
+  (function cursorParticlesInit(){
+    let last = 0;
+    document.addEventListener("mousemove", (e)=>{
+      const now = performance.now();
+      if(now - last < 55) return;
+      last = now;
+      if(Math.random() < 0.5) return;
+      const p = document.createElement("div");
+      p.className = "cursor-particle";
+      p.style.left = (e.clientX + (Math.random()-0.5)*12) + "px";
+      p.style.top = (e.clientY + (Math.random()-0.5)*12) + "px";
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(), 900);
+    }, { passive: true });
+  })();
+  document.addEventListener("click", (e)=>{
+    if(e.target.closest("input,textarea")) return;
+    const rip = document.createElement("div");
+    rip.className = "ripple";
+    rip.style.left = e.clientX + "px";
+    rip.style.top = e.clientY + "px";
+    document.body.appendChild(rip);
+    setTimeout(()=>rip.remove(), 750);
+  }, { passive:true });
+  (function bubblesInit(){
+    const MAX = 8;
+    let active = 0;
+    function spawn(){
+      if(active >= MAX) return;
+      active++;
+      const size = 30 + Math.random()*60;
+      const b = document.createElement("div");
+      b.className = "bubble";
+      b.style.width = size + "px"; b.style.height = size + "px";
+      b.style.left = (Math.random()*100) + "vw";
+      b.style.animationDuration = (16 + Math.random()*14) + "s";
+      b.style.setProperty("--bubble-x", ((Math.random()-0.5)*80) + "px");
+      document.body.appendChild(b);
+      setTimeout(()=>{ b.remove(); active--; }, 30000);
+    }
+    for(let i=0;i<3;i++) setTimeout(spawn, i*1200);
+    setInterval(spawn, 2000);
+  })();
+  (function flashInit(){
+    function flash(){
+      const f = document.createElement("div");
+      f.className = "flash-overlay";
+      f.style.setProperty("--flash-x", (20 + Math.random()*60) + "%");
+      f.style.setProperty("--flash-y", (20 + Math.random()*60) + "%");
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(), 1300);
+      setTimeout(flash, 9000 + Math.random()*7000);
+    }
+    setTimeout(flash, 5000);
+  })();
+  (function parallaxInit(){
+    document.querySelectorAll(".nomination-card").forEach(card=>{
+      let rafId = null;
+      card.addEventListener("mousemove", (e)=>{
+        const r = card.getBoundingClientRect();
+        const tx = (e.clientX - r.left) / r.width - 0.5;
+        const ty = (e.clientY - r.top) / r.height - 0.5;
+        if(rafId) return;
+        rafId = requestAnimationFrame(()=>{
+          rafId = null;
+          card.style.transform = 'perspective(700px) rotateY(' + (tx*14) + 'deg) rotateX(' + (-ty*14) + 'deg) translateY(-12px) scale(1.05)';
+        });
+      });
+      card.addEventListener("mouseleave", ()=>{
+        if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+        card.style.transform = "";
       });
     });
-    card.addEventListener("mouseleave", ()=>{
-      if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
-      card.style.transform = "";
-    });
-  });
-})();
-function sparkBurst(x, y, colorOverride){
-  if(IS_MOBILE) return;
-  const count = 16;
-  for(let i=0;i<count;i++){
-    const s = document.createElement("div");
-    const angle = (Math.PI * 2 / count) * i + Math.random()*0.35;
-    const dist = 70 + Math.random()*80;
-    s.style.position = "fixed";
-    s.style.left = x + "px";
-    s.style.top = y + "px";
-    s.style.width = "7px";
-    s.style.height = "7px";
-    s.style.borderRadius = "50%";
-    s.style.background = colorOverride || 'rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)';
-    s.style.boxShadow = '0 0 12px ' + (colorOverride || 'rgba(var(--accent-r),var(--accent-g),var(--accent-b),1)');
-    s.style.pointerEvents = "none";
-    s.style.zIndex = "9998";
-    s.style.transition = "transform .8s cubic-bezier(.2,.7,.3,1), opacity .8s";
-    s.style.transform = "translate(-50%,-50%)";
-    document.body.appendChild(s);
-    requestAnimationFrame(()=>{
-      s.style.transform = 'translate(calc(-50% + ' + (Math.cos(angle)*dist) + 'px), calc(-50% + ' + (Math.sin(angle)*dist) + 'px)) scale(0.2)';
-      s.style.opacity = "0";
-    });
-    setTimeout(()=>s.remove(), 900);
-  }
+  })();
 }
+
 function mascotClick(){
   SoundFX.random();
   const btn = document.getElementById("mascot-btn");
@@ -1314,118 +1369,77 @@ function mascotClick(){
   });
   setTimeout(()=>label.remove(), 1300);
 }
-(function konamiInit(){
-  const code = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-  let pos = 0;
-  document.addEventListener("keydown", (e)=>{
-    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    if(key === code[pos]){
-      pos++;
-      if(pos === code.length){ pos = 0; activateEaster(); }
-    } else {
-      pos = (key === code[0]) ? 1 : 0;
-    }
-  });
-  function activateEaster(){
-    SoundFX.easter();
-    document.body.setAttribute("data-theme", "rainbow");
-    applyThemeTo3D();
-    for(let i=0;i<12;i++){
-      setTimeout(()=>{
-        sparkBurst(window.innerWidth * (0.1 + Math.random()*0.8), window.innerHeight * (0.15 + Math.random()*0.6));
-      }, i*120);
-    }
-    showToast("🎉 ПАСХАЛКА! РАДУЖНЫЙ РЕЖИМ!", "success");
-    setTimeout(()=>{
-      const saved = localStorage.getItem(THEME_KEY) || "scarlet";
-      setTheme(saved);
-      showToast("Радужный режим закончился 🌈", "info");
-    }, 30000);
-  }
-})();
 
 /* ============================================================
-   THREE.JS — оптимизировано под мобилки
+   THREE.JS — ТОЛЬКО на ПК
 ============================================================ */
-const container = document.getElementById("canvas-container");
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: !IS_MOBILE, alpha: false, powerPreference: "high-performance", stencil: false });
-/* На мобилке pixel ratio = 1 — экономит в 4 раза */
-const PR = IS_MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-renderer.setPixelRatio(PR);
-renderer.setSize(container.clientWidth, container.clientHeight);
-container.appendChild(renderer.domElement);
-
-const initTor  = readCSSColor("--tor-color")   ?? 0xb8002a;
-const initTor2 = readCSSColor("--tor-color-2") ?? 0xd0d0d8;
-const initFog  = readCSSColor("--fog-color-3d") ?? 0x1a0005;
-const initBg   = readCSSColor("--bg-color-3d") ?? null;
-if(initBg != null) scene.background = new THREE.Color(initBg);
-scene.fog = new THREE.FogExp2(initFog, 0.055);
-
-/* Мобилка: 40 сегментов × 12 трубок × 3 слоя = мало полигонов */
-const TOR_SEGMENTS = IS_MOBILE ? 40 : 120;
-const TOR_TUBE_SEG = IS_MOBILE ? 12 : 40;
-const torGeo = new THREE.TorusGeometry(3.2, 0.9, TOR_TUBE_SEG, TOR_SEGMENTS);
-const torMat = new THREE.MeshBasicMaterial({ color: initTor, wireframe: true, transparent: true, opacity: 0.38 });
-const tor = new THREE.Mesh(torGeo, torMat);
-const torWireMat = new THREE.MeshBasicMaterial({ color: initTor2, wireframe: true, transparent: true, opacity: 0.18 });
-const torWireGeo = new THREE.TorusGeometry(3.2, 0.92, IS_MOBILE ? 6 : 16, TOR_SEGMENTS);
-const torWire = new THREE.Mesh(torWireGeo, torWireMat);
-const torGlowMat = new THREE.MeshBasicMaterial({ color: initTor, transparent: true, opacity: 0.04 });
-const torGlowGeo = new THREE.TorusGeometry(3.2, 1.2, IS_MOBILE ? 8 : 24, TOR_SEGMENTS);
-const torGlow = new THREE.Mesh(torGlowGeo, torGlowMat);
-const torGroup = new THREE.Group();
-torGroup.add(torGlow); torGroup.add(torWire); torGroup.add(tor);
-torGroup.position.set(0, 0, -2);
-torGroup.rotation.x = Math.PI * 0.35;
-scene.add(torGroup);
-
-themeColorTargets = { tor, torWire, torGlow };
-setTimeout(applyThemeTo3D, 50);
-camera.position.z = 8;
-
-let t = 0, lastFrame = 0, rafId = null, isVisible = !document.hidden;
-let scrollHidden = false;
-/* Пауза 3D при скролле вниз на мобилке — тор не видно, рендерить нечего */
-if(IS_MOBILE){
-  window.addEventListener("scroll", ()=>{
-    scrollHidden = window.scrollY > window.innerHeight * 0.9;
-  }, { passive: true });
-}
-document.addEventListener("visibilitychange", ()=>{
-  isVisible = !document.hidden;
-  if(isVisible && !rafId){ rafId = requestAnimationFrame(animate); }
-});
-function animate(now){
-  rafId = requestAnimationFrame(animate);
-  if(!isVisible){ rafId = null; return; }
-  if(IS_MOBILE && scrollHidden) return; /* тор уехал вверх — не рендерим */
-  if(now - lastFrame < FRAME_INTERVAL) return;
-  lastFrame = now;
-  t += 0.008;
-  torGroup.rotation.z += 0.0035;
-  torGroup.rotation.y += 0.0022;
-  torGroup.rotation.x += 0.0008;
-  const s = 1 + Math.sin(t * 0.9) * 0.06;
-  torGroup.scale.set(s, s, s);
-  renderer.render(scene, camera);
-}
-rafId = requestAnimationFrame(animate);
-
-let resizeTimer = null;
-addEventListener("resize", ()=>{
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(()=>{
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
-  }, 150);
-});
 if(!IS_MOBILE){
+  const container = document.getElementById("canvas-container");
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance", stencil: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+  window.scene = scene;
+
+  const initTor  = readCSSColor("--tor-color")   ?? 0xb8002a;
+  const initTor2 = readCSSColor("--tor-color-2") ?? 0xd0d0d8;
+  const initFog  = readCSSColor("--fog-color-3d") ?? 0x1a0005;
+  const initBg   = readCSSColor("--bg-color-3d") ?? null;
+  if(initBg != null) scene.background = new THREE.Color(initBg);
+  scene.fog = new THREE.FogExp2(initFog, 0.055);
+
+  const torGeo = new THREE.TorusGeometry(3.2, 0.9, 40, 120);
+  const torMat = new THREE.MeshBasicMaterial({ color: initTor, wireframe: true, transparent: true, opacity: 0.38 });
+  const tor = new THREE.Mesh(torGeo, torMat);
+  const torWireMat = new THREE.MeshBasicMaterial({ color: initTor2, wireframe: true, transparent: true, opacity: 0.18 });
+  const torWireGeo = new THREE.TorusGeometry(3.2, 0.92, 16, 120);
+  const torWire = new THREE.Mesh(torWireGeo, torWireMat);
+  const torGlowMat = new THREE.MeshBasicMaterial({ color: initTor, transparent: true, opacity: 0.04 });
+  const torGlowGeo = new THREE.TorusGeometry(3.2, 1.2, 24, 120);
+  const torGlow = new THREE.Mesh(torGlowGeo, torGlowMat);
+  const torGroup = new THREE.Group();
+  torGroup.add(torGlow); torGroup.add(torWire); torGroup.add(tor);
+  torGroup.position.set(0, 0, -2);
+  torGroup.rotation.x = Math.PI * 0.35;
+  scene.add(torGroup);
+
+  themeColorTargets = { tor, torWire, torGlow };
+  setTimeout(applyThemeTo3D, 50);
+  camera.position.z = 8;
+
+  let t = 0, lastFrame = 0, rafId = null, isVisible = !document.hidden;
+  document.addEventListener("visibilitychange", ()=>{
+    isVisible = !document.hidden;
+    if(isVisible && !rafId){ rafId = requestAnimationFrame(animate); }
+  });
+  function animate(now){
+    rafId = requestAnimationFrame(animate);
+    if(!isVisible){ rafId = null; return; }
+    if(now - lastFrame < 16.67) return;
+    lastFrame = now;
+    t += 0.008;
+    torGroup.rotation.z += 0.0035;
+    torGroup.rotation.y += 0.0022;
+    torGroup.rotation.x += 0.0008;
+    const s = 1 + Math.sin(t * 0.9) * 0.06;
+    torGroup.scale.set(s, s, s);
+    renderer.render(scene, camera);
+  }
+  rafId = requestAnimationFrame(animate);
+
+  let resizeTimer = null;
+  addEventListener("resize", ()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=>{
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }, 150);
+  });
   document.addEventListener("mouseover", (e)=>{
     const el = e.target.closest(".nomination-card, .vote-action-btn, .auth-btn, .admin-btn, .admin-tool-btn, .vote-main-btn, .close-modal, .online-counter, .reset-btn, .vote-confirm-btn, .vote-cancel-small, .theme-toggle, .theme-option, .profile-action, .mascot-btn");
     if(el && el !== e.relatedTarget && !el.contains(e.relatedTarget)) SoundFX.hover();
