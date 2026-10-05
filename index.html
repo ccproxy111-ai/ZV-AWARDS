@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZV-AWARDS</title>
+<title>ZV-AWARDS | Средневековое голосование</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=MedievalSharp&family=Uncial+Antiqua&family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
@@ -1045,6 +1045,30 @@ header{
 .vote-action-btn:disabled{cursor:not-allowed;opacity:.55}
 .vote-action-btn:disabled:hover{animation:none;transform:none}
 
+/* НОВАЯ КНОПКА "Следующая номинация" */
+.vote-action-btn.next-btn{
+  border-color:var(--gold-bright);
+  color:var(--brown-dark);
+  background:linear-gradient(90deg, var(--gold-bright), #fff8dc, var(--gold-bright));
+  background-size:200% 100%;
+  font-size:10.5px;
+  box-shadow:0 0 22px rgba(255,215,0,.8), inset 0 0 12px rgba(255,255,255,.25);
+  animation:btnShimmer 2.4s linear infinite, nextPulse 1.8s ease-in-out infinite;
+  margin-top:2px;
+  letter-spacing:1px;
+  text-shadow:0 1px 2px rgba(255,255,255,.35);
+}
+.vote-action-btn.next-btn:hover{
+  background:linear-gradient(90deg, #fff8dc, var(--gold-light), #fff8dc);
+  background-size:200% 100%;
+  box-shadow:0 0 35px rgba(255,255,255,.95), 0 0 60px rgba(184,224,255,.5);
+  transform:translateY(-2px) scale(1.03);
+}
+@keyframes nextPulse{
+  0%,100%{box-shadow:0 0 18px rgba(255,215,0,.7), inset 0 0 12px rgba(255,255,255,.2)}
+  50%{box-shadow:0 0 30px rgba(255,215,0,1), 0 0 55px rgba(184,224,255,.4), inset 0 0 15px rgba(255,255,255,.3)}
+}
+
 .vote-confirm-btn{
   background:linear-gradient(90deg, var(--gold-dark), var(--gold-bright), var(--gold-dark));
   background-size:200% 100%;
@@ -1319,6 +1343,7 @@ header{
   .nominee-name{font-size:11px}
   .vote-action-btn{font-size:9.5px;padding:7px 8px;letter-spacing:.5px}
   .vote-action-btn.cancel-btn{font-size:9px}
+  .vote-action-btn.next-btn{font-size:9px;padding:8px 8px}
   .vote-confirm-btn{font-size:9px;padding:8px 10px}
   .vote-cancel-small{font-size:8.5px;padding:6px 10px}
   .toast{left:16px;right:16px;bottom:16px;text-align:center;max-width:none}
@@ -1386,7 +1411,7 @@ header{
     <i class="fa-solid fa-feather hero-feather right"></i>
   </div>
 
-  <div class="hero-subtitle"></div>
+  <div class="hero-subtitle">Средневековое голосование</div>
 
   <div class="countdown-wrap" id="countdown-wrap">
     <div class="countdown-label">ДО КОНЦА ГОЛОСОВАНИЯ ОСТАЛОСЬ</div>
@@ -1852,7 +1877,7 @@ const nomineesDatabase = {
     { name: "Dark Angel (Сагит)", avatar: "https://i.ibb.co/ksD4C14h/2026-10-05-171434.png" },
     { name: "Медуза (Никита)", avatar: "https://i.ibb.co/Xkzz45Km/avatars-t3y0nyd-KNL8ap6-No-f7bl6w-t1080x1080.jpg" },
     { name: "Тiмур (Тимур)", avatar: "https://i.ibb.co/JFgTmQ8b/2026-10-05-171422.png" },
-    { name: "FrozEn (Арсений)" }
+    { name: "FrozEn (Арсений)", avatar: "https://i.ibb.co/6R0s7b8/2026-10-05-171441.png" }
   ],
   "Мультигеймер года": [
     { name: "Dark Angel (Сагит)", avatar: "https://i.ibb.co/ksD4C14h/2026-10-05-171434.png" },
@@ -1878,6 +1903,16 @@ const nomineesDatabase = {
     { name: "MrAdiviK (Артём младший)", avatar: "https://i.ibb.co/FqXcFS4Q/2026-10-05-171530.png" }
   ]
 };
+
+/* Порядок номинаций для кнопки "Следующая номинация" */
+const NOMINATION_ORDER = Object.keys(nomineesDatabase);
+
+function getNextNomination(currentCategory){
+  const idx = NOMINATION_ORDER.indexOf(currentCategory);
+  if(idx === -1) return null;
+  if(idx >= NOMINATION_ORDER.length - 1) return null; // последняя
+  return NOMINATION_ORDER[idx + 1];
+}
 
 const LS_VOTES = "zvawards_my_votes";
 const LS_USER = "zvawards_user";
@@ -2070,6 +2105,22 @@ function openNomination(category){
   openModal("nomination-modal");
 }
 
+/* Переход к следующей номинации */
+function goToNextNomination(currentCategory){
+  const next = getNextNomination(currentCategory);
+  if(!next){
+    SoundFX.close();
+    closeModal("nomination-modal");
+    showToast("Вы прошли все номинации! Спасибо за голосование!", "success");
+    return;
+  }
+  SoundFX.switch();
+  const title = document.getElementById("modal-category-title");
+  title.textContent = next;
+  title.classList.toggle("king-title", next === "ZV KING");
+  refreshNominationUI(next);
+}
+
 function buildNomineeCard(o){
   const card = document.createElement("div");
   card.className = "nominee-card";
@@ -2110,6 +2161,21 @@ function buildNomineeCard(o){
     btn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> ОТМЕНИТЬ ВЫБОР';
     btn.addEventListener("click", (e)=>{ e.stopPropagation(); cancelVote(o.category, o.name); });
     actions.appendChild(btn);
+
+    /* >>> НОВАЯ КНОПКА "СЛЕДУЮЩАЯ НОМИНАЦИЯ" <<< */
+    const nextCat = getNextNomination(o.category);
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "vote-action-btn next-btn";
+    nextBtn.type = "button";
+    if(nextCat){
+      nextBtn.innerHTML = 'СЛЕДУЮЩАЯ НОМИНАЦИЯ <i class="fa-solid fa-arrow-right"></i>';
+      nextBtn.addEventListener("click", (e)=>{ e.stopPropagation(); goToNextNomination(o.category); });
+    } else {
+      nextBtn.innerHTML = 'ЗАВЕРШИТЬ <i class="fa-solid fa-check"></i>';
+      nextBtn.addEventListener("click", (e)=>{ e.stopPropagation(); goToNextNomination(o.category); });
+    }
+    actions.appendChild(nextBtn);
+
   } else if(o.isLocked){
     const btn = document.createElement("button");
     btn.className = "vote-action-btn";
@@ -2191,8 +2257,13 @@ function refreshNominationUI(category){
     const isGame = typeof nomineeObj === "string" ? false : !!nomineeObj.isGame;
     container.appendChild(buildNomineeCard({ category, name, avatar, isGame, isKing, isChosen: alreadyVoted === name, isLocked: !!alreadyVoted && alreadyVoted !== name, idx }));
   });
-  if(alreadyVoted) subtitle.innerHTML = 'Ваш выбор: <b class="' + (isKing ? "gold" : "") + '">' + escapeHtml(alreadyVoted) + '</b>.';
-  else subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
+  if(alreadyVoted){
+    const isLast = !getNextNomination(category);
+    subtitle.innerHTML = 'Ваш выбор: <b class="' + (isKing ? "gold" : "") + '">' + escapeHtml(alreadyVoted) + '</b>.'
+      + (isLast ? ' Это была последняя номинация — можно завершить голосование.' : ' Нажмите «Следующая номинация», чтобы продолжить.');
+  } else {
+    subtitle.textContent = "Выберите одного номинанта. Выбор можно отменить до закрытия окна.";
+  }
 }
 
 function showZvClubConfirm(){ SoundFX.click(); openModal("zv-club-modal"); }
