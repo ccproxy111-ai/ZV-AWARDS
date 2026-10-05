@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZV-AWARDS | Средневековое голосование</title>
+<title>ZV-AWARDS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=MedievalSharp&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=MedievalSharp&family=Uncial+Antiqua&family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
@@ -15,25 +15,26 @@
   --gold-light:#f4e4a6;
   --gold-bright:#ffd700;
   --gold-dark:#8b6914;
-  --gold-deep:#5c4410;
-  --brown:#3d2410;
-  --brown-dark:#1f1105;
-  --brown-mid:#5a3a1a;
-  --brown-light:#7a5028;
+  --gold-deep:#4a3508;
+  --brown:#2a1608;
+  --brown-dark:#0f0803;
+  --brown-mid:#3d2410;
+  --brown-light:#5a3a1a;
+  --crystal-1:#b8e0ff;
+  --crystal-2:#d4f0ff;
+  --crystal-3:#e8f6ff;
   --parchment:#f0e0c0;
-  --parchment-dark:#d4b896;
-  --ink:#2a1a08;
+  --ink:#1a0e04;
   --red-wax:#8b0000;
   --green-online:#7cc47c;
-  --shadow-gold:rgba(212,175,55,.5);
 }
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
 html,body{height:100%}
 body{
   background:
-    radial-gradient(ellipse at 20% 10%, rgba(212,175,55,.08), transparent 55%),
-    radial-gradient(ellipse at 80% 80%, rgba(139,105,20,.15), transparent 60%),
-    linear-gradient(180deg, #1a0e04 0%, #2a1808 40%, #1f1105 100%);
+    radial-gradient(ellipse at 20% 10%, rgba(212,175,55,.06), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(139,105,20,.12), transparent 60%),
+    linear-gradient(180deg, #0d0602 0%, #1a0e04 40%, #0f0803 100%);
   color:#f4e4a6;
   font-family:'Cormorant Garamond', 'Cinzel', serif;
   overflow-x:hidden;
@@ -47,8 +48,8 @@ body::before{
   z-index:-2;
   pointer-events:none;
   background-image:
-    radial-gradient(circle at 30% 40%, rgba(212,175,55,.06), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(255,215,0,.04), transparent 50%);
+    radial-gradient(circle at 30% 40%, rgba(212,175,55,.05), transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(255,215,0,.03), transparent 50%);
   animation:breathe 10s ease-in-out infinite alternate;
 }
 @keyframes breathe{0%,100%{opacity:.6}100%{opacity:1}}
@@ -61,7 +62,7 @@ body::after{
   pointer-events:none;
   font-family:'Uncial Antiqua', serif;
   font-size:80px;
-  color:rgba(212,175,55,.025);
+  color:rgba(212,175,55,.02);
   letter-spacing:60px;
   line-height:1.6;
   padding:40px;
@@ -70,6 +71,24 @@ body::after{
   overflow:hidden;
 }
 @keyframes runeFloat{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(-20px,-10px) rotate(1deg)}}
+
+/* ===== Кристаллические частицы ===== */
+.crystal-particle{
+  position:fixed;
+  z-index:1;
+  pointer-events:none;
+  opacity:0;
+  animation:crystalFloat linear infinite;
+  filter:drop-shadow(0 0 6px rgba(184,224,255,.8));
+}
+.crystal-particle svg{display:block}
+@keyframes crystalFloat{
+  0%{transform:translateY(0) rotate(0deg) scale(.6); opacity:0}
+  15%{opacity:.9}
+  50%{transform:translateY(50vh) rotate(180deg) scale(1); opacity:.7}
+  85%{opacity:.5}
+  100%{transform:translateY(110vh) rotate(360deg) scale(.7); opacity:0}
+}
 
 .feather{
   position:fixed;
@@ -90,14 +109,31 @@ body::after{
   100%{transform:translateY(110vh) translateX(calc(var(--drift,30px) * -1)) rotate(360deg); opacity:0}
 }
 
+/* ===== Кристаллические искры по всему экрану ===== */
+.sparkle{
+  position:fixed;
+  pointer-events:none;
+  z-index:2;
+  color:var(--crystal-1);
+  font-size:14px;
+  opacity:0;
+  animation:sparklePulse 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 8px rgba(184,224,255,1)) drop-shadow(0 0 16px rgba(212,240,255,.6));
+}
+@keyframes sparklePulse{
+  0%,100%{opacity:0; transform:scale(.5) rotate(0deg)}
+  50%{opacity:1; transform:scale(1.3) rotate(180deg)}
+}
+
 .ripple{
   position:fixed;pointer-events:none;z-index:9999;border-radius:50%;
   border:2px solid rgba(212,175,55,.85);
+  box-shadow:0 0 20px rgba(255,215,0,.6), inset 0 0 20px rgba(184,224,255,.4);
   width:10px;height:10px;
   transform:translate(-50%,-50%) scale(1);
-  animation:rippleOut .8s ease-out forwards;
+  animation:rippleOut .9s ease-out forwards;
 }
-@keyframes rippleOut{to{width:200px;height:200px;opacity:0;border-width:0}}
+@keyframes rippleOut{to{width:220px;height:220px;opacity:0;border-width:0}}
 
 .logo-wrap{
   display:flex;
@@ -106,16 +142,16 @@ body::after{
   position:relative;
 }
 .logo{
-  font-family:'Uncial Antiqua', 'Cinzel', serif;
+  font-family:'Cinzel Decorative', 'Uncial Antiqua', serif;
   font-size:26px;
   font-weight:900;
   letter-spacing:4px;
-  background:linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 30%, var(--gold) 50%, var(--gold-dark) 70%, var(--gold-bright) 100%);
+  background:linear-gradient(135deg, var(--gold-bright) 0%, var(--crystal-2) 25%, var(--gold-light) 50%, var(--gold) 65%, var(--gold-bright) 100%);
   background-size:300% 300%;
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 10px rgba(212,175,55,.7)) drop-shadow(0 2px 4px rgba(0,0,0,.9));
+  filter:drop-shadow(0 0 10px rgba(212,175,55,.7)) drop-shadow(0 0 20px rgba(184,224,255,.4)) drop-shadow(0 2px 4px rgba(0,0,0,.9));
   animation:logoShine 5s ease-in-out infinite;
   white-space:nowrap;
 }
@@ -145,7 +181,7 @@ header{
   padding:18px 40px;
   display:flex;justify-content:space-between;align-items:center;
   z-index:100;
-  background:linear-gradient(to bottom, rgba(31,17,5,.95) 0%, rgba(31,17,5,.7) 60%, transparent 100%);
+  background:linear-gradient(to bottom, rgba(15,8,3,.95) 0%, rgba(15,8,3,.7) 60%, transparent 100%);
   backdrop-filter:blur(8px);
   gap:16px;
   border-bottom:1px solid rgba(212,175,55,.2);
@@ -154,7 +190,7 @@ header{
 
 .online-counter{
   display:flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg, rgba(61,36,16,.9), rgba(31,17,5,.9));
+  background:linear-gradient(135deg, rgba(42,22,8,.9), rgba(15,8,3,.9));
   border:1px solid rgba(212,175,55,.5);
   padding:8px 16px;border-radius:30px;
   font-family:'Cinzel',serif;font-size:13px;font-weight:700;letter-spacing:1px;
@@ -162,11 +198,19 @@ header{
   box-shadow:0 0 15px rgba(212,175,55,.2), inset 0 0 12px rgba(212,175,55,.08);
   white-space:nowrap;
   position:relative;
+  transition:all .4s ease;
+}
+.online-counter:hover{
+  box-shadow:0 0 25px rgba(212,175,55,.5), 0 0 40px rgba(184,224,255,.2), inset 0 0 15px rgba(212,175,55,.15);
+  border-color:var(--gold-bright);
 }
 .online-counter::before,.online-counter::after{
   content:"✦";
-  color:var(--gold);font-size:10px;opacity:.7;
+  color:var(--crystal-1);font-size:10px;opacity:.8;
+  text-shadow:0 0 6px var(--crystal-1);
+  animation:sparklePulse 2s ease-in-out infinite;
 }
+.online-counter::after{animation-delay:1s}
 .online-dot{
   width:8px;height:8px;border-radius:50%;
   background:var(--green-online);
@@ -178,21 +222,29 @@ header{
 .online-counter .online-label{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:600}
 
 .auth-btn{
-  background:linear-gradient(135deg, rgba(92,68,16,.5), rgba(61,36,16,.7));
+  background:linear-gradient(135deg, rgba(74,53,8,.5), rgba(42,22,8,.7));
   border:1px solid var(--gold);
   color:var(--gold-light);
   padding:8px 14px 8px 8px;border-radius:30px;cursor:pointer;
   font-family:'Cinzel',serif;font-weight:600;font-size:13px;
   display:flex;align-items:center;gap:10px;
-  transition:all .3s ease;position:relative;
+  transition:all .4s ease;position:relative;
   box-shadow:0 0 12px rgba(212,175,55,.25), inset 0 0 10px rgba(212,175,55,.06);
+  overflow:hidden;
 }
+.auth-btn::before{
+  content:"";
+  position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,215,0,.3), transparent);
+  transition:left .5s;
+}
+.auth-btn:hover::before{left:100%}
 .auth-btn:hover{
   background:linear-gradient(135deg, var(--gold), var(--gold-dark));
   color:var(--brown-dark);
   border-color:var(--gold-bright);
-  box-shadow:0 0 25px rgba(255,215,0,.7);
-  transform:translateY(-2px);
+  box-shadow:0 0 25px rgba(255,215,0,.7), 0 0 50px rgba(184,224,255,.3);
+  transform:translateY(-2px) scale(1.03);
 }
 .auth-btn.logged-in{border-color:var(--gold-bright);box-shadow:0 0 18px rgba(255,215,0,.5)}
 .auth-btn img.auth-mini-avatar{width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
@@ -201,33 +253,43 @@ header{
 .auth-btn.logged-in.opened .auth-chevron{transform:rotate(180deg)}
 
 .zv-club-btn{
-  background:linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
-  background-size:200% 200%;
+  background:linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-bright), var(--gold), var(--gold-dark));
+  background-size:300% 300%;
   border:1px solid var(--gold-bright);
   color:var(--brown-dark);
   padding:8px 18px;border-radius:30px;cursor:pointer;
   font-weight:800;font-family:'Cinzel',serif;
   font-size:11px;letter-spacing:2px;
   display:flex;align-items:center;gap:8px;
-  transition:all .3s;
+  transition:all .4s;
   box-shadow:0 0 20px rgba(212,175,55,.6), inset 0 0 10px rgba(255,215,0,.2);
   text-shadow:0 1px 2px rgba(255,255,255,.3);
-  animation:zvClubGlow 2.5s ease-in-out infinite;
+  animation:zvClubGlow 2.5s ease-in-out infinite, gradientShift 4s linear infinite;
   white-space:nowrap;
+  position:relative;
+  overflow:hidden;
+}
+.zv-club-btn::before{
+  content:"";
+  position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+  animation:shine 3s ease-in-out infinite;
 }
 .zv-club-btn:hover{
   transform:translateY(-2px) scale(1.05);
-  box-shadow:0 0 35px rgba(255,215,0,1);
+  box-shadow:0 0 35px rgba(255,215,0,1), 0 0 60px rgba(184,224,255,.4);
   background-position:100% 50%;
 }
+@keyframes gradientShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes shine{0%{left:-100%}60%,100%{left:120%}}
 @keyframes zvClubGlow{
   0%,100%{box-shadow:0 0 18px rgba(212,175,55,.5), inset 0 0 10px rgba(255,215,0,.2)}
-  50%{box-shadow:0 0 32px rgba(255,215,0,.95), inset 0 0 14px rgba(255,215,0,.35)}
+  50%{box-shadow:0 0 32px rgba(255,215,0,.95), 0 0 60px rgba(184,224,255,.3), inset 0 0 14px rgba(255,215,0,.35)}
 }
 
 .profile-menu{
   position:absolute;top:calc(100% + 10px);right:0;min-width:260px;
-  background:linear-gradient(160deg, rgba(61,36,16,.98), rgba(31,17,5,.98));
+  background:linear-gradient(160deg, rgba(42,22,8,.98), rgba(15,8,3,.98));
   border:2px solid var(--gold);
   border-radius:14px;padding:14px;
   box-shadow:0 15px 50px rgba(0,0,0,.85), 0 0 40px rgba(212,175,55,.35);
@@ -250,7 +312,7 @@ header{
   font-weight:700;font-family:'Cinzel',serif;
   font-size:11px;letter-spacing:1.5px;
   display:flex;align-items:center;gap:10px;
-  transition:all .25s;
+  transition:all .3s;
 }
 .profile-action:hover{
   background:var(--gold);
@@ -260,42 +322,8 @@ header{
   transform:translateY(-1px);
 }
 
-.click-counter{
-  position:fixed;right:20px;top:88px;z-index:99;
-  padding:6px 14px;border-radius:14px;
-  background:linear-gradient(135deg, rgba(61,36,16,.85), rgba(31,17,5,.85));
-  border:1px solid rgba(212,175,55,.5);
-  font-family:'Cinzel',serif;font-size:10px;
-  letter-spacing:1.5px;color:var(--gold-dark);
-  display:flex;align-items:center;gap:6px;
-  opacity:.75;transition:opacity .3s, box-shadow .3s;
-  box-shadow:0 0 12px rgba(212,175,55,.2);
-}
-.click-counter:hover{opacity:1;box-shadow:0 0 20px rgba(212,175,55,.5)}
-.click-counter i{color:var(--gold-bright)}
-.click-counter b{color:var(--gold-light);font-size:12px}
-
-.reset-btn{
-  position:fixed;left:20px;bottom:20px;z-index:99;
-  background:linear-gradient(135deg, rgba(139,0,0,.7), rgba(61,36,16,.85));
-  border:1px solid var(--red-wax);
-  color:var(--gold-light);
-  padding:8px 14px;border-radius:20px;cursor:pointer;
-  font-size:11px;font-weight:700;font-family:'Cinzel',serif;
-  letter-spacing:1px;display:none;align-items:center;gap:6px;
-  transition:all .3s;
-  box-shadow:0 0 12px rgba(139,0,0,.4);
-}
-.reset-btn:hover{
-  background:linear-gradient(135deg, var(--red-wax), #b00000);
-  border-color:var(--gold);
-  box-shadow:0 0 25px rgba(139,0,0,.8);
-  transform:translateY(-2px);
-}
-.reset-btn.visible{display:flex}
-
 .mascot-btn{
-  position:fixed;left:20px;bottom:70px;z-index:99;
+  position:fixed;left:20px;bottom:20px;z-index:99;
   width:46px;height:46px;border-radius:50%;
   background:radial-gradient(circle at 30% 30%, var(--gold-bright), var(--gold-dark));
   border:2px solid var(--gold-bright);
@@ -305,7 +333,7 @@ header{
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 22px rgba(255,215,0,.7), inset 0 0 10px rgba(0,0,0,.25);
   animation:mascotBlink 2s ease-in-out infinite;
-  transition:transform .2s;
+  transition:transform .3s;
 }
 .mascot-btn:hover{transform:scale(1.1) rotate(-8deg)}
 .mascot-btn:active{transform:scale(.92)}
@@ -320,16 +348,20 @@ header{
   text-align:center;
   padding:140px 20px 60px;
   position:relative;
-  background:radial-gradient(ellipse 65% 55% at 50% 45%, rgba(61,36,16,.6) 0%, rgba(31,17,5,.4) 50%, transparent 80%);
+  background:radial-gradient(ellipse 65% 55% at 50% 45%, rgba(42,22,8,.7) 0%, rgba(15,8,3,.5) 50%, transparent 80%);
 }
 .hero-decoration{
   font-family:'Uncial Antiqua',serif;
   font-size:30px;
-  color:var(--gold);
+  color:var(--crystal-1);
   letter-spacing:20px;
   margin-bottom:20px;
-  text-shadow:0 0 20px rgba(212,175,55,.8);
-  animation:fadeUp 1.5s ease both;
+  text-shadow:0 0 20px rgba(184,224,255,.9), 0 0 40px rgba(212,240,255,.5);
+  animation:fadeUp 1.5s ease both, decorationPulse 3s ease-in-out infinite;
+}
+@keyframes decorationPulse{
+  0%,100%{text-shadow:0 0 20px rgba(184,224,255,.9), 0 0 40px rgba(212,240,255,.5)}
+  50%{text-shadow:0 0 30px rgba(184,224,255,1), 0 0 60px rgba(212,240,255,.8), 0 0 80px rgba(255,215,0,.4)}
 }
 .hero-title-wrap{
   display:flex;align-items:center;gap:20px;
@@ -356,18 +388,18 @@ header{
 }
 
 .hero h1{
-  font-family:'Uncial Antiqua', 'Cinzel', serif;
+  font-family:'Cinzel Decorative', 'Uncial Antiqua', serif;
   font-size:clamp(52px, 10vw, 110px);
   font-weight:900;
   letter-spacing:8px;
   text-transform:uppercase;
   margin:0;
-  background:linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-light) 30%, var(--gold) 55%, var(--gold-dark) 85%, var(--gold-bright) 100%);
+  background:linear-gradient(180deg, var(--gold-bright) 0%, var(--crystal-2) 25%, var(--gold-light) 45%, var(--gold) 65%, var(--gold-dark) 85%, var(--gold-bright) 100%);
   background-size:100% 200%;
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 4px 8px rgba(0,0,0,.95)) drop-shadow(0 0 30px rgba(212,175,55,.7));
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.95)) drop-shadow(0 0 30px rgba(212,175,55,.7)) drop-shadow(0 0 60px rgba(184,224,255,.3));
   animation:heroShine 5s ease-in-out infinite, floatY 7s ease-in-out infinite;
   position:relative;
   z-index:2;
@@ -382,7 +414,7 @@ header{
   letter-spacing:6px;
   text-transform:uppercase;
   margin-bottom:26px;
-  text-shadow:0 0 12px rgba(212,175,55,.4);
+  text-shadow:0 0 12px rgba(212,175,55,.4), 0 0 24px rgba(184,224,255,.2);
   animation:fadeUp 1.5s ease .3s both;
 }
 
@@ -390,51 +422,62 @@ header{
   display:flex;flex-direction:column;align-items:center;gap:14px;
   margin-bottom:28px;padding:24px 38px;
   border-radius:20px;
-  background:linear-gradient(160deg, rgba(61,36,16,.85), rgba(31,17,5,.95));
+  background:linear-gradient(160deg, rgba(42,22,8,.85), rgba(15,8,3,.95));
   border:2px solid var(--gold);
   box-shadow:
     0 0 40px rgba(212,175,55,.35),
     0 0 80px rgba(212,175,55,.15),
+    0 0 120px rgba(184,224,255,.15),
     inset 0 0 30px rgba(212,175,55,.08);
   position:relative;z-index:2;
   animation:cdWrapPulse 3s ease-in-out infinite;
+  transition:all .4s;
+}
+.countdown-wrap:hover{
+  border-color:var(--gold-bright);
+  box-shadow:
+    0 0 60px rgba(255,215,0,.6),
+    0 0 120px rgba(255,215,0,.3),
+    0 0 180px rgba(184,224,255,.25),
+    inset 0 0 50px rgba(212,175,55,.15);
 }
 .countdown-wrap::before,.countdown-wrap::after{
-  content:"⚜";
+  content:"❈";
   position:absolute;
   top:50%;transform:translateY(-50%);
-  font-size:22px;color:var(--gold);
-  text-shadow:0 0 10px rgba(212,175,55,.8);
+  font-size:24px;color:var(--crystal-1);
+  text-shadow:0 0 12px rgba(184,224,255,1), 0 0 24px rgba(212,240,255,.6);
+  animation:sparklePulse 2.5s ease-in-out infinite;
 }
 .countdown-wrap::before{left:14px}
-.countdown-wrap::after{right:14px}
+.countdown-wrap::after{right:14px; animation-delay:1.2s}
 @keyframes cdWrapPulse{
-  0%,100%{box-shadow:0 0 35px rgba(212,175,55,.3), 0 0 70px rgba(212,175,55,.12), inset 0 0 30px rgba(212,175,55,.08)}
-  50%{box-shadow:0 0 55px rgba(255,215,0,.65), 0 0 110px rgba(212,175,55,.28), inset 0 0 40px rgba(212,175,55,.15)}
+  0%,100%{box-shadow:0 0 35px rgba(212,175,55,.3), 0 0 70px rgba(212,175,55,.12), 0 0 100px rgba(184,224,255,.1), inset 0 0 30px rgba(212,175,55,.08)}
+  50%{box-shadow:0 0 55px rgba(255,215,0,.65), 0 0 110px rgba(212,175,55,.28), 0 0 150px rgba(184,224,255,.2), inset 0 0 40px rgba(212,175,55,.15)}
 }
 .countdown-label{
   font-family:'Cinzel',serif;
   font-size:clamp(11px,1.3vw,14px);
   font-weight:700;letter-spacing:5px;text-transform:uppercase;
   color:var(--gold-light);
-  text-shadow:0 0 12px rgba(212,175,55,.7);
+  text-shadow:0 0 12px rgba(212,175,55,.7), 0 0 24px rgba(184,224,255,.3);
 }
 .countdown{display:flex;align-items:center;gap:clamp(6px,1vw,16px);flex-wrap:nowrap}
 .cd-block{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:clamp(52px,6.5vw,86px)}
 .cd-num{
-  font-family:'Cinzel',serif;
+  font-family:'Cinzel Decorative','Cinzel',serif;
   font-size:clamp(28px,4.8vw,60px);
   font-weight:900;letter-spacing:2px;line-height:1;
-  background:linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-light) 40%, var(--gold) 70%, var(--gold-dark) 100%);
+  background:linear-gradient(180deg, var(--gold-bright) 0%, var(--crystal-2) 25%, var(--gold-light) 45%, var(--gold) 70%, var(--gold-dark) 100%);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 15px rgba(255,215,0,.8)) drop-shadow(0 2px 4px rgba(0,0,0,.95));
+  filter:drop-shadow(0 0 15px rgba(255,215,0,.8)) drop-shadow(0 0 25px rgba(184,224,255,.4)) drop-shadow(0 2px 4px rgba(0,0,0,.95));
   transition:transform .3s ease;display:inline-block;
 }
 .cd-num.flip{animation:cdFlip .5s ease}
 @keyframes cdFlip{
   0%{transform:scale(1)}
-  40%{transform:scale(1.18) rotateX(-25deg);filter:drop-shadow(0 0 30px rgba(255,215,0,1)) drop-shadow(0 2px 4px rgba(0,0,0,.95))}
+  40%{transform:scale(1.18) rotateX(-25deg);filter:drop-shadow(0 0 30px rgba(255,215,0,1)) drop-shadow(0 0 50px rgba(184,224,255,.6)) drop-shadow(0 2px 4px rgba(0,0,0,.95))}
   100%{transform:scale(1)}
 }
 .cd-cap{
@@ -447,7 +490,7 @@ header{
   font-family:'Cinzel',serif;
   font-size:clamp(24px,3.8vw,48px);font-weight:900;
   color:var(--gold);
-  text-shadow:0 0 18px rgba(255,215,0,1), 0 2px 4px rgba(0,0,0,1);
+  text-shadow:0 0 18px rgba(255,215,0,1), 0 0 30px rgba(184,224,255,.5), 0 2px 4px rgba(0,0,0,1);
   margin-bottom:22px;
   animation:cdSepPulse 1s ease-in-out infinite;
 }
@@ -462,12 +505,21 @@ header{
   display:inline-block;
   color:var(--gold-light);
   border:2px solid var(--gold);
-  background:linear-gradient(160deg, rgba(61,36,16,.6), rgba(31,17,5,.8));
+  background:linear-gradient(160deg, rgba(42,22,8,.6), rgba(15,8,3,.8));
   box-shadow:
     0 0 25px rgba(212,175,55,.4),
+    0 0 40px rgba(184,224,255,.15),
     inset 0 0 25px rgba(212,175,55,.1);
   position:relative;overflow:hidden;z-index:2;
   animation:dateGlow 3s ease-in-out infinite;
+  transition:all .4s;
+}
+.vote-dates:hover{
+  border-color:var(--gold-bright);
+  box-shadow:
+    0 0 40px rgba(255,215,0,.7),
+    0 0 70px rgba(184,224,255,.3),
+    inset 0 0 35px rgba(212,175,55,.2);
 }
 .vote-dates::before{
   content:"";
@@ -477,8 +529,8 @@ header{
   animation:dateSweep 3.5s ease-in-out infinite;
 }
 @keyframes dateGlow{
-  0%,100%{box-shadow:0 0 20px rgba(212,175,55,.35), inset 0 0 25px rgba(212,175,55,.1)}
-  50%{box-shadow:0 0 40px rgba(255,215,0,.7), inset 0 0 35px rgba(212,175,55,.2)}
+  0%,100%{box-shadow:0 0 20px rgba(212,175,55,.35), 0 0 30px rgba(184,224,255,.1), inset 0 0 25px rgba(212,175,55,.1)}
+  50%{box-shadow:0 0 40px rgba(255,215,0,.7), 0 0 60px rgba(184,224,255,.25), inset 0 0 35px rgba(212,175,55,.2)}
 }
 @keyframes dateSweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
 
@@ -497,8 +549,8 @@ header{
 
 .vote-main-btn{
   font-family:'Cinzel',serif;
-  background:linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-bright), var(--gold), var(--gold-dark));
-  background-size:300% 300%;
+  background:linear-gradient(135deg, var(--gold-dark), var(--gold), var(--crystal-2), var(--gold-bright), var(--gold), var(--gold-dark));
+  background-size:400% 400%;
   border:2px solid var(--gold-bright);
   padding:20px 60px;
   color:var(--brown-dark);
@@ -507,30 +559,35 @@ header{
   border-radius:50px;cursor:pointer;
   box-shadow:
     0 0 40px rgba(212,175,55,.7),
+    0 0 80px rgba(184,224,255,.3),
     inset 0 0 20px rgba(255,255,255,.2);
   text-shadow:0 1px 2px rgba(255,255,255,.4);
   transition:transform .3s,box-shadow .3s,background-position .8s;
-  animation:pulseBtn 2.8s ease-in-out infinite, gradientShift 5s linear infinite;
+  animation:pulseBtn 2.8s ease-in-out infinite, gradientShift 6s linear infinite;
   position:relative;overflow:hidden;z-index:2;
 }
 .vote-main-btn::before{
   content:"";
   position:absolute;top:0;left:-100%;width:100%;height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
   animation:shine 3.2s ease-in-out infinite;
 }
-@keyframes shine{0%{left:-100%}60%,100%{left:120%}}
-@keyframes gradientShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.vote-main-btn::after{
+  content:"✦";
+  position:absolute;top:50%;right:20px;transform:translateY(-50%);
+  color:#fff;font-size:16px;opacity:.6;
+  animation:sparklePulse 2s ease-in-out infinite;
+}
 @keyframes pulseBtn{
-  0%,100%{box-shadow:0 0 30px rgba(212,175,55,.6), inset 0 0 15px rgba(255,255,255,.15)}
-  50%{box-shadow:0 0 60px rgba(255,215,0,.95), inset 0 0 25px rgba(255,255,255,.3)}
+  0%,100%{box-shadow:0 0 30px rgba(212,175,55,.6), 0 0 60px rgba(184,224,255,.2), inset 0 0 15px rgba(255,255,255,.15)}
+  50%{box-shadow:0 0 60px rgba(255,215,0,.95), 0 0 120px rgba(184,224,255,.4), inset 0 0 25px rgba(255,255,255,.3)}
 }
 .vote-main-btn:hover{transform:scale(1.06)}
 
 .container{max-width:1200px;margin:0 auto;padding:80px 20px;position:relative}
 
 .section-title{
-  font-family:'Uncial Antiqua', serif;
+  font-family:'Cinzel Decorative','Uncial Antiqua', serif;
   font-size:36px;
   text-align:center;
   margin-bottom:50px;
@@ -538,28 +595,193 @@ header{
   position:relative;
   text-transform:uppercase;
   color:var(--gold-light);
-  text-shadow:0 2px 6px rgba(0,0,0,.95), 0 0 20px rgba(212,175,55,.5);
+  text-shadow:0 2px 6px rgba(0,0,0,.95), 0 0 20px rgba(212,175,55,.5), 0 0 40px rgba(184,224,255,.2);
 }
 .section-title::before{
-  content:"❦";
+  content:"❈ ✦ ❈";
   display:block;
-  font-size:22px;
-  color:var(--gold);
+  font-size:20px;
+  color:var(--crystal-1);
   margin-bottom:8px;
-  opacity:.8;
-  text-shadow:0 0 12px rgba(212,175,55,.8);
+  opacity:.9;
+  text-shadow:0 0 14px rgba(184,224,255,1), 0 0 28px rgba(212,240,255,.6);
+  animation:decorationPulse 3s ease-in-out infinite;
 }
 .section-title::after{
   content:"";
   display:block;
   width:120px;height:2px;
-  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  background:linear-gradient(90deg, transparent, var(--gold), var(--crystal-1), var(--gold), transparent);
   margin:15px auto 0;
-  box-shadow:0 0 15px var(--gold);
+  box-shadow:0 0 15px var(--gold), 0 0 30px var(--crystal-1);
   animation:linePulse 2.4s ease-in-out infinite;
 }
-@keyframes linePulse{0%,100%{width:120px;opacity:.7}50%{width:200px;opacity:1}}
+@keyframes linePulse{0%,100%{width:120px;opacity:.7}50%{width:220px;opacity:1}}
 
+/* ===== ZV-KING Мега-выделяющаяся секция ===== */
+.king-section{
+  display:flex;justify-content:center;
+  margin-bottom:80px;
+  position:relative;
+  padding:40px 20px;
+}
+.king-section::before{
+  content:"";
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%, rgba(255,215,0,.15), transparent 60%);
+  animation:kingAuraPulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes kingAuraPulse{
+  0%,100%{opacity:.5; transform:scale(1)}
+  50%{opacity:1; transform:scale(1.1)}
+}
+
+.nomination-card.king-card{
+  max-width:480px;width:100%;
+  position:relative;
+  border:3px solid var(--gold-bright);
+  background:linear-gradient(135deg, rgba(139,105,20,.5), rgba(15,8,3,.98) 50%, rgba(139,105,20,.45));
+  border-radius:24px;
+  aspect-ratio:auto;
+  padding:60px 40px 40px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  cursor:pointer;
+  overflow:hidden;
+  box-shadow:
+    0 0 60px rgba(255,215,0,.7),
+    0 0 120px rgba(255,215,0,.4),
+    0 0 180px rgba(184,224,255,.25),
+    inset 0 0 60px rgba(255,215,0,.15);
+  animation:kingCardFloat 4s ease-in-out infinite, kingCardGlow 2.5s ease-in-out infinite;
+  transition:all .5s cubic-bezier(.175,.885,.32,1.275);
+}
+@keyframes kingCardFloat{
+  0%,100%{transform:translateY(0) rotate(-.5deg)}
+  50%{transform:translateY(-12px) rotate(.5deg)}
+}
+@keyframes kingCardGlow{
+  0%,100%{box-shadow:0 0 60px rgba(255,215,0,.6), 0 0 120px rgba(255,215,0,.35), 0 0 180px rgba(184,224,255,.2), inset 0 0 60px rgba(255,215,0,.12)}
+  50%{box-shadow:0 0 100px rgba(255,215,0,.95), 0 0 180px rgba(255,215,0,.6), 0 0 260px rgba(184,224,255,.4), inset 0 0 80px rgba(255,215,0,.25)}
+}
+
+.king-card::before{
+  content:"";
+  position:absolute;inset:-2px;
+  border-radius:26px;
+  background:conic-gradient(from 0deg, transparent 0deg, var(--gold-bright) 60deg, var(--crystal-2) 120deg, transparent 180deg, var(--gold-bright) 240deg, var(--crystal-2) 300deg, transparent 360deg);
+  z-index:-1;
+  animation:kingBorderRotate 4s linear infinite;
+  filter:blur(2px);
+  opacity:.7;
+}
+@keyframes kingBorderRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* Корона */
+.king-card>i{
+  color:var(--gold-bright) !important;
+  font-size:80px;
+  text-shadow:0 0 25px rgba(255,215,0,1), 0 0 50px rgba(255,215,0,.8), 0 0 90px rgba(255,215,0,.5), 0 0 130px rgba(184,224,255,.4) !important;
+  animation:crownFloat 3s ease-in-out infinite, crownShine 2s ease-in-out infinite !important;
+  transition:none;
+  position:relative;z-index:2;
+  margin-bottom:10px;
+}
+@keyframes crownFloat{
+  0%,100%{transform:translateY(0) scale(1) rotate(-3deg);filter:drop-shadow(0 0 20px rgba(255,215,0,.95))}
+  50%{transform:translateY(-10px) scale(1.08) rotate(3deg);filter:drop-shadow(0 0 40px rgba(255,215,0,1))}
+}
+@keyframes crownShine{
+  0%,100%{filter:drop-shadow(0 0 20px rgba(255,215,0,.95)) drop-shadow(0 0 40px rgba(255,215,0,.6))}
+  50%{filter:drop-shadow(0 0 40px rgba(255,215,0,1)) drop-shadow(0 0 80px rgba(184,224,255,.7))}
+}
+
+/* Кольца вокруг короны */
+.king-card .crown-rings{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:200px;height:200px;
+  border-radius:50%;
+  border:1px dashed rgba(184,224,255,.4);
+  animation:crownRingSpin 12s linear infinite;
+  pointer-events:none;
+}
+.king-card .crown-rings::before{
+  content:"";
+  position:absolute;
+  inset:20px;
+  border-radius:50%;
+  border:1px dashed rgba(255,215,0,.3);
+  animation:crownRingSpin 8s linear infinite reverse;
+}
+@keyframes crownRingSpin{0%{transform:translate(-50%,-50%) rotate(0deg)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
+
+.king-card h3{
+  color:var(--gold-bright);
+  text-shadow:0 0 20px rgba(255,215,0,1), 0 0 40px rgba(184,224,255,.5), 0 2px 4px rgba(0,0,0,.9);
+  position:relative;z-index:2;
+  font-size:32px;
+  letter-spacing:6px;
+  font-family:'Cinzel Decorative','Uncial Antiqua',serif;
+  animation:kingTitleShine 3s ease-in-out infinite;
+  margin-top:10px;
+}
+@keyframes kingTitleShine{
+  0%,100%{text-shadow:0 0 20px rgba(255,215,0,1), 0 0 40px rgba(184,224,255,.4), 0 2px 4px rgba(0,0,0,.9)}
+  50%{text-shadow:0 0 35px rgba(255,215,0,1), 0 0 70px rgba(184,224,255,.8), 0 0 100px rgba(255,215,0,.5), 0 2px 4px rgba(0,0,0,.9)}
+}
+.king-card .king-label{
+  position:absolute;top:22px;left:0;right:0;text-align:center;
+  font-size:12px;font-family:'Cinzel',serif;letter-spacing:5px;
+  color:var(--crystal-1);
+  text-shadow:0 0 14px rgba(184,224,255,1), 0 0 28px rgba(212,240,255,.6);
+  z-index:2;
+  animation:decorationPulse 2.5s ease-in-out infinite;
+}
+
+/* Кристаллы вокруг королевской карточки */
+.king-crystals{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:3;
+  overflow:hidden;
+  border-radius:24px;
+}
+.king-crystal{
+  position:absolute;
+  color:var(--crystal-1);
+  filter:drop-shadow(0 0 8px rgba(184,224,255,1)) drop-shadow(0 0 16px rgba(212,240,255,.6));
+  animation:kingCrystalFloat 3s ease-in-out infinite;
+  opacity:.9;
+}
+.king-crystal:nth-child(1){top:15%;left:8%;font-size:20px;animation-delay:0s}
+.king-crystal:nth-child(2){top:25%;right:10%;font-size:16px;animation-delay:.6s}
+.king-crystal:nth-child(3){bottom:25%;left:12%;font-size:18px;animation-delay:1.2s}
+.king-crystal:nth-child(4){bottom:15%;right:8%;font-size:22px;animation-delay:1.8s}
+.king-crystal:nth-child(5){top:50%;left:5%;font-size:14px;animation-delay:2.4s}
+.king-crystal:nth-child(6){top:55%;right:6%;font-size:15px;animation-delay:3s}
+@keyframes kingCrystalFloat{
+  0%,100%{transform:translateY(0) rotate(0deg) scale(1); opacity:.7}
+  50%{transform:translateY(-10px) rotate(180deg) scale(1.2); opacity:1}
+}
+
+.king-card:hover{
+  border-color:#fff8dc;
+  transform:translateY(-15px) scale(1.05) rotate(0);
+  box-shadow:
+    0 0 120px rgba(255,215,0,1),
+    0 0 200px rgba(255,215,0,.7),
+    0 0 300px rgba(184,224,255,.5),
+    inset 0 0 100px rgba(255,215,0,.3);
+}
+.king-card:hover>i{
+  transform:scale(1.15) rotate(0);
+  animation-play-state:paused;
+}
+
+/* ===== Обычные номинации ===== */
 .nominations-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -567,14 +789,14 @@ header{
   margin-bottom:80px;
 }
 .nomination-card{
-  background:linear-gradient(160deg, rgba(61,36,16,.85) 0%, rgba(31,17,5,.95) 100%);
+  background:linear-gradient(160deg, rgba(42,22,8,.85) 0%, rgba(15,8,3,.95) 100%);
   border:2px solid var(--gold-dark);
   border-radius:18px;
   aspect-ratio:1/1;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   padding:24px 20px;text-align:center;cursor:pointer;
   position:relative;overflow:hidden;
-  transition:transform .35s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s;
+  transition:transform .4s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s;
   transform-style:preserve-3d;will-change:transform;
   box-shadow:inset 0 0 30px rgba(0,0,0,.5);
 }
@@ -584,109 +806,67 @@ header{
   background:radial-gradient(circle at 50% 30%, rgba(255,215,0,.25), transparent 65%);
   opacity:0;transition:opacity .4s ease;pointer-events:none;
 }
+.nomination-card::after{
+  content:"✦";
+  position:absolute;top:12px;right:14px;
+  color:var(--crystal-1);
+  font-size:12px;
+  opacity:.4;
+  text-shadow:0 0 8px var(--crystal-1);
+  animation:sparklePulse 2.5s ease-in-out infinite;
+  transition:opacity .3s;
+}
 .nomination-card:hover::before{opacity:1}
+.nomination-card:hover::after{opacity:1}
 .nomination-card:hover{
   border-color:var(--gold-bright);
   box-shadow:
     0 25px 70px rgba(212,175,55,.55),
     0 0 50px rgba(255,215,0,.4),
+    0 0 90px rgba(184,224,255,.2),
     inset 0 0 40px rgba(212,175,55,.15);
 }
-.nomination-card>i{
-  font-size:48px;margin-bottom:18px;
-  color:var(--gold-light) !important;
-  text-shadow:0 0 18px rgba(255,215,0,.7), 0 2px 4px rgba(0,0,0,.95);
-  transition:transform .4s;
-  animation:iconFloat 3.5s ease-in-out infinite;
+
+/* SVG иконки номинаций */
+.nom-icon{
+  width:64px;height:64px;
+  margin-bottom:18px;
   position:relative;z-index:1;
+  filter:drop-shadow(0 0 10px rgba(255,215,0,.6)) drop-shadow(0 0 20px rgba(184,224,255,.2)) drop-shadow(0 2px 4px rgba(0,0,0,.8));
+  transition:transform .4s, filter .4s;
+  animation:iconFloat 3.5s ease-in-out infinite;
+  display:block;
+}
+.nomination-card:hover .nom-icon{
+  transform:scale(1.18) rotate(-6deg);
+  filter:drop-shadow(0 0 20px rgba(255,215,0,.9)) drop-shadow(0 0 40px rgba(184,224,255,.5)) drop-shadow(0 2px 4px rgba(0,0,0,.8));
 }
 @keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(3deg)}}
-.nomination-card:hover>i{transform:scale(1.22) rotate(10deg)}
+
 .nomination-card h3{
   font-family:'Cinzel',serif;
   font-size:19px;letter-spacing:2px;
   margin-top:10px;position:relative;z-index:1;
   color:var(--gold-light);
   text-shadow:0 2px 6px rgba(0,0,0,.95);
+  transition:all .3s;
 }
-
-/* ===== SVG иконки номинаций ===== */
-.nom-icon{
-  width:64px;height:64px;
-  margin-bottom:18px;
-  position:relative;z-index:1;
-  filter:drop-shadow(0 0 12px rgba(255,215,0,.6)) drop-shadow(0 2px 4px rgba(0,0,0,.8));
-  transition:transform .4s;
-  animation:iconFloat 3.5s ease-in-out infinite;
-  display:block;
-}
-.nomination-card:hover .nom-icon{transform:scale(1.15) rotate(-5deg)}
-
-/* ===== Королевская карточка ===== */
-.king-section{display:flex;justify-content:center;margin-bottom:60px}
-.nomination-card.king-card{
-  max-width:420px;width:100%;
-  border:3px solid var(--gold-bright);
-  background:linear-gradient(135deg, rgba(139,105,20,.4), rgba(31,17,5,.95) 60%, rgba(139,105,20,.35));
-  box-shadow:
-    0 0 45px rgba(255,215,0,.5),
-    0 0 90px rgba(255,215,0,.25),
-    inset 0 0 40px rgba(255,215,0,.12);
-}
-.nomination-card.king-card::before{display:none}
-.nomination-card.king-card::after{
-  content:"";
-  position:absolute;inset:0;border-radius:16px;
-  background:radial-gradient(circle at 50% 40%, rgba(255,215,0,.3), transparent 60%);
-  opacity:.7;pointer-events:none;
-  animation:kingGlow 3s ease-in-out infinite;
-}
-@keyframes kingGlow{0%,100%{opacity:.5}50%{opacity:1}}
-.nomination-card.king-card .king-label{
-  position:absolute;top:18px;left:0;right:0;text-align:center;
-  font-size:11px;font-family:'Cinzel',serif;letter-spacing:4px;
+.nomination-card:hover h3{
   color:var(--gold-bright);
-  text-shadow:0 0 12px rgba(255,215,0,.9);
-  z-index:2;
-}
-.nomination-card.king-card:hover{
-  border-color:#fff8dc;
-  box-shadow:
-    0 25px 90px rgba(255,215,0,.75),
-    0 0 120px rgba(255,215,0,.5),
-    inset 0 0 60px rgba(255,215,0,.2);
-}
-.nomination-card.king-card>i{
-  color:var(--gold-bright) !important;
-  font-size:70px;
-  text-shadow:0 0 20px rgba(255,215,0,.95), 0 0 45px rgba(255,215,0,.7), 0 0 80px rgba(255,215,0,.45) !important;
-  animation:crownFloat 3s ease-in-out infinite !important;
-  transition:none;
-  position:relative;z-index:2;
-}
-@keyframes crownFloat{
-  0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 20px rgba(255,215,0,.95))}
-  50%{transform:translateY(-8px) scale(1.05);filter:drop-shadow(0 0 35px rgba(255,215,0,1))}
-}
-.nomination-card.king-card:hover>i{transform:none !important}
-.nomination-card.king-card h3{
-  color:var(--gold-bright);
-  text-shadow:0 0 15px rgba(255,215,0,.8);
-  position:relative;z-index:2;
-  font-size:22px;
+  text-shadow:0 0 15px rgba(255,215,0,.8), 0 2px 6px rgba(0,0,0,.95);
 }
 
 /* ===== Модалка ===== */
 .modal-overlay{
   position:fixed;inset:0;width:100%;height:100%;
-  background:radial-gradient(circle at 50% 50%, rgba(31,17,5,.95), rgba(0,0,0,.98));
+  background:radial-gradient(circle at 50% 50%, rgba(15,8,3,.95), rgba(0,0,0,.98));
   backdrop-filter:blur(14px);
   z-index:1000;display:flex;justify-content:center;align-items:center;
   opacity:0;pointer-events:none;transition:opacity .4s ease;padding:20px;
 }
 .modal-overlay.active{opacity:1;pointer-events:auto}
 .modal-content{
-  background:linear-gradient(160deg, rgba(61,36,16,.98), rgba(20,10,3,.98));
+  background:linear-gradient(160deg, rgba(42,22,8,.98), rgba(10,5,2,.98));
   border:3px solid var(--gold);
   border-radius:20px;
   padding:40px;
@@ -696,39 +876,40 @@ header{
   transition:transform .45s cubic-bezier(.175,.885,.32,1.2);
   box-shadow:
     0 0 70px rgba(212,175,55,.4),
-    0 0 100px rgba(139,105,20,.3);
+    0 0 100px rgba(139,105,20,.3),
+    0 0 140px rgba(184,224,255,.15);
   max-height:90vh;display:flex;flex-direction:column;
 }
 .modal-overlay.active .modal-content{transform:scale(1) translateY(0)}
 .modal-content::before{
   content:"";
   position:absolute;inset:-3px;border-radius:22px;
-  background:linear-gradient(135deg, rgba(255,215,0,.5), transparent 35%, transparent 65%, rgba(255,215,0,.3));
+  background:linear-gradient(135deg, rgba(255,215,0,.5), transparent 35%, transparent 65%, rgba(184,224,255,.4));
   z-index:-1;filter:blur(10px);opacity:.7;
 }
 .close-modal{
   position:absolute;top:14px;right:22px;
   font-size:28px;cursor:pointer;
   color:var(--gold-dark);
-  transition:all .3s;line-height:1;
+  transition:all .4s;line-height:1;
   font-family:'Cinzel',serif;
 }
 .close-modal:hover{
   color:var(--gold-bright);
   transform:rotate(90deg) scale(1.2);
-  text-shadow:0 0 15px rgba(255,215,0,.9);
+  text-shadow:0 0 15px rgba(255,215,0,.9), 0 0 30px rgba(184,224,255,.6);
 }
 .modal-title{
-  font-family:'Uncial Antiqua',serif;
+  font-family:'Cinzel Decorative','Uncial Antiqua',serif;
   font-size:28px;
   margin-bottom:25px;text-align:center;letter-spacing:4px;text-transform:uppercase;
   color:var(--gold-light);
-  text-shadow:0 0 15px rgba(212,175,55,.7), 0 2px 4px rgba(0,0,0,.9);
+  text-shadow:0 0 15px rgba(212,175,55,.7), 0 0 30px rgba(184,224,255,.3), 0 2px 4px rgba(0,0,0,.9);
 }
 .modal-title.king-title{
   color:var(--gold-bright);
-  text-shadow:0 0 18px rgba(255,215,0,.8), 0 2px 4px rgba(0,0,0,.9);
-  animation:crownFloat 3s ease-in-out infinite;
+  text-shadow:0 0 18px rgba(255,215,0,.8), 0 0 40px rgba(184,224,255,.5), 0 2px 4px rgba(0,0,0,.9);
+  animation:kingTitleShine 3s ease-in-out infinite;
 }
 .modal-subtitle{
   text-align:center;
@@ -752,13 +933,13 @@ header{
 .nominees-list::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:10px}
 
 .nominee-card{
-  background:linear-gradient(160deg, rgba(61,36,16,.55), rgba(31,17,5,.75));
+  background:linear-gradient(160deg, rgba(42,22,8,.55), rgba(15,8,3,.75));
   border:1px solid rgba(212,175,55,.35);
   border-radius:14px;
   padding:18px 12px;
   display:flex;flex-direction:column;justify-content:space-between;align-items:center;
   text-align:center;min-height:210px;
-  transition:all .35s;
+  transition:all .4s;
   position:relative;overflow:hidden;
   animation:cardIn .5s ease both;
 }
@@ -772,9 +953,10 @@ header{
 .nominee-card:hover::after{opacity:1}
 .nominee-card:hover{
   border-color:var(--gold-bright);
-  transform:translateY(-4px) scale(1.02);
+  transform:translateY(-6px) scale(1.03);
   box-shadow:
     0 10px 30px rgba(212,175,55,.5),
+    0 0 40px rgba(184,224,255,.2),
     inset 0 0 20px rgba(212,175,55,.12);
 }
 
@@ -786,7 +968,7 @@ header{
   font-size:24px;
   margin-bottom:12px;
   border:2px solid var(--gold-light);
-  box-shadow:0 0 18px rgba(212,175,55,.6), inset 0 0 12px rgba(0,0,0,.3);
+  box-shadow:0 0 18px rgba(212,175,55,.6), 0 0 30px rgba(184,224,255,.2), inset 0 0 12px rgba(0,0,0,.3);
   transition:transform .4s,box-shadow .4s;
   animation:avatarPulse 3s ease-in-out infinite;
   position:relative;z-index:1;
@@ -795,18 +977,18 @@ header{
 }
 .nominee-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 @keyframes avatarPulse{
-  0%,100%{box-shadow:0 0 12px rgba(212,175,55,.4), inset 0 0 10px rgba(0,0,0,.3)}
-  50%{box-shadow:0 0 25px rgba(255,215,0,.85), inset 0 0 15px rgba(0,0,0,.35)}
+  0%,100%{box-shadow:0 0 12px rgba(212,175,55,.4), 0 0 20px rgba(184,224,255,.15), inset 0 0 10px rgba(0,0,0,.3)}
+  50%{box-shadow:0 0 25px rgba(255,215,0,.85), 0 0 50px rgba(184,224,255,.4), inset 0 0 15px rgba(0,0,0,.35)}
 }
 .nominee-card:hover .nominee-avatar{
-  transform:scale(1.1) rotate(-4deg);
-  box-shadow:0 0 30px rgba(255,215,0,1), inset 0 0 15px rgba(0,0,0,.3);
+  transform:scale(1.12) rotate(-4deg);
+  box-shadow:0 0 30px rgba(255,215,0,1), 0 0 60px rgba(184,224,255,.5), inset 0 0 15px rgba(0,0,0,.3);
 }
 .nominee-card.king-nominee .nominee-avatar{
   background:radial-gradient(circle at 30% 30%, #fff8dc, var(--gold-bright));
   color:var(--brown-dark);
   border-color:var(--gold-bright);
-  box-shadow:0 0 20px rgba(255,215,0,.8), inset 0 0 12px rgba(0,0,0,.2);
+  box-shadow:0 0 20px rgba(255,215,0,.8), 0 0 40px rgba(184,224,255,.3), inset 0 0 12px rgba(0,0,0,.2);
   animation:none;
 }
 .nominee-name{
@@ -825,14 +1007,21 @@ header{
   padding:9px 14px;border-radius:20px;cursor:pointer;
   font-weight:700;font-family:'Cinzel',serif;
   font-size:10.5px;letter-spacing:1.5px;
-  transition:all .3s;width:100%;
+  transition:all .4s;width:100%;
   position:relative;overflow:hidden;
 }
+.vote-action-btn::before{
+  content:"";
+  position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  transition:left .5s;
+}
+.vote-action-btn:hover::before{left:100%}
 .vote-action-btn:hover{
   background:linear-gradient(90deg, var(--gold-dark), var(--gold-bright), var(--gold-dark));
   background-size:200% 100%;
   color:var(--brown-dark);
-  box-shadow:0 0 25px rgba(255,215,0,.9);
+  box-shadow:0 0 25px rgba(255,215,0,.9), 0 0 50px rgba(184,224,255,.3);
   transform:translateY(-2px);
   animation:btnShimmer 1.5s linear infinite;
 }
@@ -865,17 +1054,17 @@ header{
   font-weight:800;font-family:'Cinzel',serif;
   font-size:10.5px;letter-spacing:1.5px;
   transition:all .3s;width:100%;
-  box-shadow:0 0 25px rgba(255,215,0,.85), inset 0 0 12px rgba(255,255,255,.2);
+  box-shadow:0 0 25px rgba(255,215,0,.85), 0 0 50px rgba(184,224,255,.3), inset 0 0 12px rgba(255,255,255,.2);
   animation:confirmPulse 1.4s ease-in-out infinite, btnShimmer 2s linear infinite;
   text-shadow:0 1px 2px rgba(255,255,255,.3);
 }
 .vote-confirm-btn:hover{
   transform:translateY(-2px) scale(1.03);
-  box-shadow:0 0 35px rgba(255,215,0,1);
+  box-shadow:0 0 35px rgba(255,215,0,1), 0 0 70px rgba(184,224,255,.5);
 }
 @keyframes confirmPulse{
-  0%,100%{box-shadow:0 0 20px rgba(255,215,0,.6), inset 0 0 12px rgba(255,255,255,.15)}
-  50%{box-shadow:0 0 35px rgba(255,215,0,1), inset 0 0 15px rgba(255,255,255,.25)}
+  0%,100%{box-shadow:0 0 20px rgba(255,215,0,.6), 0 0 40px rgba(184,224,255,.2), inset 0 0 12px rgba(255,255,255,.15)}
+  50%{box-shadow:0 0 35px rgba(255,215,0,1), 0 0 70px rgba(184,224,255,.5), inset 0 0 15px rgba(255,255,255,.25)}
 }
 .vote-cancel-small{
   background:transparent;
@@ -905,13 +1094,14 @@ header{
   background:linear-gradient(160deg, rgba(255,215,0,.2), rgba(139,105,20,.15));
   box-shadow:
     0 0 40px rgba(255,215,0,.6),
+    0 0 80px rgba(184,224,255,.3),
     0 0 60px rgba(212,175,55,.4),
     inset 0 0 25px rgba(255,215,0,.15);
   animation:chosenPulse 2s ease-in-out infinite;
 }
 @keyframes chosenPulse{
-  0%,100%{box-shadow:0 0 25px rgba(255,215,0,.5), 0 0 40px rgba(212,175,55,.4), inset 0 0 20px rgba(255,215,0,.1)}
-  50%{box-shadow:0 0 50px rgba(255,215,0,.9), 0 0 80px rgba(212,175,55,.7), inset 0 0 30px rgba(255,215,0,.2)}
+  0%,100%{box-shadow:0 0 25px rgba(255,215,0,.5), 0 0 50px rgba(184,224,255,.2), 0 0 40px rgba(212,175,55,.4), inset 0 0 20px rgba(255,215,0,.1)}
+  50%{box-shadow:0 0 50px rgba(255,215,0,.9), 0 0 100px rgba(184,224,255,.5), 0 0 80px rgba(212,175,55,.7), inset 0 0 30px rgba(255,215,0,.2)}
 }
 .nominee-card.chosen .nominee-avatar{
   border-color:var(--gold-bright);
@@ -922,7 +1112,7 @@ header{
 .nominee-card.king-nominee.chosen{
   border-color:var(--gold-bright);
   background:linear-gradient(160deg, rgba(255,215,0,.25), rgba(139,105,20,.15));
-  box-shadow:0 0 40px rgba(255,215,0,.7), 0 0 70px rgba(255,215,0,.4), inset 0 0 25px rgba(255,215,0,.15);
+  box-shadow:0 0 40px rgba(255,215,0,.7), 0 0 100px rgba(184,224,255,.4), 0 0 70px rgba(255,215,0,.4), inset 0 0 25px rgba(255,215,0,.15);
 }
 .nominee-card.king-nominee.chosen .nominee-avatar{
   border-color:var(--gold-bright);
@@ -951,11 +1141,12 @@ header{
 .game-card{padding:12px}
 .game-card .vote-actions{margin-top:4px}
 
+/* ===== Модалка выхода ===== */
 .logout-confirm .modal-content{max-width:440px;text-align:center}
 .logout-confirm-icon{
   font-size:50px;color:var(--gold-bright);
   margin-bottom:14px;
-  text-shadow:0 0 20px rgba(255,215,0,.8);
+  text-shadow:0 0 20px rgba(255,215,0,.8), 0 0 40px rgba(184,224,255,.4);
   animation:iconFloat 3s ease-in-out infinite;
 }
 .logout-confirm-text{
@@ -974,7 +1165,7 @@ header{
   padding:12px 24px;border-radius:22px;cursor:pointer;
   font-family:'Cinzel',serif;
   font-size:12px;font-weight:800;letter-spacing:1.5px;
-  transition:all .3s;
+  transition:all .4s;
 }
 .btn-yes{
   background:linear-gradient(135deg, var(--gold-dark), var(--gold-bright));
@@ -984,7 +1175,7 @@ header{
 }
 .btn-yes:hover{
   transform:translateY(-2px) scale(1.03);
-  box-shadow:0 0 35px rgba(255,215,0,1);
+  box-shadow:0 0 35px rgba(255,215,0,1), 0 0 70px rgba(184,224,255,.5);
 }
 .btn-no{
   background:transparent;
@@ -997,20 +1188,27 @@ header{
   transform:translateY(-1px);
 }
 
+/* ===== Тосты (уведомления) — полностью скрыты по умолчанию ===== */
 .toast{
   position:fixed;bottom:30px;right:30px;
   padding:16px 26px;border-radius:14px;
   font-weight:600;z-index:3000;
-  transform:translateY(150%);
+  transform:translateY(200%) scale(.8);
+  opacity:0;
+  pointer-events:none;
   color:var(--brown-dark);
   font-size:14px;
   font-family:'Cinzel',serif;
-  transition:transform .4s cubic-bezier(.175,.885,.32,1.2);
+  transition:transform .5s cubic-bezier(.175,.885,.32,1.4), opacity .4s;
   max-width:380px;
   box-shadow:0 0 40px rgba(0,0,0,.6);
   border:2px solid var(--gold-bright);
 }
-.toast.active{transform:translateY(0)}
+.toast.active{
+  transform:translateY(0) scale(1);
+  opacity:1;
+  pointer-events:auto;
+}
 .toast.error{
   background:linear-gradient(135deg, #8b0000, #5a0000);
   color:#f4e4a6;
@@ -1020,7 +1218,7 @@ header{
 .toast.success{
   background:linear-gradient(135deg, var(--gold-bright), var(--gold-light));
   color:var(--brown-dark);
-  box-shadow:0 0 35px rgba(255,215,0,.8);
+  box-shadow:0 0 35px rgba(255,215,0,.8), 0 0 70px rgba(184,224,255,.4);
 }
 .toast.info{
   background:linear-gradient(135deg, var(--gold), var(--gold-dark));
@@ -1033,7 +1231,7 @@ header{
   font-size:54px;
   color:var(--gold-bright);
   margin-bottom:14px;
-  text-shadow:0 0 20px rgba(255,215,0,.9);
+  text-shadow:0 0 20px rgba(255,215,0,.9), 0 0 40px rgba(184,224,255,.5);
   animation:iconFloat 2.5s ease-in-out infinite;
 }
 .zv-club-confirm-text{
@@ -1045,8 +1243,8 @@ header{
 }
 .zv-club-confirm-text b{
   color:var(--gold-bright);
-  text-shadow:0 0 10px rgba(255,215,0,.9);
-  font-family:'Uncial Antiqua',serif;
+  text-shadow:0 0 10px rgba(255,215,0,.9), 0 0 20px rgba(184,224,255,.5);
+  font-family:'Cinzel Decorative','Uncial Antiqua',serif;
   letter-spacing:2px;
 }
 .zv-club-confirm-actions{
@@ -1056,7 +1254,7 @@ header{
   padding:12px 24px;border-radius:22px;cursor:pointer;
   font-family:'Cinzel',serif;
   font-size:12px;font-weight:800;letter-spacing:1.5px;
-  transition:all .3s;
+  transition:all .4s;
 }
 .zv-club-confirm-actions .btn-go{
   background:linear-gradient(135deg, var(--gold-dark), var(--gold-bright));
@@ -1066,7 +1264,7 @@ header{
 }
 .zv-club-confirm-actions .btn-go:hover{
   transform:translateY(-2px) scale(1.03);
-  box-shadow:0 0 35px rgba(255,215,0,1);
+  box-shadow:0 0 35px rgba(255,215,0,1), 0 0 70px rgba(184,224,255,.5);
 }
 .zv-club-confirm-actions .btn-back{
   background:transparent;
@@ -1090,13 +1288,11 @@ header{
   .auth-btn{padding:6px 12px 6px 6px;font-size:11px;gap:6px}
   .auth-btn img.auth-mini-avatar{width:22px;height:22px}
   .zv-club-btn{padding:6px 12px;font-size:10px;letter-spacing:1px}
-  .reset-btn{padding:6px 10px;font-size:10px;left:12px;bottom:12px}
   .profile-menu{min-width:220px}
   .profile-avatar{width:38px;height:38px}
   .profile-name{font-size:13px}
   .profile-email{font-size:10px}
-  .mascot-btn{left:12px;bottom:60px;width:38px;height:38px;font-size:11px}
-  .click-counter{right:12px;top:80px;padding:4px 8px;font-size:9px}
+  .mascot-btn{left:12px;bottom:12px;width:38px;height:38px;font-size:11px}
   .hero-title-wrap{gap:10px}
   .hero-feather{font-size:26px}
 }
@@ -1110,10 +1306,12 @@ header{
   .section-title::after{width:80px}
   .nominations-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .nomination-card{padding:12px;border-radius:14px}
-  .nomination-card>i{font-size:32px}
-  .nomination-card h3{font-size:13px}
   .nom-icon{width:44px;height:44px;margin-bottom:12px}
-  .nomination-card.king-card>i{font-size:52px}
+  .nomination-card h3{font-size:13px}
+  .king-card{padding:40px 20px 25px;max-width:320px}
+  .king-card>i{font-size:60px}
+  .king-card h3{font-size:24px;letter-spacing:4px}
+  .king-card .crown-rings{width:140px;height:140px}
   .modal-content{padding:24px 16px;border-radius:16px}
   .nominees-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .nominee-card{min-height:180px;padding:14px 8px}
@@ -1140,6 +1338,7 @@ header{
 <body>
 
 <div id="feathers-container"></div>
+<div id="crystals-container"></div>
 
 <header>
   <div class="logo-wrap">
@@ -1176,19 +1375,10 @@ header{
   </div>
 </header>
 
-<div class="click-counter" title="Твои клики">
-  <i class="fa-solid fa-hand-pointer"></i>
-  <b id="click-count">0</b> кликов
-</div>
-
-<button class="reset-btn" id="reset-btn" type="button" onclick="resetMyVotes()">
-  <i class="fa-solid fa-rotate-left"></i> СБРОСИТЬ МОИ ГОЛОСА
-</button>
-
 <button class="mascot-btn" id="mascot-btn" type="button" onclick="mascotClick()" title="Нажми меня!">ZV</button>
 
 <section class="hero">
-  <div class="hero-decoration">⚜ ✦ ⚜</div>
+  <div class="hero-decoration">❈ ✦ ❈</div>
 
   <div class="hero-title-wrap">
     <i class="fa-solid fa-feather hero-feather left"></i>
@@ -1196,7 +1386,7 @@ header{
     <i class="fa-solid fa-feather hero-feather right"></i>
   </div>
 
-  <div class="hero-subtitle">Средневековое голосование</div>
+  <div class="hero-subtitle"></div>
 
   <div class="countdown-wrap" id="countdown-wrap">
     <div class="countdown-label">ДО КОНЦА ГОЛОСОВАНИЯ ОСТАЛОСЬ</div>
@@ -1233,9 +1423,19 @@ header{
 
 <main class="container" id="voting-section">
   <h2 class="section-title">Главная номинация</h2>
+
   <div class="king-section">
     <div class="nomination-card king-card" onclick="openNomination('ZV KING')">
-      <span class="king-label">⚜ ГЛАВНАЯ НОМИНАЦИЯ ⚜</span>
+      <div class="king-crystals">
+        <i class="fa-solid fa-gem king-crystal"></i>
+        <i class="fa-solid fa-star king-crystal"></i>
+        <i class="fa-solid fa-gem king-crystal"></i>
+        <i class="fa-solid fa-star king-crystal"></i>
+        <i class="fa-solid fa-gem king-crystal"></i>
+        <i class="fa-solid fa-star king-crystal"></i>
+      </div>
+      <div class="crown-rings"></div>
+      <span class="king-label">❈ ГЛАВНАЯ НОМИНАЦИЯ ❈</span>
       <i class="fa-solid fa-crown"></i>
       <h3>ZV KING</h3>
     </div>
@@ -1244,14 +1444,14 @@ header{
   <h2 class="section-title">Дополнительные номинации</h2>
   <div class="nominations-grid">
 
-    <!-- Фейл года — разбитое сердце / череп -->
+    <!-- Фейл года — череп -->
     <div class="nomination-card" onclick="openNomination('Фейл года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <path d="M32 6C20 6 12 14 12 26c0 10 6 16 10 20l2 10c0 2 2 4 4 4h8c2 0 4-2 4-4l2-10c4-4 10-10 10-20C52 14 44 6 32 6z" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="24" cy="26" r="3" fill="#ffd700"/>
-        <circle cx="40" cy="26" r="3" fill="#ffd700"/>
-        <path d="M24 40c2-3 6-3 8 0M32 40c2-3 6-3 8 0" stroke="#ffd700" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M20 8l-6-4M44 8l6-4" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/>
+        <path d="M32 6C20 6 12 14 12 26c0 10 6 16 10 20l2 10c0 2 2 4 4 4h8c2 0 4-2 4-4l2-10c4-4 10-10 10-20C52 14 44 6 32 6z" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="24" cy="26" r="3" fill="#d4af37"/>
+        <circle cx="40" cy="26" r="3" fill="#d4af37"/>
+        <path d="M24 40c2-3 6-3 8 0M32 40c2-3 6-3 8 0" stroke="#d4af37" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M20 8l-6-4M44 8l6-4" stroke="#d4af37" stroke-width="2" stroke-linecap="round"/>
       </svg>
       <h3>Фейл года</h3>
     </div>
@@ -1259,42 +1459,47 @@ header{
     <!-- Роблоксер года — куб с человечком -->
     <div class="nomination-card" onclick="openNomination('Роблоксер года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <rect x="8" y="8" width="48" height="48" rx="6" fill="none" stroke="#ffd700" stroke-width="2.5"/>
-        <rect x="14" y="14" width="36" height="36" rx="3" fill="none" stroke="#ffd700" stroke-width="1.5" opacity=".5"/>
-        <circle cx="32" cy="24" r="6" fill="none" stroke="#ffd700" stroke-width="2"/>
-        <path d="M22 44c0-6 4-10 10-10s10 4 10 10" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="8" y="8" width="48" height="48" rx="6" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+        <rect x="14" y="14" width="36" height="36" rx="3" fill="none" stroke="#d4af37" stroke-width="1.5" opacity=".5"/>
+        <circle cx="32" cy="24" r="6" fill="none" stroke="#d4af37" stroke-width="2"/>
+        <path d="M22 44c0-6 4-10 10-10s10 4 10 10" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
       </svg>
       <h3>Роблоксер года</h3>
     </div>
 
-    <!-- Харизма года — огонь / звезда -->
+    <!-- Харизма года — звезда -->
     <div class="nomination-card" onclick="openNomination('Харизма года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <path d="M32 4l6 18 18 2-14 12 4 20-14-10-14 10 4-20L8 24l18-2z" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linejoin="round"/>
-        <path d="M32 14l3 9 9 1-7 6 2 10-7-5-7 5 2-10-7-6 9-1z" fill="#ffd700" opacity=".3"/>
+        <path d="M32 4l6 18 18 2-14 12 4 20-14-10-14 10 4-20L8 24l18-2z" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M32 14l3 9 9 1-7 6 2 10-7-5-7 5 2-10-7-6 9-1z" fill="#d4af37" opacity=".3"/>
       </svg>
       <h3>Харизма года</h3>
     </div>
 
-    <!-- Майнкрафтер года — кирка по диагонали -->
+    <!-- Майнкрафтер года — НАСТОЯЩАЯ КИРКА (все цвета золото/коричневый) -->
     <div class="nomination-card" onclick="openNomination('Майнкрафтер года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <!-- Рукоятка (дерево) — по диагонали из левого нижнего угла в правый верхний -->
-        <rect x="10" y="50" width="6" height="6" fill="#8b6914"/>
-        <rect x="16" y="44" width="6" height="6" fill="#a07828"/>
-        <rect x="22" y="38" width="6" height="6" fill="#8b6914"/>
-        <rect x="28" y="32" width="6" height="6" fill="#a07828"/>
-        <rect x="34" y="26" width="6" height="6" fill="#8b6914"/>
-        <rect x="40" y="20" width="6" height="6" fill="#a07828"/>
-        <!-- Головка кирки (голубая/бирюзовая) -->
-        <rect x="34" y="8" width="20" height="8" fill="#2dd4bf" stroke="#0f766e" stroke-width="1"/>
-        <rect x="34" y="8" width="20" height="3" fill="#5eead4"/>
-        <rect x="28" y="14" width="8" height="8" fill="#2dd4bf" stroke="#0f766e" stroke-width="1"/>
-        <rect x="46" y="16" width="8" height="8" fill="#2dd4bf" stroke="#0f766e" stroke-width="1"/>
-        <rect x="48" y="24" width="6" height="10" fill="#2dd4bf" stroke="#0f766e" stroke-width="1"/>
-        <rect x="34" y="8" width="6" height="8" fill="#14b8a6" stroke="#0f766e" stroke-width="1"/>
-        <!-- Блик на головке -->
-        <rect x="36" y="10" width="10" height="2" fill="#a7f3d0" opacity=".7"/>
+        <!-- Рукоятка (дерево, по диагонали снизу-слева вверх-направо) -->
+        <rect x="10" y="52" width="5" height="5" fill="#8b6914"/>
+        <rect x="15" y="47" width="5" height="5" fill="#d4af37"/>
+        <rect x="20" y="42" width="5" height="5" fill="#8b6914"/>
+        <rect x="25" y="37" width="5" height="5" fill="#d4af37"/>
+        <rect x="30" y="32" width="5" height="5" fill="#8b6914"/>
+        <rect x="35" y="27" width="5" height="5" fill="#d4af37"/>
+        <!-- Головка кирки: горизонтальная перекладина сверху -->
+        <rect x="30" y="10" width="24" height="6" fill="#d4af37" stroke="#8b6914" stroke-width="1"/>
+        <rect x="30" y="10" width="24" height="2" fill="#ffd700"/>
+        <!-- Левый зуб кирки (загибается вниз) -->
+        <rect x="26" y="16" width="6" height="6" fill="#d4af37" stroke="#8b6914" stroke-width="1"/>
+        <rect x="22" y="20" width="6" height="6" fill="#d4af37" stroke="#8b6914" stroke-width="1"/>
+        <!-- Правый зуб кирки (загибается вниз) -->
+        <rect x="52" y="16" width="6" height="6" fill="#d4af37" stroke="#8b6914" stroke-width="1"/>
+        <rect x="54" y="22" width="5" height="6" fill="#d4af37" stroke="#8b6914" stroke-width="1"/>
+        <!-- Центральное соединение -->
+        <rect x="34" y="16" width="14" height="6" fill="#8b6914"/>
+        <rect x="34" y="16" width="14" height="2" fill="#d4af37"/>
+        <!-- Блик -->
+        <rect x="32" y="11" width="8" height="2" fill="#ffd700" opacity=".8"/>
       </svg>
       <h3>Майнкрафтер года</h3>
     </div>
@@ -1302,10 +1507,10 @@ header{
     <!-- КСер года — прицел -->
     <div class="nomination-card" onclick="openNomination('КСер года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="20" fill="none" stroke="#ffd700" stroke-width="2.5"/>
-        <circle cx="32" cy="32" r="4" fill="#ffd700"/>
-        <path d="M32 4v12M32 48v12M4 32h12M48 32h12" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
-        <path d="M14 14l6 6M50 14l-6 6M14 50l6-6M50 50l-6-6" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="32" cy="32" r="20" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+        <circle cx="32" cy="32" r="4" fill="#d4af37"/>
+        <path d="M32 4v12M32 48v12M4 32h12M48 32h12" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
+        <path d="M14 14l6 6M50 14l-6 6M14 50l6-6M50 50l-6-6" stroke="#d4af37" stroke-width="2" stroke-linecap="round"/>
       </svg>
       <h3>КСер года</h3>
     </div>
@@ -1313,26 +1518,23 @@ header{
     <!-- Мультигеймер года — геймпад -->
     <div class="nomination-card" onclick="openNomination('Мультигеймер года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 20h24c6 0 10 4 12 10l4 16c1 4-2 8-6 8-3 0-5-2-7-5l-2-4H19l-2 4c-2 3-4 5-7 5-4 0-7-4-6-8l4-16c2-6 6-10 12-10z" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linejoin="round"/>
-        <path d="M22 30v8M18 34h8" stroke="#ffd700" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="44" cy="32" r="2.5" fill="#ffd700"/>
-        <circle cx="50" cy="37" r="2.5" fill="#ffd700"/>
+        <path d="M20 20h24c6 0 10 4 12 10l4 16c1 4-2 8-6 8-3 0-5-2-7-5l-2-4H19l-2 4c-2 3-4 5-7 5-4 0-7-4-6-8l4-16c2-6 6-10 12-10z" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M22 30v8M18 34h8" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="44" cy="32" r="2.5" fill="#d4af37"/>
+        <circle cx="50" cy="37" r="2.5" fill="#d4af37"/>
       </svg>
       <h3>Мультигеймер года</h3>
     </div>
 
-    <!-- Игра года — джойстик + кубок -->
+    <!-- Игра года — кубок -->
     <div class="nomination-card" onclick="openNomination('Игра года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <!-- Кубок -->
-        <path d="M20 8h24v12c0 8-5 13-12 15-7-2-12-7-12-15V8z" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linejoin="round"/>
-        <path d="M20 12H14c-2 0-4 2-4 4v2c0 4 3 7 7 7h3M44 12h6c2 0 4 2 4 4v2c0 4-3 7-7 7h-3" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/>
-        <!-- Ножка -->
-        <path d="M28 35v6h8v-6" fill="none" stroke="#ffd700" stroke-width="2.5"/>
-        <rect x="22" y="41" width="20" height="4" rx="1" fill="#ffd700"/>
-        <rect x="18" y="45" width="28" height="5" rx="1.5" fill="#ffd700"/>
-        <!-- Звезда на кубке -->
-        <path d="M32 15l1.5 4 4 .5-3 2.5.8 4-3.3-2-3.3 2 .8-4-3-2.5 4-.5z" fill="#fff8dc"/>
+        <path d="M20 8h24v12c0 8-5 13-12 15-7-2-12-7-12-15V8z" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M20 12H14c-2 0-4 2-4 4v2c0 4 3 7 7 7h3M44 12h6c2 0 4 2 4 4v2c0 4-3 7-7 7h-3" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round"/>
+        <path d="M28 35v6h8v-6" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+        <rect x="22" y="41" width="20" height="4" rx="1" fill="#d4af37"/>
+        <rect x="18" y="45" width="28" height="5" rx="1.5" fill="#d4af37"/>
+        <path d="M32 15l1.5 4 4 .5-3 2.5.8 4-3.3-2-3.3 2 .8-4-3-2.5 4-.5z" fill="#ffd700"/>
       </svg>
       <h3>Игра года</h3>
     </div>
@@ -1340,8 +1542,8 @@ header{
     <!-- Актив года — молния -->
     <div class="nomination-card" onclick="openNomination('Актив года')">
       <svg class="nom-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <path d="M36 4L14 36h14l-4 24 26-34H36l4-22z" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linejoin="round"/>
-        <path d="M36 4L14 36h14l-4 24 26-34H36l4-22z" fill="#ffd700" opacity=".2"/>
+        <path d="M36 4L14 36h14l-4 24 26-34H36l4-22z" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M36 4L14 36h14l-4 24 26-34H36l4-22z" fill="#d4af37" opacity=".3"/>
       </svg>
       <h3>Актив года</h3>
     </div>
@@ -1377,7 +1579,7 @@ header{
 <div class="modal-overlay zv-club-confirm" id="zv-club-modal" onclick="handleModalBg(event,'zv-club-modal')">
   <div class="modal-content">
     <i class="fa-solid fa-shield-halved zv-club-confirm-icon"></i>
-    <div class="zv-club-confirm-text">Вы хотите перейти на сайт <b>⚜ ZV-CLUB ⚜</b>?</div>
+    <div class="zv-club-confirm-text">Вы хотите перейти на сайт <b>❈ ZV-CLUB ❈</b>?</div>
     <div class="zv-club-confirm-actions">
       <button class="btn-go" type="button" onclick="goToZvClub()">
         <i class="fa-solid fa-arrow-up-right-from-square"></i> ПЕРЕЙТИ
@@ -1397,10 +1599,11 @@ const SHEETS_API = "https://script.google.com/macros/s/AKfycby41UAg4dKCmnXyWICq2
 
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 900 && "ontouchstart" in window);
 
+/* ===== Падающие перья ===== */
 (function feathersInit(){
   if(IS_MOBILE) return;
   const container = document.getElementById("feathers-container");
-  const FEATHER_COUNT = 12;
+  const FEATHER_COUNT = 10;
   function spawnFeather(){
     const f = document.createElement("div");
     f.className = "feather";
@@ -1419,7 +1622,52 @@ const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || 
     }, (18 + Math.random() * 12) * 1000);
   }
   for(let i = 0; i < FEATHER_COUNT; i++){
-    setTimeout(spawnFeather, i * 800);
+    setTimeout(spawnFeather, i * 900);
+  }
+})();
+
+/* ===== Кристаллические частицы ===== */
+(function crystalsInit(){
+  if(IS_MOBILE) return;
+  const container = document.getElementById("crystals-container");
+  const COLORS = ["#b8e0ff", "#d4f0ff", "#e8f6ff", "#ffd700", "#f4e4a6"];
+  function spawnCrystal(){
+    const c = document.createElement("div");
+    c.className = "crystal-particle";
+    const size = 8 + Math.random() * 14;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    c.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2L4 9L12 22L20 9L12 2Z" fill="${color}" fill-opacity="0.7" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M12 2L12 22M4 9L20 9" stroke="${color}" stroke-width="1" opacity="0.6"/>
+    </svg>`;
+    c.style.left = (Math.random() * 100) + "vw";
+    c.style.animationDuration = (8 + Math.random() * 10) + "s";
+    c.style.animationDelay = (Math.random() * 6) + "s";
+    container.appendChild(c);
+    setTimeout(() => {
+      c.remove();
+      spawnCrystal();
+    }, (14 + Math.random() * 10) * 1000);
+  }
+  for(let i = 0; i < 14; i++){
+    setTimeout(spawnCrystal, i * 700);
+  }
+})();
+
+/* ===== Кристаллические искры по экрану ===== */
+(function sparklesInit(){
+  if(IS_MOBILE) return;
+  const SPARKLES = 8;
+  for(let i = 0; i < SPARKLES; i++){
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.innerHTML = "✦";
+    s.style.left = (Math.random() * 100) + "vw";
+    s.style.top = (Math.random() * 100) + "vh";
+    s.style.animationDelay = (Math.random() * 3) + "s";
+    s.style.animationDuration = (2.5 + Math.random() * 2) + "s";
+    s.style.fontSize = (10 + Math.random() * 12) + "px";
+    document.body.appendChild(s);
   }
 })();
 
@@ -1431,9 +1679,10 @@ document.addEventListener("click", (e) => {
   rip.style.left = e.clientX + "px";
   rip.style.top = e.clientY + "px";
   document.body.appendChild(rip);
-  setTimeout(() => rip.remove(), 850);
+  setTimeout(() => rip.remove(), 950);
 }, { passive: true });
 
+/* ===== Таймер ===== */
 (function countdownInit(){
   const END_DATE = new Date("2026-12-31T23:59:59+03:00").getTime();
   const elDays    = document.getElementById("cd-days");
@@ -1473,6 +1722,7 @@ document.addEventListener("click", (e) => {
   setInterval(tick, 1000);
 })();
 
+/* ===== API ===== */
 function getSessionId(){
   let sid = sessionStorage.getItem("zvawards_sid");
   if(!sid){
@@ -1519,6 +1769,7 @@ function updateOnlineUI(n){
   setInterval(fetchOnline, 120000);
 })();
 
+/* ===== Sound ===== */
 const SoundFX = (()=>{
   let ctx = null;
   function ensureCtx(){
@@ -1557,6 +1808,7 @@ const SoundFX = (()=>{
   };
 })();
 
+/* ===== Данные ===== */
 let currentUser = null;
 let userVotes = {};
 
@@ -1665,6 +1917,7 @@ function showToast(msg, type){
 }
 function scrollToNominations(){ SoundFX.whoosh(); document.getElementById("voting-section").scrollIntoView({behavior:"smooth"}); }
 
+/* ===== Google Auth ===== */
 let googleInitialized = false;
 function initGoogle(){
   if(googleInitialized) return;
@@ -1697,7 +1950,7 @@ function handleGoogleCredential(response){
     currentUser = { name: payload.name || payload.email, email: payload.email, picture: payload.picture || "" };
     localStorage.setItem(LS_USER, JSON.stringify(currentUser));
     updateAuthUI();
-    document.getElementById("reset-btn").classList.add("visible");
+    document.getElementById("reset-btn")?.classList.add("visible");
     showToast("Вы вошли как " + currentUser.name, "success");
   }catch(e){ showToast("Ошибка входа через Google", "error"); console.error(e); }
 }
@@ -1709,7 +1962,7 @@ function doLogout(){
   userVotes = {};
   saveMyVotes(userVotes);
   updateAuthUI();
-  document.getElementById("reset-btn").classList.remove("visible");
+  document.getElementById("reset-btn")?.classList.remove("visible");
   if(window.google && google.accounts) google.accounts.id.disableAutoSelect();
   showToast("Вы вышли из аккаунта", "info");
 }
@@ -1774,7 +2027,7 @@ function parseJwt(token){
     if(raw){
       currentUser = JSON.parse(raw);
       updateAuthUI();
-      document.getElementById("reset-btn").classList.add("visible");
+      document.getElementById("reset-btn")?.classList.add("visible");
     }
   }catch(e){}
 })();
@@ -1949,19 +2202,6 @@ function goToZvClub(){
   window.open("https://ccproxy111-ai.github.io/ZV-CLUB/", "_blank");
 }
 
-const LS_CLICKS_KEY = "zvawards_clicks";
-let myClicks = parseInt(localStorage.getItem(LS_CLICKS_KEY) || "0", 10);
-function updateClickCounter(){
-  const el = document.getElementById("click-count");
-  if(el) el.textContent = myClicks;
-}
-document.addEventListener("click", ()=>{
-  myClicks++;
-  localStorage.setItem(LS_CLICKS_KEY, myClicks);
-  updateClickCounter();
-});
-updateClickCounter();
-
 function mascotClick(){
   SoundFX.random();
   const btn = document.getElementById("mascot-btn");
@@ -1976,9 +2216,9 @@ function mascotClick(){
   label.style.top = (btn.getBoundingClientRect().top - 10) + "px";
   label.style.color = "#ffd700";
   label.style.fontWeight = "900";
-  label.style.fontFamily = "'Uncial Antiqua', serif";
+  label.style.fontFamily = "'Cinzel Decorative', serif";
   label.style.fontSize = "18px";
-  label.style.textShadow = "0 0 14px rgba(255,215,0,1), 0 2px 4px rgba(0,0,0,1)";
+  label.style.textShadow = "0 0 14px rgba(255,215,0,1), 0 0 28px rgba(184,224,255,.7), 0 2px 4px rgba(0,0,0,1)";
   label.style.pointerEvents = "none";
   label.style.zIndex = "100";
   label.style.transition = "transform 1.2s ease-out, opacity 1.2s";
@@ -1990,8 +2230,9 @@ function mascotClick(){
   setTimeout(()=>label.remove(), 1300);
 }
 
+/* ===== Параллакс номинаций ===== */
 if(!IS_MOBILE){
-  document.querySelectorAll(".nomination-card").forEach(card=>{
+  document.querySelectorAll(".nomination-card:not(.king-card)").forEach(card=>{
     let rafId = null;
     card.addEventListener("mousemove", (e)=>{
       const r = card.getBoundingClientRect();
